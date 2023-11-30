@@ -1,0 +1,26 @@
+.mainActionButton, .secondaryActionButton
+{
+    padding: 7px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    text-align: center;
+    width: 100px;
+    min-height: 19px;
+    font-size: 15px;
+    font-family: 'Audiowide';
+    font-style: normal;
+    font-weight: 400;
+    font-family: 'Audiowide', sans-serif;    
+}
+
+.mainActionButton
+{
+    background-color: #F97C00;
+}
+
+.secondaryActionButton
+{
+    background-color: #954A00;
+}
