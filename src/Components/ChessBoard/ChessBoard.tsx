@@ -1,47 +1,70 @@
 import './ChessBoard.css';
 import React, { useState } from 'react';
-//import Chess  from 'chess.js';
+import {Chess}  from 'chess.js';
+import { log } from 'console';
 
-const startFEN="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+const col=["a","b","c","d","e","f","g","h"];
+const ver=[8,7,6,5,4,3,2,1]
 
-function makeChess(fenString:string):string{
-    let board:string="";
+//Class for one cell in chess board
+class Cell {
+    pos: string;
+    piece: string;
+    constructor(pos:string, piece:string) {
+        this.pos = pos;
+        this.piece = piece;
+    }
+}
+
+function makeChess(fenString:string):Cell[]{
+    //Get pieces from fen string
     const fenPieces = fenString.split(' ')[0].split('/').join(''); //Get the first portion //remove the row delimiters '/'
-
-    //let i,j;
     const pieces=Array.from(fenPieces);
-    let counter:number=0;
-    let i=0;
-    console.log(pieces);
+    
+    let board:Cell[] =[];   //Chess board
+    let versCounter=0;      //Verse counter
+    let counter:number=0;   //Column counter
+    let i=0;                //Iterator
     while(i<pieces.length){
         let item=pieces[i];
-        console.log(i,item);
-        let jump=parseInt(item);
+        let jump=parseInt(item);    //if nober, how many spaces
+        //if item is not a number
         if(Number.isNaN(jump)){
-            board+=counter===8?item:item+'|';
+            let key=col[counter]+ver[versCounter];
+            let cell=new Cell(key,item);
+            board.push(cell);
             counter++;
         }else{
             for(let j=0;j<jump;j++){
-                board+=counter===8?" ":" |";
+                let key=col[counter]+ver[versCounter];
+                let cell=new Cell(key," ");
+                board.push(cell);
                 counter++;
             }
         }
+        //if verse ended
         if(counter===8){
-            board+="\n________________\n";
+            versCounter++;
             counter=0;
         }
         i++;
     }
-    console.log(board);
     return board;
 }
 
 function ChessBoard()
 {
-    let [FEN,setFEN]= useState(startFEN);
-    let startChess=makeChess(FEN);
-    let [chess,setChess] = useState(startChess);
-    return <p> <pre>{chess}</pre></p>;
+    //Initialised component Chess
+    let [chess,setChess]=useState(new Chess());
+    //Get FEN string
+    let startChess=makeChess(chess.fen());
+    //Set Board
+    let [chessBoard,setChessBoard] = useState(startChess);
+    return <div className="board">
+        {chessBoard.map((cell:Cell) => (
+        <div key={cell.pos}>{cell.piece}</div>
+    ))}
+</div>;
 
 }
 
