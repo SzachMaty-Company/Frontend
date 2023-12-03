@@ -6,8 +6,18 @@ import { log } from 'console';
 const col=["a","b","c","d","e","f","g","h"];
 const ver=[8,7,6,5,4,3,2,1]
 
-//Class for one cell in chess board
-class Cell {
+function Cell({color,position,piece}:{color:string,position:string,piece:string}){
+    return <div className={color} key={position}>
+        {piece}
+        <input type='hidden' className='PieceType' value={piece}></input>
+        <img className='PieceImg'></img>
+        </div>
+}
+
+
+
+//Class for storing data from one cell in chess board
+class CellObject {
     pos: string;
     piece: string;
     constructor(pos:string, piece:string) {
@@ -16,12 +26,12 @@ class Cell {
     }
 }
 
-function makeChess(fenString:string):Cell[]{
+function makeChess(fenString:string):CellObject[]{
     //Get pieces from fen string
     const fenPieces = fenString.split(' ')[0].split('/').join(''); //Get the first portion //remove the row delimiters '/'
     const pieces=Array.from(fenPieces);
     
-    let board:Cell[] =[];   //Chess board
+    let board:CellObject[] =[];   //Chess board
     let versCounter=0;      //Verse counter
     let counter:number=0;   //Column counter
     let i=0;                //Iterator
@@ -31,13 +41,13 @@ function makeChess(fenString:string):Cell[]{
         //if item is not a number
         if(Number.isNaN(jump)){
             let key=col[counter]+ver[versCounter];
-            let cell=new Cell(key,item);
+            let cell=new CellObject(key,item);
             board.push(cell);
             counter++;
         }else{
             for(let j=0;j<jump;j++){
                 let key=col[counter]+ver[versCounter];
-                let cell=new Cell(key," ");
+                let cell=new CellObject(key,"_"); //Not " ", because css make cell not equal size
                 board.push(cell);
                 counter++;
             }
@@ -60,9 +70,18 @@ function ChessBoard()
     let startChess=makeChess(chess.fen());
     //Set Board
     let [chessBoard,setChessBoard] = useState(startChess);
+    //Painting cells
+    function colorCell(id:number) {
+        //if row is Even, move color scheme by one
+        if(Math.floor(id/8)%2==1){
+            id++;
+        }
+        return id%2==0?"black":"white";
+    };
+
     return <div className="board">
-        {chessBoard.map((cell:Cell) => (
-        <div key={cell.pos}>{cell.piece}</div>
+        {chessBoard.map((cell:CellObject,id:number) => (
+        <Cell color={colorCell(id)} position={cell.pos} piece={cell.piece}></Cell>
     ))}
 </div>;
 

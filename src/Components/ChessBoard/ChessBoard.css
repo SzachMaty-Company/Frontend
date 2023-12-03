@@ -10,3 +10,18 @@
     grid-template-columns: repeat(8, 1fr);
     background-color: burlywood;
 }
+
+div.white{
+    background-color: white;
+}
+
+div.black{
+    background-color: black;
+    color: white;
+}
+
+.white .PieceType[value="p"] ~ .PieceImg {
+    content:url(https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Chess_plt45.svg/800px-Chess_plt45.svg.png);
+    max-width:100%;
+    max-height:100%;
+}
