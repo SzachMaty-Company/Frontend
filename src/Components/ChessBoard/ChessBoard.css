@@ -2,10 +2,9 @@
     padding: 1rem;
     margin: 0 auto; /** centered */
     margin-top: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 0 5px 5px #e9e7e7;
+    border-radius: 2rem;
     width: calc(100vh * 0.9);
-    height: calc(100vh * 0.85);
+    height: calc(100vh * 0.9);
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     background-color: burlywood;
@@ -13,15 +12,71 @@
 
 div.white{
     background-color: white;
+    display:flex;
 }
 
 div.black{
     background-color: black;
     color: white;
+    display:flex;
 }
 
-.white .PieceType[value="p"] ~ .PieceImg {
-    content:url(https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Chess_plt45.svg/800px-Chess_plt45.svg.png);
-    max-width:100%;
-    max-height:100%;
+.PieceImg{
+    width:100%;
+    height:100%;
+}
+
+/*Whites*/
+.w-pawn.PieceImg {
+    content:url('./pieces/pawn-w.svg');
+}
+
+.w-rook.PieceImg {
+    content:url('./pieces/rook-w.svg');
+}
+
+.w-knight.PieceImg {
+    content:url('./pieces/knight-w.svg');
+}
+
+.w-bishop.PieceImg {
+    content:url('./pieces/bishop-w.svg');
+}
+
+.w-queen.PieceImg {
+    content:url('./pieces/queen-w.svg');
+}
+
+.w-king.PieceImg {
+    content:url('./pieces/king-w.svg');
+}
+
+/*Blacks*/
+.b-pawn.PieceImg {
+    content:url('./pieces/pawn-b.svg');
+}
+
+.b-rook.PieceImg {
+    content:url('./pieces/rook-b.svg');
+}
+
+.b-knight.PieceImg {
+    content:url('./pieces/knight-b.svg');
+}
+
+.b-bishop.PieceImg {
+    content:url('./pieces/bishop-b.svg');
+}
+
+.b-queen.PieceImg {
+    content:url('./pieces/queen-b.svg');
+}
+
+.b-king.PieceImg {
+    content:url('./pieces/king-b.svg');
+}
+
+/*Space*/
+.space.PieceImg{
+    content:url('./pieces/space.svg');
 }

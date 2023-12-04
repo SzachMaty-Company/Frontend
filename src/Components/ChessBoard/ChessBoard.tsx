@@ -4,13 +4,26 @@ import {Chess}  from 'chess.js';
 import { log } from 'console';
 
 const col=["a","b","c","d","e","f","g","h"];
-const ver=[8,7,6,5,4,3,2,1]
+const ver=[8,7,6,5,4,3,2,1];
+const pieceDict:{[key:string]:string}={
+    "p":"w-pawn",
+    "r":"w-rook",
+    "n":"w-knight",
+    "b":"w-bishop",
+    "q":"w-queen",
+    "k":"w-king",
+    "P":"b-pawn",
+    "R":"b-rook",
+    "N":"b-knight",
+    "B":"b-bishop",
+    "Q":"b-queen",
+    "K":"b-king",
+    "_":"space"
+};
 
 function Cell({color,position,piece}:{color:string,position:string,piece:string}){
-    return <div className={color} key={position}>
-        {piece}
-        <input type='hidden' className='PieceType' value={piece}></input>
-        <img className='PieceImg'></img>
+    return <div className={color}>
+        <img className={`PieceImg ${pieceDict[piece]}`}></img>
         </div>
 }
 
@@ -81,7 +94,7 @@ function ChessBoard()
 
     return <div className="board">
         {chessBoard.map((cell:CellObject,id:number) => (
-        <Cell color={colorCell(id)} position={cell.pos} piece={cell.piece}></Cell>
+        <Cell key={cell.pos} color={colorCell(id)} position={cell.pos} piece={cell.piece}></Cell>
     ))}
 </div>;
 
