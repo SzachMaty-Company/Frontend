@@ -2,40 +2,20 @@ import './ChessBoard.css';
 import React, { useState } from 'react';
 import {Chess}  from 'chess.js';
 import { log } from 'console';
+import Cell from './Cell';
 
 const col=["a","b","c","d","e","f","g","h"];
 const ver=[8,7,6,5,4,3,2,1];
-const pieceDict:{[key:string]:string}={
-    "p":"w-pawn",
-    "r":"w-rook",
-    "n":"w-knight",
-    "b":"w-bishop",
-    "q":"w-queen",
-    "k":"w-king",
-    "P":"b-pawn",
-    "R":"b-rook",
-    "N":"b-knight",
-    "B":"b-bishop",
-    "Q":"b-queen",
-    "K":"b-king",
-    "_":"space"
-};
-
-function Cell({color,position,piece}:{color:string,position:string,piece:string}){
-    return <div className={color}>
-        <img className={`PieceImg ${pieceDict[piece]}`}></img>
-        </div>
-}
-
-
 
 //Class for storing data from one cell in chess board
-class CellObject {
+export class CellObject {
     pos: string;
     piece: string;
+    choosed:boolean;
     constructor(pos:string, piece:string) {
         this.pos = pos;
         this.piece = piece;
+        this.choosed = false;
     }
 }
 
@@ -73,7 +53,16 @@ function makeChess(fenString:string):CellObject[]{
         i++;
     }
     return board;
-}
+};
+
+//Coloring cells
+function colorCell(id:number) {
+    //if row is Even, move color scheme by one
+    if(Math.floor(id/8)%2==1){
+        id++;
+    }
+    return id%2==0?"black":"white";
+};
 
 function ChessBoard()
 {
@@ -83,18 +72,29 @@ function ChessBoard()
     let startChess=makeChess(chess.fen());
     //Set Board
     let [chessBoard,setChessBoard] = useState(startChess);
-    //Painting cells
-    function colorCell(id:number) {
-        //if row is Even, move color scheme by one
-        if(Math.floor(id/8)%2==1){
-            id++;
-        }
-        return id%2==0?"black":"white";
+    //Clicked cell
+    let [cellClicked,setCellClicked]=useState("");
+
+    const cellOnClick = (cell:CellObject) =>{
+        /*if(cell.pos===cellClicked){
+
+        }else{
+            
+        }*/
+        //unclicked previous one
+        chessBoard.forEach((c)=>{
+            if(c.pos===cellClicked){
+                c.choosed=false;
+            }
+        });
+        setCellClicked(cell.pos);
+        cell.choosed=true;
+        console.log(cell.pos);
     };
 
     return <div className="board">
         {chessBoard.map((cell:CellObject,id:number) => (
-        <Cell key={cell.pos} color={colorCell(id)} position={cell.pos} piece={cell.piece}></Cell>
+        <Cell key={cell.pos} color={colorCell(id)} cell={cell} callback={cellOnClick}></Cell>
     ))}
 </div>;
 
