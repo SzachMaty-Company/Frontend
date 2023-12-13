@@ -1,6 +1,6 @@
 import './ChessBoard.css';
 import React, { useEffect, useState } from 'react';
-import {Chess}  from 'chess.js';
+import {BLACK, Chess, WHITE}  from 'chess.js';
 import { log } from 'console';
 import Cell from './Cell';
 
@@ -77,7 +77,26 @@ function colorCell(id:number):string {
 };
 
 //Calculate position of cell in table
-function reverseCellPosition(pos:string):number{
+function reverseCellPosition(piece:string,pos:string):number{
+    //Castling short
+    if(pos==="O-O"){
+    //Black king
+        if(piece==="k")
+            return reverseCellPosition(piece,"h8");
+        //White king
+        else if(piece==="K")
+            return reverseCellPosition(piece,"h1");
+    }
+    //Castling long
+    else if(pos==="O-O-O"){
+        //Black king
+        if(piece==="k")
+            return reverseCellPosition(piece,"a8");
+        //White king
+        else if(piece==="K")
+            return reverseCellPosition(piece,"a1");
+    }
+    console.log(pos);
     return reverseCol[pos.charAt(0)]+(parseInt(pos.charAt(1))-8)*-8;
 }
 
@@ -94,13 +113,28 @@ function ChessBoard()
     let [cellClicked,setCellClicked]=useState("");
 
     useEffect(()=>{
-        console.log("reload");
         let cellTable=makeChess(chess.fen());
         setChessBoard(cellTable);
     },[chessChanged])
 
     const cellOnClick = (cell:CellObject) =>{
-        if(cell.piece==="_" && chessBoard[reverseCellPosition(cellClicked)].piece!=="_"){
+        console.log(cellClicked+" "+cell.pos)
+        let ddd=chess.getCastlingRights(chess.turn()==="b"?BLACK:WHITE);
+        if(((cellClicked==="e8" && cell.pos==="h8") || (cellClicked==="e1" && cell.pos==="h1")) && ddd.k){
+            try{
+                console.log("O-O");
+                chess.move("O-O");
+                setChessChanged(!chessChanged);
+            }catch{}
+            
+        }else if(((cellClicked==="e8" && cell.pos==="a8") || (cellClicked==="e1" && cell.pos==="a1")) && ddd.q){
+            try{
+                console.log("O-O-O");
+                chess.move("O-O-O");
+                setChessChanged(!chessChanged);
+            }catch{}
+        }
+        if(cellClicked!=="" && chessBoard[reverseCellPosition("",cellClicked)].piece!=="_"){
             try{
                 console.log({from: cellClicked, to: cell.pos});
                 console.log("before move");
@@ -122,20 +156,29 @@ function ChessBoard()
         //Get avaiable cells
         let currentPos:any=cell.pos;
         let availableMoves=chess.moves({ square: currentPos });
+        console.log("Available moves ",availableMoves);
         if(availableMoves.length!=0){
             availableMoves.forEach((m)=>{
+                //Parsing moves
+                let move:string=m;
+                //Remove Check and Mate symbols
+                if(move.indexOf("+")===m.length-1 || move.indexOf("#")===m.length-1){
+                    move=move.substring(0,move.length-1);
+                }
                 //Set cell on legal position and change it to avaiable. slice(-2) to cut of unnecessary info
-                chessCopy[reverseCellPosition(m.slice(-2))].available=true;
+                if(move!=="O-O-O" && move!=="O-O"){
+                    move=move.slice(-2);
+                }
+                //Add promotions
+                chessCopy[reverseCellPosition(cell.piece,move)].available=true;
             })
         }
         //Set cell to choosed
         cell.choosed=true;
         setCellClicked(cell.pos);
-        console.log(cell.pos)
-
+        console.log("Click "+cell.pos)
+        //seting chessBoard
         setChessBoard(chessCopy);
-
-        console.log(chessBoard);
     };
 
     return <div className="board">
