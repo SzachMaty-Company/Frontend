@@ -27,16 +27,27 @@
     margin: 0 auto; /** centered */
     margin-top: 2rem;
     border-radius: 2rem;
-    width: calc(100vh * 0.9);
-    height: calc(100vh * 0.9);
+    width: calc(100vh * 0.8);
+    height: calc(100vh * 0.8);
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     background-color: burlywood;
 }
 
-.board div{
-    width:calc(100vh * 0.9/8);
-    height:calc(100vh * 0.9/8);
+.Promotion{
+    padding: 1rem;
+    margin: 0 auto; /** centered */
+    border-radius: 2rem;
+    width: calc(100vh * 0.4);
+    height: calc(100vh * 0.1);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.board div,
+.Promotion div{
+    width:calc(100vh * 0.8/8);
+    height:calc(100vh * 0.8/8);
 }
 
 .white{

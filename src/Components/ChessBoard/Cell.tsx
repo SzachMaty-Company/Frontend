@@ -1,5 +1,3 @@
-import { CellObject } from "./ChessBoard";
-
 //Translating fen to file name
 const pieceDict:{[key:string]:string}={
     "P":"w-pawn",
@@ -16,10 +14,23 @@ const pieceDict:{[key:string]:string}={
     "k":"b-king"
 };
 
-function Cell({color,cell,callback}:{color:string,cell:CellObject,callback:(cell:CellObject) => void}){
+//React component for displaying cell
+export function Cell({color,cell,callback}:{color:string,cell:CellObject,callback:(cell:CellObject) => void}){
     return <div className={`${color} ${cell.available?"available":""}`} onClick={()=>callback(cell)}>
         <img className={`PieceImg ${pieceDict[cell.piece]} ${cell.choosed===true?"choosed":""}`}></img>
         </div>
 }
 
-export default Cell
+//Class for storing data from one cell in chess board
+export class CellObject {
+    pos: string;
+    piece: string;
+    choosed:boolean;
+    available:boolean;
+    constructor(pos:string, piece:string) {
+        this.pos = pos;
+        this.piece = piece;
+        this.choosed = false;
+        this.available = false;
+    }
+}
