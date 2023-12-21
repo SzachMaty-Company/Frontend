@@ -121,8 +121,3 @@
 .b-king.PieceImg {
     content:url('./pieces/king-b.svg');
 }
-
-/*Space*/
-.space.PieceImg{
-    content:url('./pieces/space.svg');
-}
