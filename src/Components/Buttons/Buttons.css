@@ -1,0 +1,7 @@
+.button{
+    font-family: 'Montserrat';
+    font-size: calc(100vh * 0.025);
+    background-color: transparent;
+    color: #E07000;
+    border-color: transparent;
+}
