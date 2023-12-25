@@ -1,0 +1,14 @@
+.header{
+    height: calc(100vh * 0.1);
+    display: flex;
+    align-items:flex-end;
+}
+
+.logo{
+    height: calc(100vh * 0.1);
+    content:url("./logo.svg");
+}
+
+.button{
+    margin-bottom:calc(100vh * 0.01);
+}
