@@ -1,0 +1,36 @@
+.registerTable{
+    width: 27%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.registerTable tr{
+    margin-bottom: 0px;
+}
+
+.registerTable td{
+    color:#F97C00;
+}
+
+.registerTable td:first-child{
+    text-align: left;
+}
+
+.registerTable td:last-child{
+    text-align: right;
+}
+
+.registerTable > tr:first-child h1{
+    text-align: center;
+    color: white;
+}
+
+.registerTable > tr:last-child button{
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+.registerTable input{
+    color:#F97C00;
+}

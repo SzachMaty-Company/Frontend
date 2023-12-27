@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import logo from './logo.svg';
 import {
   BrowserRouter,
@@ -9,39 +9,25 @@ import {
 } from "react-router-dom";
 import Layout from './Layout';
 import './App.css'
+import RegisterView from './Views/RegisterView/RegisterView';
+import GameView from './Views/GameView/GameView';
+import StatsView from './Views/StatisticsView/StatisticsView';
 
-
-import {MainActionButton, SecondaryActionButton} from './Components/ActionButtons/ActionButtons.js';
-import ChessBoard from './Components/ChessBoard/ChessBoard';
 
 function App() {
 
-  return(<div className='app'>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout gamePath="/game" statPath="/statistic" mainPath='/main'/>}>
-          <Route
-            path="game"
-            element={
-              <ChessBoard></ChessBoard>
-            }
-          />
-          <Route
-            path="statistic"
-            element={
-              <h2>Statistics</h2>
-            }
-          />
-          <Route
-            path="main"
-            element={
-              <h2>Hello traveler</h2>
-            }
-          />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-    </div>)
+  return(
+  <div className='app'>
+      <BrowserRouter basename='/'>
+        <Routes>
+          <Route path="/" element={<Layout gamePath="/game" statPath="/statistic" mainPath='/main'/>}>
+            <Route path="game" Component={GameView}/>
+            <Route path="statistic" Component={StatsView}/>
+            <Route path="register" Component={RegisterView}/>
+          </Route>
+        </Routes>
+      </BrowserRouter>
+  </div>)
 }
 
 export default App;
