@@ -4,20 +4,43 @@ import { MainActionButton } from '../../Components/ActionButtons/ActionButtons';
 import './RegisterView.css'
 
 
-
-
-
 export default function RegisterView()
 {
 
+    const [password, setPassword] = useState("");
+    const [reapeatedPassword, setRepeatedPassword] = useState("");
+    const [error, setError] = useState("");
+    
+
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        if (password != reapeatedPassword)
+        {
+            setError("hasła nie są zgodne!");
+            return;
+        }
+        setError("");
+    };
+
     return <ContentWrapper>
-    <form action="" method="post">
+    <form onSubmit={handleSubmit}>
         <table className="registerTable">
         <tr>
             <td colSpan={2}>
                 <h1>Rejestracja</h1>
             </td>
         </tr>
+        {error != "" &&
+            <tr className="errorRow">
+                <td>
+                    Wystąpił błąd: 
+                </td>
+                <td>
+                    {error}
+                </td>
+            </tr>
+        }
         <tr>
             <td>Login</td>
             <td>
@@ -45,13 +68,13 @@ export default function RegisterView()
         <tr>
             <td>Hasło</td>
             <td>
-                <input type="password" name="password"></input>
+                <input type="password" name="password" onChange={(e) => setPassword(e.target.value)}></input>
             </td>
         </tr>
         <tr>
             <td>Powtórz hasło</td>
             <td>
-                <input type="password" name="repeatedpassword"></input>
+                <input type="password" name="repeatedpassword" onChange={(e) => setRepeatedPassword(e.target.value)}></input>
             </td>
         </tr>
         <tr>
