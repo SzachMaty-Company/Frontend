@@ -3,9 +3,9 @@ import './ActionButtons.css';
 function ActionButton({className, text})
 {
     return (
-        <div className={className}>
+        <button type="submit" className={className}>
             {text}
-        </div>
+        </button>
     );
 }
 
