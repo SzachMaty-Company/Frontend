@@ -12,3 +12,8 @@
 .button{
     margin-bottom:calc(100vh * 0.01);
 }
+
+.loginButton{
+    margin-left: auto;
+    margin-right: 1rem;
+}
