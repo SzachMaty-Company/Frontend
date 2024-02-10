@@ -1,0 +1,60 @@
+.InGameChat{
+    font-family: 'Montserrat';
+    font-size: calc(100vh * 0.025);
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+}
+
+.ChatWindow {
+    background-color: #d9d9d9;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.ChatWindow .receiverUserName {
+    flex: 5%;
+    text-align: center;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #E07000;
+    font-style: italic;
+}
+
+.ChatWindow .conversation {
+    flex:90%;
+    height: 100%;
+    background-color: #00004B;
+    border: 2px solid #d9d9d9;
+    overflow: auto;
+}
+.ChatWindow .controls {
+    flex:5%;
+    width: 100%;
+}
+
+.controls table {
+    width: 100%;
+    font-weight: 700;
+}
+
+.controls tr:first-child {
+    width: 80%;
+}
+.controls input {
+    width: 100%;
+}
+.controls tr:last-child {
+    width: 20%;
+    text-align: right;
+}
+.controls button {
+    width: 90%;
+}
+
+.conversation div {
+    margin: 2px;
+}
