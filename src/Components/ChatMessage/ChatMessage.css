@@ -1,0 +1,43 @@
+.ChatMessage {
+    width: 75%;
+    min-height: 5vh;
+    background-color: #d9d9d9;
+}
+
+.sentMessage {
+    position: relative;
+    right: 0px;
+}
+
+.messageContentHolder {
+    display: flex;
+    flex-direction: column;
+}
+
+.messageContentHolder .messageInfo {
+    flex: 20%;
+    width: 100%;
+}
+
+.messageContentHolder td{
+    width: 100%;
+    color: black;
+    font-weight: 700;
+}
+
+.messageContentHolder td:first-child {
+    text-align: left;
+}
+
+.messageContentHolder td:last-child {
+    text-align: right;
+}
+
+
+.messageContentHolder .receivedText {
+    color: #E07000;
+}
+
+.messageContentHolder .sentText {
+    color: blue;
+}

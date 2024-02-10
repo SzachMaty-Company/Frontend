@@ -1,0 +1,28 @@
+.PlayerInfo{
+    font-family: 'Montserrat';
+    font-size: calc(100vh * 0.020);
+    background-color: transparent;
+    font-weight: 700;
+    width: 100%;
+    color:white;
+}
+
+.PlayerInfo table{
+    width: 100%;
+}
+
+.PlayerInfo span {
+    background-color: #E07000;
+    border-radius: 2px;
+    margin-right: 3px;
+}
+
+.PlayerInfo table td:first-child {
+    text-align: left;
+}
+
+.PlayerInfo table td:last-child {
+    text-align: right;
+    padding-right: 3px;
+    font-weight: 400;
+}
