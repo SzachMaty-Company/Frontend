@@ -1,0 +1,83 @@
+.content
+{
+  margin-left: 1rem;
+  font-family: 'Monteserrat', sans-serif;  
+}
+
+tr
+{
+    height: 1.6rem;
+}
+
+td
+{
+    width: 20rem;
+}
+
+input
+{
+    color:#F97C00;
+    font-weight: bold;
+}
+
+.ProfileName
+{
+    font-size: 2.5rem;
+    font-weight: bold;
+    color:#F97C00;
+    margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
+}
+
+.LabelHeader
+{
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
+}
+
+.MatchHeader{
+    color:#D9D9EC;
+    font-weight: bold;
+    margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
+}
+
+.LabelTag
+{
+    color:#F97C00;
+    font-weight: bold;
+}
+
+.LabelValue
+{
+    color:#F97C00;
+}
+
+.GameHistoryHeader
+{
+    background-color: #D9D9EC;
+}
+
+.GameHistoryTable
+{
+    border-collapse: collapse;
+    border-style:solid;
+    border-width: 0.3rem;
+    border-color: #D9D9EC;
+}
+
+.GameHistory td
+{
+    width: 15rem;
+    text-align: center;
+    border-style:solid;
+    border-color: #D9D9EC;
+    border-width: 0rem 0.3rem 0rem 0.3rem;
+}
+
+.GameHistory.Selected
+{
+    background-color: #D9D9EC;
+}
