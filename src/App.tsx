@@ -6,7 +6,8 @@ import {
   Route,
   useNavigate,
   useLocation,
-  Navigate
+  Navigate,
+  useParams
 } from "react-router-dom";
 import Layout from './Layout';
 import './App.css'
@@ -23,7 +24,7 @@ function App() {
   <div className='app'>
       <BrowserRouter basename='/'>
         <Routes>
-          <Route path="/" element={<Layout gamePath="/game" statPath="/statistic" mainPath='/main' loginPath='/login'/>}>
+          <Route path="/" element={<Layout gamePath="/game" statPath="/statistic/user" mainPath='/main' loginPath='/login'/>}>
             <Route 
               path="game" 
               element={
@@ -33,7 +34,7 @@ function App() {
               } 
             />
             <Route 
-              path="statistic" 
+              path="statistic/:name" 
               element={
                 <ProtectedPath>
                   <StatsView/>
@@ -50,6 +51,8 @@ function App() {
 
 function ProtectedPath({ children }:{children:any}) {
   let location = useLocation();
+  console.log("Params Protected:")
+  console.log(useParams())
   return AuthComponent.isAuthenticated ? (
     children
   ) : (
