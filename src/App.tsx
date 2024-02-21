@@ -16,6 +16,8 @@ import GameView from './Views/GameView/GameView';
 import StatsView from './Views/StatisticsView/StatisticsView';
 import AuthComponent from './AuthComponent';
 import LoginView from './Views/LoginView/LoginView';
+import SearchGameView from './Views/GameView/SearchGame';
+import GameStatus from './Views/GameView/GameStatus';
 
 
 function App() {
@@ -29,7 +31,17 @@ function App() {
               path="game" 
               element={
                 <ProtectedPath>
-                  <GameView/>
+                  <GamePath>
+                    <GameView/>
+                  </GamePath>
+                </ProtectedPath>
+              } 
+            />
+            <Route 
+              path="game/searching" 
+              element={
+                <ProtectedPath>
+                  <SearchGameView/>
                 </ProtectedPath>
               } 
             />
@@ -57,6 +69,15 @@ function ProtectedPath({ children }:{children:any}) {
     children
   ) : (
     <Navigate to="/login" state={{ from: location.pathname }} />
+  );
+}
+
+function GamePath({ children }:{children:any}){
+  let location = useLocation();
+  return GameStatus.gameFound ? (
+    children
+  ) : (
+    <Navigate to="/game/searching" state={{ from: location.pathname }} />
   );
 }
 

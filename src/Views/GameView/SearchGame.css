@@ -1,0 +1,110 @@
+.SearchTable{
+    width: 27%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h1{
+    font-size: 3rem;
+    font-weight: normal;
+    text-align: center;
+    color: white;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+tr{
+    margin-bottom: auto;
+}
+
+td{
+    color:#F97C00;
+    padding-bottom: 0.8rem;
+}
+
+.LabelTag{
+    width: 30%;
+}
+
+.LabelValue{
+    width: 120%;
+}
+
+.SelectForm{
+    text-align: center;
+    font-weight: bolder;
+    color:#F97C00;
+    width: 100%;
+}
+
+.SearchTable button{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ButtonDiv{
+    display: flex;
+    justify-content: center;
+}
+
+.SubmitButton{
+    background-color: transparent;
+    border-color: transparent;
+    color:#F97C00;
+    font-weight: bold;
+    width: 100%;
+    font-size: 1rem;
+}
+
+.Horse{
+    color:white;
+    font-size: 2rem;
+    font-weight: normal;
+}
+
+.Animation{
+    position: relative;
+    height: 5rem;
+}
+
+.AnimationPart{
+    position: absolute;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+}
+
+.AnimationPart p{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-weight: bold;
+}
+
+.Loading{
+    color: #bb5d00;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    font-size: 3rem;
+    filter: blur(0.1rem);
+    text-align: center;
+    font-weight: normal;
+    animation: zoom-in-zoom-out 1s ease infinite;
+}
+
+
+@keyframes zoom-in-zoom-out {
+    0% {
+      transform: scale(1, 1);
+    }
+    50% {
+      transform: scale(1.5, 1.5);
+    }
+    100% {
+      transform: scale(1, 1);
+    }
+  }
