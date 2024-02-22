@@ -4,7 +4,7 @@
     margin-right: auto;
 }
 
-h1{
+.SearchGameView h1{
     font-size: 3rem;
     font-weight: normal;
     text-align: center;
@@ -13,11 +13,11 @@ h1{
     margin-bottom: auto;
 }
 
-tr{
+.SearchTable tr{
     margin-bottom: auto;
 }
 
-td{
+.SearchTable td{
     color:#F97C00;
     padding-bottom: 0.8rem;
 }

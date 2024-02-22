@@ -23,7 +23,7 @@ export default function RegisterView()
         setError("");
     };
 
-    return <ContentWrapper>
+    return <ContentWrapper isCentered={true}>
     <form onSubmit={handleSubmit}>
         <table className="registerTable">
         <tr>

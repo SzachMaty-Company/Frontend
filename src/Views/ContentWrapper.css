@@ -1,5 +1,11 @@
-.content{
+.centeredContent{
     width: 75%;
     margin-left: auto;
     margin-right: auto;
+    font-family: 'Monteserrat', sans-serif;
 }
+
+.leftAllignedContent{
+    margin-left: 1rem;
+}
+

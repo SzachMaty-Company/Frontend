@@ -39,7 +39,7 @@ export default function SearchGameView() {
         GameStatus.stopSearch();
     }
 
-    return <ContentWrapper>
+    return <ContentWrapper isCentered={true}>
         <div className="SearchGameView">
             <form onSubmit={searchSubmit}>
                 <table className='SearchTable'>
