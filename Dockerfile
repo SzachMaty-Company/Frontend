@@ -1,7 +1,7 @@
 FROM node:14 as build-stage
 WORKDIR /app
 COPY . .
-RUN npm install
+RUN npm install --production
 RUN npm run build
 RUN ls -l .
  
