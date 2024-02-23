@@ -4,12 +4,12 @@
   font-family: 'Monteserrat', sans-serif;  
 }
 
-tr
+.StatisticsTable tr
 {
     height: 1.6rem;
 }
 
-td
+.StatisticsTable td
 {
     width: 20rem;
 }

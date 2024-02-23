@@ -39,7 +39,7 @@ export default function StatsView() {
         navigate(`/statistic/${name}`);
     };
 
-    return <ContentWrapper>
+    return <ContentWrapper isCentered={false}>
         <table className='StatisticsTable'>
             <tr>
                 <td>

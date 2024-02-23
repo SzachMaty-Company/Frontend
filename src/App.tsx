@@ -18,6 +18,36 @@ import AuthComponent from './AuthComponent';
 import LoginView from './Views/LoginView/LoginView';
 import SearchGameView from './Views/GameView/SearchGame';
 import GameStatus from './Views/GameView/GameStatus';
+import GameSummaryView from './Views/GameSummaryView/GameSummaryView';
+
+const sampleGameData = {
+    playerWhiteFigures: 'sprzeglo46',
+    playerBlackFigures: 'cbra600',
+    winner: { isWhite: true},
+    timerSettings: '10 minutes',
+    gameStart: '21:37',
+    gameHistory: [
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
+      
+    ]
+};
 
 
 function App() {
@@ -55,6 +85,7 @@ function App() {
             />
             <Route path="register" Component={RegisterView}/>
             <Route path="login" Component={LoginView}/>
+            <Route path="summary" Component={() => <GameSummaryView {...sampleGameData} />} />
           </Route>
         </Routes>
       </BrowserRouter>

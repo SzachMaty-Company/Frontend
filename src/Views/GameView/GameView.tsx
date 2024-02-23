@@ -52,7 +52,7 @@ export default function GameView()
         setMessages((prevMessages) => [...prevMessages, newMessage]);
     };
 
-    return <ContentWrapper>
+    return <ContentWrapper isCentered={true}>
         <div className="gameViewHolder">
             <div className="gameSide">
                 <PlayerInfo name="cbra600" figures={BLACK_FIGURES} timer={timer}></PlayerInfo>
