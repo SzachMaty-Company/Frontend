@@ -3,6 +3,7 @@ import ContentWrapper from '../ContentWrapper';
 import GetProfileStatistic from './ProfileStatisticGetter';
 import "./StatisticsView.css"
 import { useNavigate, useParams } from 'react-router-dom';
+import GameSummaryHistory from '../GameSummaryView/GameSummaryHistory';
 
 
 
@@ -38,6 +39,8 @@ export default function StatsView() {
     const friendClicked = (name: string) => {
         navigate(`/statistic/${name}`);
     };
+
+    console.log(profile.matches);
 
     return <ContentWrapper isCentered={false}>
         <table className='StatisticsTable'>
@@ -98,7 +101,7 @@ export default function StatsView() {
             </tr>
             {profile.friendList.map((friend, i) => (
                 <tr key={i} className='FormRecord'>
-                    <td className='LabelTag' onClick={() => (friendClicked(friend.nickname))}>{friend.nickname}</td>
+                    <td className='LabelTag' onClick={() => (friendClicked(friend.nickname))}><span className='friend'>{friend.nickname}</span></td>
                 </tr>
             ))}
         </table>
@@ -124,31 +127,13 @@ export default function StatsView() {
                             <td className='LabelValue'>{match.white}</td>
                             <td className='LabelValue'>{match.black}</td>
                             <td className='LabelValue'>{match.win}</td>
-                            <td className='LabelValue'>{match.mode}</td>
-                            <td className='LabelValue'>{match.date.toString()}</td>
+                            <td className='LabelValue Mode'>{match.mode}</td>
+                            <td className='LabelValue Date'>{new Date(match.date).toLocaleString()}</td>
                         </tr>
                     ))}
                 </table>{
                     selectedMatch !== -1 ?
-                        <table>
-                            <tr>
-                                <td>
-                                    <h2 className='LabelHeader'>Historia partii:</h2>
-                                </td>
-                            </tr>
-                            <tr>
-                                    <td className='MatchHeader'>Gracz</td>
-                                    <td className='MatchHeader'>Figura</td>
-                                    <td className='MatchHeader'>Ruch</td>
-                                </tr>
-                            {profile.matches[selectedMatch].history.map((move, i) => (
-                                <tr key={i}>
-                                    <td className='LabelValue'>{move.player}</td>
-                                    <td className='LabelValue'>{move.piece}</td>
-                                    <td className='LabelValue'>{move.place}</td>
-                                </tr>
-                            ))}
-                        </table>
+                        <GameSummaryHistory title='Historia partii:' gameHistory={profile.matches[selectedMatch].history}/>
                         : <br />
                 }
             </div>

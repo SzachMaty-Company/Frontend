@@ -1,3 +1,5 @@
+import { GameHistoryRecordInterface } from "../GameSummaryView/GameSummaryView";
+
 export default class ProfileStatistic{
     nickname:string;
     firstname:string;
@@ -35,8 +37,8 @@ class Match{
     black:string;
     win:string;
     mode:string;
-    date:Date;
-    history:Move[];
+    date:string;
+    history:GameHistoryRecordInterface[];
 
     constructor()
     {
@@ -44,20 +46,7 @@ class Match{
         this.black=""
         this.win="";
         this.mode="";
-        this.date=new Date();
+        this.date="";
         this.history=[];
-    }
-}
-
-class Move{
-    player:string;
-    piece:string;
-    place:string;
-
-    constructor()
-    {
-        this.player="";
-        this.piece="";
-        this.place="";
     }
 }

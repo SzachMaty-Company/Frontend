@@ -11,6 +11,7 @@
 
 .button{
     margin-bottom:calc(100vh * 0.01);
+    cursor: pointer;
 }
 
 .loginButton{

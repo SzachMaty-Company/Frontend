@@ -28,9 +28,9 @@
             "mode":"10 min",
             "date":"2023-11-27T09:53:51.111Z",
             "history":[
-                {"player":"NieoddychającyGrzesiu","piece":"pionek","place":"B5"},
-                {"player":"MariuszP","piece":"pionek","place":"D4"},
-                {"player":"NieoddychającyGrzesiu","piece":"pionek","place":"B4"}
+                { "doneBy": { "isWhite": true }, "figure": "pionek", "position": "B7", "moveTo":"B5" },
+                { "doneBy": { "isWhite": false }, "figure": "pionek", "position": "D2", "moveTo":"D4" },
+                { "doneBy": { "isWhite": true }, "figure": "pionek", "position": "B5", "moveTo":"B4" }
             ]
             },
             {
@@ -40,9 +40,9 @@
             "mode":"10 min",
             "date":"2024-01-02T13:53:51.111Z",
             "history":[
-                {"player":"NieoddychającyGrzesiu","piece":"pionek","place":"B5"},
-                {"player":"SkibidiToilet","piece":"pionek","place":"A4"},
-                {"player":"NieoddychającyGrzesiu","piece":"pionek","place":"B4"}
+                { "doneBy": { "isWhite": true }, "figure": "pionek", "position": "B7", "moveTo":"B5" },
+                { "doneBy": { "isWhite": false }, "figure": "pionek", "position": "A2", "moveTo":"A4" },
+                { "doneBy": { "isWhite": true }, "figure": "pionek", "position": "B5", "moveTo":"B4" }
             ]
             }
         ]

@@ -84,7 +84,7 @@ export default function SearchGameView() {
                                     </div>
                                 </div>
                                 :
-                                <button className='SubmitButton' type="submit"><span className='Horse'>♞</span>Graj</button>
+                                <button className='SubmitButton' type="submit"><span className='clickable'><span className='Horse'>♞</span>Graj</span></button>
                             }
                         </td>
                     </tr>

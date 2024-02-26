@@ -1,5 +1,3 @@
-import React, { ReactNode } from 'react';
-import logo from './logo.svg';
 import {
   BrowserRouter,
   Routes,
@@ -11,7 +9,6 @@ import {
 } from "react-router-dom";
 import Layout from './Layout';
 import './App.css'
-import RegisterView from './Views/RegisterView/RegisterView';
 import GameView from './Views/GameView/GameView';
 import StatsView from './Views/StatisticsView/StatisticsView';
 import AuthComponent from './AuthComponent';
@@ -27,24 +24,24 @@ const sampleGameData = {
     timerSettings: '10 minutes',
     gameStart: '21:37',
     gameHistory: [
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
       
     ]
 };
