@@ -56,7 +56,7 @@ function App() {
   <div className='app'>
       <BrowserRouter basename='/'>
         <Routes>
-          <Route path="/" element={<Layout gamePath="/game" statPath="/statistic/user" mainPath='/main' loginPath='/login'/>}>
+          <Route path="/" element={<Layout gamePath="/game" statPath="/statistic" mainPath='/main' loginPath='/login'/>}>
             <Route 
               path="game" 
               element={
@@ -83,7 +83,14 @@ function App() {
                 </ProtectedPath>
               } 
             />
-            <Route path="register" Component={RegisterView}/>
+            <Route 
+              path="statistic" 
+              element={
+                <ProtectedPath>
+                  <StatsView/>
+                </ProtectedPath>
+              } 
+            />
             <Route path="login" Component={LoginView}/>
             <Route path="summary" Component={() => <GameSummaryView {...sampleGameData} />} />
           </Route>
