@@ -2,7 +2,7 @@ import {Cell,CellObject} from "./Cell";
 import './ChessBoard.css';
 
 //Promotion choises, White
-const choises = ["R","K","B","Q"];
+const choises = ["R","N","B","Q"];
 
 //React component for display promotion decision
 export default function Promotion({isVisible, whoseTurn,callback}:{isVisible:boolean,whoseTurn:string,callback:(cell:CellObject) => void}){
