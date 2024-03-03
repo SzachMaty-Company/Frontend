@@ -19,6 +19,8 @@ import LoginView from './Views/LoginView/LoginView';
 import SearchGameView from './Views/GameView/SearchGame';
 import GameStatus from './Views/GameView/GameStatus';
 import GameSummaryView from './Views/GameSummaryView/GameSummaryView';
+import InGameChat from './Components/IngameChat/InGameChat';
+import FriendsChat from './Components/FriendsChat/FriendsChat';
 
 const sampleGameData = {
     playerWhiteFigures: 'sprzeglo46',
@@ -51,7 +53,6 @@ const sampleGameData = {
 
 
 function App() {
-
   return(
   <div className='app'>
       <BrowserRouter basename='/'>
@@ -96,7 +97,9 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
-  </div>)
+      <FriendsChat></FriendsChat>
+  </div>
+  )
 }
 
 function ProtectedPath({ children }:{children:any}) {
