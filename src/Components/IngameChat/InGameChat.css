@@ -6,6 +6,19 @@
     height: 100%;
 }
 
+.chatHeader {
+    display: flex;
+    width: 100%;
+}
+
+.receiverUserName {
+    flex: 95% 0 0;
+}
+
+.closeChatWindow {
+    flex: 5% 0 0;
+    text-align: center;
+}
 .ChatWindow {
     background-color: #d9d9d9;
     display: flex;
@@ -14,12 +27,8 @@
 }
 
 .ChatWindow .receiverUserName {
-    flex: 5%;
-    text-align: center;
     font-weight: 700;
     display: flex;
-    justify-content: center;
-    align-items: center;
     color: #E07000;
     font-style: italic;
 }
@@ -57,4 +66,12 @@
 
 .conversation div {
     margin: 2px;
+}
+.closeChatWindow {
+    background-color: #E07000;
+    height: 100%;
+    width: 100%;
+    font-weight: 700;
+    color: white;
+    border-radius: 1vh;
 }
