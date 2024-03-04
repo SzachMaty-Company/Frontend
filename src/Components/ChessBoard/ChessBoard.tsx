@@ -87,18 +87,12 @@ function reverseCellPosition(piece:string,pos:string):number{
 
 function ChessBoard({chess, chessChanged,chessChangedCallback,promotionCallback,isPromote,figurePromote}:{chess:Chess, chessChanged:boolean,chessChangedCallback:any,promotionCallback:any,isPromote:boolean,figurePromote:string})
 {
-    //Initialised component Chess
-    //let [chess,setChess]=useState(ChessData);
-    //let [chessChanged,setChessChanged]=useState(ChessDataChanged);
     //Cell table
     let startChess=makeChess(chess.fen());
     //Set Board
     let [chessBoard,setChessBoard] = useState(startChess);
     //Clicked cell
     let [cellClicked,setCellClicked]=useState("");
-    //Promotion
-    //let [canPromote,setCanPromote]=useState("");    //Define from which cell pawn can promote or when he go
-    //let [promoting,setPromoting]=useState(false);
 
     //Refreshing chess board
     useEffect(()=>{
@@ -107,32 +101,16 @@ function ChessBoard({chess, chessChanged,chessChangedCallback,promotionCallback,
         setChessBoard(cellTable);
     },[chessChanged])
 
-    //Handle promotion choise
-    /*const promotionClick = (cell:CellObject)=>{
-        //If promotions is invalid, skip
-        if(!promoting){
-            return;
-        }
-        //Make move
-        let m=canPromote+cell.piece;
-        chess.move(m); 
-        chessChangedCallback();
-        //setChessChanged(!chessChanged); //Refresh board
-        setPromoting(false);    //Reset promotion trigger
-    }*/
-
     //Handle clicking the board
     const cellOnClick = (cell:CellObject) =>{
         //Reset promotion
         promotionCallback(false,"");
-        //setPromoting(false);
         let castRight=chess.getCastlingRights(chess.turn()==="b"?BLACK:WHITE);
         //Castling short, king side
         if(((cellClicked==="e8" && cell.pos==="h8") || (cellClicked==="e1" && cell.pos==="h1")) && castRight.k){
             try{
                 chess.move("O-O");
                 chessChangedCallback();
-                //setChessChanged(!chessChanged);
             }catch{}
             
         }
@@ -141,26 +119,21 @@ function ChessBoard({chess, chessChanged,chessChangedCallback,promotionCallback,
             try{
                 chess.move("O-O-O");
                 chessChangedCallback();
-                //setChessChanged(!chessChanged);
             }catch{}
         }
         //If player choosed piece
         if(cellClicked!=="" && chessBoard[reverseCellPosition("",cellClicked)].piece!=="_"){
             //Promotion
             if(figurePromote!=="" && cellClicked===figurePromote){
-                //setPromoting(true);
-                //setCanPromote(cellClicked+"x"+cell.pos+"=");
                 promotionCallback(true,cellClicked+"x"+cell.pos+"=");
             }
             //Reset promotion
             else{
-                //setCanPromote("");
                 promotionCallback(isPromote,"");
             }
             try{
                 chess.move({from: cellClicked, to: cell.pos});  //Make move
                 chessChangedCallback();
-                //setChessChanged(!chessChanged);     //Refresh board
             }catch(err){}
             
         }
@@ -186,7 +159,6 @@ function ChessBoard({chess, chessChanged,chessChangedCallback,promotionCallback,
                 //Add promotions
                 if(move.includes("=")){
                     promotionCallback(isPromote,cell.pos);
-                    //setCanPromote(cell.pos);
                     move=move.slice(0,move.length-2);
                 }
                 //Set cell on legal position and change it to avaiable. slice(-2) to cut of unnecessary info
@@ -211,5 +183,4 @@ function ChessBoard({chess, chessChanged,chessChangedCallback,promotionCallback,
         </div>
     </>;
 }
-//<Promotion isVisible={promoting} whoseTurn={chess.turn()} callback={promotionClick}/>
 export default ChessBoard;

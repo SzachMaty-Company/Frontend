@@ -3,9 +3,12 @@
         "nickname":"NieoddychającyGrzesiu",
         "firstname":"Grzegorz",
         "lastname":"Skiba",
-        "winrate":0.75,
+        "winrateFriends":0.75,
+        "winFriends":225,
+        "playFriends":300,
         "winrateAI":0.69,
-        "winrateFriends":0.89,
+        "winAI":69,
+        "playAI":100,
         "friendList":[
             {
                 "nickname":"SkibidiToilet",
@@ -51,9 +54,12 @@
         "nickname":"MariuszP",
         "firstname":"Mariusz",
         "lastname":"Pudzianowski",
-        "winrate":0.42,
-        "winrateAI":0.54,
         "winrateFriends":0.27,
+        "winFriends":3,
+        "playFriends":9,
+        "winrateAI":0.54,
+        "winAI":32,
+        "playAI":63,
         "friendList":[
             {
                 "nickname":"SkibidiToilet",

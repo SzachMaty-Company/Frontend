@@ -4,9 +4,12 @@ export default class ProfileStatistic{
     nickname:string;
     firstname:string;
     lastname:string;
-    winrate:number;
-    winrateAI:number;
     winrateFriends:number;
+    winFriends:number;
+    playFriends:number;
+    winrateAI:number;
+    winAI:number;
+    playAI:number;
     friendList:Friend[];
     matches:Match[];
 
@@ -15,7 +18,10 @@ export default class ProfileStatistic{
         this.nickname="";
         this.firstname="";
         this.lastname="";
-        this.winrate=0;
+        this.winFriends=0;
+        this.playFriends=0;
+        this.winAI=0;
+        this.playAI=0;
         this.winrateAI=0;
         this.winrateFriends=0;
         this.friendList=[];

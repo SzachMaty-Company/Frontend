@@ -68,19 +68,32 @@ export default function StatsView() {
                 </td>
             </tr>
             <tr className='FormRecord'>
-                <td className='LabelTag'>Zwycięstwa</td>
-                <td>{profile.winrate}</td>
+                <td className='LabelTag'>Wsp. Zwycięstw (AI)</td>
+                <td>{profile.winrateAI*100}%</td>
             </tr>
             <tr className='FormRecord'>
-                <td className='LabelTag'>Zwycięstwa(SI)</td>
-                <td>{profile.winrateAI}</td>
+                <td className='LabelTag'>Zwycięstwa (AI)</td>
+                <td>{profile.winAI}</td>
             </tr>
             <tr className='FormRecord'>
-                <td className='LabelTag'>Zwycięstwa(Znajomi)</td>
-                <td>{profile.winrateFriends}</td>
+                <td className='LabelTag'>Rozegrane gry (AI)</td>
+                <td>{profile.playAI}</td>
+            </tr>
+
+            <tr className='FormRecord'>
+                <td className='LabelTag'>Wsp. Zwycięstw (Znajomi)</td>
+                <td>{profile.winrateFriends*100}%</td>
             </tr>
             <tr className='FormRecord'>
-                <td className='LabelTag'>Filtr</td>
+                <td className='LabelTag'>Zwycięstwa (Znajomi)</td>
+                <td>{profile.winFriends}</td>
+            </tr>
+            <tr className='FormRecord'>
+                <td className='LabelTag'>Rozegrane gry (Znajomi)</td>
+                <td>{profile.playFriends}</td>
+            </tr>
+            <tr className='FormRecord'>
+                <td className='LabelTag'>Wybierz znajomego</td>
                 <td>
                     <select value={selectedFriendName}
                         onChange={(e) => changeFriend(e)}>
@@ -91,7 +104,7 @@ export default function StatsView() {
                 </td>
             </tr>
             <tr className='FormRecord'>
-                <td className='LabelTag'>Wynik</td>
+                <td className='LabelTag'>Wsp. Zwycięstw</td>
                 <td>{friends[selectedFriend].winrate}</td>
             </tr>
             <tr>
