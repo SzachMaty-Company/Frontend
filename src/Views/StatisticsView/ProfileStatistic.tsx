@@ -1,10 +1,15 @@
+import { GameHistoryRecordInterface } from "../GameSummaryView/GameSummaryView";
+
 export default class ProfileStatistic{
     nickname:string;
     firstname:string;
     lastname:string;
-    winrate:number;
-    winrateAI:number;
     winrateFriends:number;
+    winFriends:number;
+    playFriends:number;
+    winrateAI:number;
+    winAI:number;
+    playAI:number;
     friendList:Friend[];
     matches:Match[];
 
@@ -13,7 +18,10 @@ export default class ProfileStatistic{
         this.nickname="";
         this.firstname="";
         this.lastname="";
-        this.winrate=0;
+        this.winFriends=0;
+        this.playFriends=0;
+        this.winAI=0;
+        this.playAI=0;
         this.winrateAI=0;
         this.winrateFriends=0;
         this.friendList=[];
@@ -35,8 +43,8 @@ class Match{
     black:string;
     win:string;
     mode:string;
-    date:Date;
-    history:Move[];
+    date:string;
+    history:GameHistoryRecordInterface[];
 
     constructor()
     {
@@ -44,20 +52,7 @@ class Match{
         this.black=""
         this.win="";
         this.mode="";
-        this.date=new Date();
+        this.date="";
         this.history=[];
-    }
-}
-
-class Move{
-    player:string;
-    piece:string;
-    place:string;
-
-    constructor()
-    {
-        this.player="";
-        this.piece="";
-        this.place="";
     }
 }

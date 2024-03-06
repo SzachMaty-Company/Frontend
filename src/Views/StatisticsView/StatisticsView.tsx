@@ -3,6 +3,7 @@ import ContentWrapper from '../ContentWrapper';
 import GetProfileStatistic from './ProfileStatisticGetter';
 import "./StatisticsView.css"
 import { useNavigate, useParams } from 'react-router-dom';
+import GameSummaryHistory from '../GameSummaryView/GameSummaryHistory';
 
 
 
@@ -39,6 +40,8 @@ export default function StatsView() {
         navigate(`/statistic/${name}`);
     };
 
+    console.log(profile.matches);
+
     return <ContentWrapper isCentered={false}>
         <table className='StatisticsTable'>
             <tr>
@@ -65,19 +68,32 @@ export default function StatsView() {
                 </td>
             </tr>
             <tr className='FormRecord'>
-                <td className='LabelTag'>Zwycięstwa</td>
-                <td>{profile.winrate}</td>
+                <td className='LabelTag'>Wsp. Zwycięstw (AI)</td>
+                <td>{profile.winrateAI*100}%</td>
             </tr>
             <tr className='FormRecord'>
-                <td className='LabelTag'>Zwycięstwa(SI)</td>
-                <td>{profile.winrateAI}</td>
+                <td className='LabelTag'>Zwycięstwa (AI)</td>
+                <td>{profile.winAI}</td>
             </tr>
             <tr className='FormRecord'>
-                <td className='LabelTag'>Zwycięstwa(Znajomi)</td>
-                <td>{profile.winrateFriends}</td>
+                <td className='LabelTag'>Rozegrane gry (AI)</td>
+                <td>{profile.playAI}</td>
+            </tr>
+
+            <tr className='FormRecord'>
+                <td className='LabelTag'>Wsp. Zwycięstw (Znajomi)</td>
+                <td>{profile.winrateFriends*100}%</td>
             </tr>
             <tr className='FormRecord'>
-                <td className='LabelTag'>Filtr</td>
+                <td className='LabelTag'>Zwycięstwa (Znajomi)</td>
+                <td>{profile.winFriends}</td>
+            </tr>
+            <tr className='FormRecord'>
+                <td className='LabelTag'>Rozegrane gry (Znajomi)</td>
+                <td>{profile.playFriends}</td>
+            </tr>
+            <tr className='FormRecord'>
+                <td className='LabelTag'>Wybierz znajomego</td>
                 <td>
                     <select value={selectedFriendName}
                         onChange={(e) => changeFriend(e)}>
@@ -88,7 +104,7 @@ export default function StatsView() {
                 </td>
             </tr>
             <tr className='FormRecord'>
-                <td className='LabelTag'>Wynik</td>
+                <td className='LabelTag'>Wsp. Zwycięstw</td>
                 <td>{friends[selectedFriend].winrate}</td>
             </tr>
             <tr>
@@ -98,12 +114,12 @@ export default function StatsView() {
             </tr>
             {profile.friendList.map((friend, i) => (
                 <tr key={i} className='FormRecord'>
-                    <td className='LabelTag' onClick={() => (friendClicked(friend.nickname))}>{friend.nickname}</td>
+                    <td className='LabelTag' onClick={() => (friendClicked(friend.nickname))}><span className='friend'>{friend.nickname}</span></td>
                 </tr>
             ))}
         </table>
         {!userLogged ? <br /> :
-            <div>
+            <div className='GameHistoryDiv'>
                 <table>
                     <tr>
                         <td>
@@ -124,31 +140,13 @@ export default function StatsView() {
                             <td className='LabelValue'>{match.white}</td>
                             <td className='LabelValue'>{match.black}</td>
                             <td className='LabelValue'>{match.win}</td>
-                            <td className='LabelValue'>{match.mode}</td>
-                            <td className='LabelValue'>{match.date.toString()}</td>
+                            <td className='LabelValue Mode'>{match.mode}</td>
+                            <td className='LabelValue Date'>{new Date(match.date).toLocaleString()}</td>
                         </tr>
                     ))}
                 </table>{
                     selectedMatch !== -1 ?
-                        <table>
-                            <tr>
-                                <td>
-                                    <h2 className='LabelHeader'>Historia partii:</h2>
-                                </td>
-                            </tr>
-                            <tr>
-                                    <td className='MatchHeader'>Gracz</td>
-                                    <td className='MatchHeader'>Figura</td>
-                                    <td className='MatchHeader'>Ruch</td>
-                                </tr>
-                            {profile.matches[selectedMatch].history.map((move, i) => (
-                                <tr key={i}>
-                                    <td className='LabelValue'>{move.player}</td>
-                                    <td className='LabelValue'>{move.piece}</td>
-                                    <td className='LabelValue'>{move.place}</td>
-                                </tr>
-                            ))}
-                        </table>
+                        <GameSummaryHistory title='Historia partii:' gameHistory={profile.matches[selectedMatch].history}/>
                         : <br />
                 }
             </div>
