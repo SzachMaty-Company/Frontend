@@ -53,7 +53,7 @@ function App() {
   <div className='app'>
       <BrowserRouter basename='/'>
         <Routes>
-          <Route path="/" element={<Layout gamePath="/game" statPath="/statistic" mainPath='/main' loginPath='/login'/>}>
+          <Route path="/" element={<Layout gamePath="/game" statPath="/statistic" loginPath='/login'/>}>
             <Route 
               path="game" 
               element={

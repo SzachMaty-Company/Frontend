@@ -21,7 +21,7 @@ export default function LoginView() {
         <table className="LoginTable">
           <tr>
             <td>
-              <h1>Logowanie</h1>
+              <span>Logowanie</span>
             </td>
           </tr>
           <tr>

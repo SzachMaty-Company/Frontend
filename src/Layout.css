@@ -1,4 +1,6 @@
 .header{
+    margin-top: 1.5rem;
+    margin-left: 0.5rem;
     height: calc(100vh * 0.1);
     display: flex;
     align-items:flex-end;
@@ -7,14 +9,32 @@
 .logo{
     height: calc(100vh * 0.1);
     content:url("./logo.svg");
+    margin-bottom: 0.5rem;
 }
 
 .button{
+    display: flex;
+    align-items:flex-end;
     margin-bottom:calc(100vh * 0.01);
+    margin-right: calc(100vh * 0.015);
+    margin-left: calc(100vh * 0.015);
     cursor: pointer;
 }
 
 .loginButton{
     margin-left: auto;
     margin-right: 1rem;
+}
+
+.button span{
+    display: flex;
+    align-self: flex-end;
+    margin-bottom: 0.5rem;
+}
+
+.horse{
+    margin-bottom: 0rem !important;
+    color:black;
+    font-size: 3rem;
+    font-weight: normal;
 }

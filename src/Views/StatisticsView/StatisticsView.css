@@ -61,7 +61,9 @@ input
 
 .GameHistoryHeader
 {
+    height: 2rem;
     background-color: #D9D9EC;
+    text-align: center;
 }
 
 .GameHistoryTable
@@ -70,12 +72,12 @@ input
     border-style:solid;
     border-width: 0.3rem;
     border-color: #D9D9EC;
+    width: 100%;
 }
 
 .GameHistory td
 {
     cursor: pointer;
-    width: 15rem;
     text-align: center;
     border-style:solid;
     border-color: #D9D9EC;
@@ -85,4 +87,8 @@ input
 .GameHistory.Selected
 {
     background-color: #D9D9EC;
+}
+
+div.GameHistoryDiv {
+    width: 80%;
 }

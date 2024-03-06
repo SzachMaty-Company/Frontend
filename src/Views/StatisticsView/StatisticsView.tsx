@@ -119,7 +119,7 @@ export default function StatsView() {
             ))}
         </table>
         {!userLogged ? <br /> :
-            <div>
+            <div className='GameHistoryDiv'>
                 <table>
                     <tr>
                         <td>

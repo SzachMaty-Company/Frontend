@@ -22,11 +22,11 @@
     padding-bottom: 0.8rem;
 }
 
-.LabelTag{
+.SearchGameView .LabelTag{
     width: 30%;
 }
 
-.LabelValue{
+.SearchGameView .LabelValue{
     width: 120%;
 }
 
