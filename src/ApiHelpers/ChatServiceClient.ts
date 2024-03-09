@@ -79,7 +79,6 @@ async function makeRequest(token: string, url: string, endpoint: string){
     return response.json();
 }
 
-
 interface ChatParticipant{
     id: string,
     username: string
@@ -103,70 +102,60 @@ function tokenToId(token: string)
 async function gatherParticipants(token:string, url:string, chatId: number, tokenOwnerId: string){
     if (tokenOwnerId != undefined)
     {
-        const data = await makeRequest(token, url, `chat/${chatId}/participants`);
-        for (const x of data)
+        const participantsData = await makeRequest(token, url, `chat/${chatId}/participants`);
+        for (const participantData of participantsData)
         {
-            if (tokenOwnerId != x.participantId)
+            if (tokenOwnerId != participantData.participantId)
             {
-                let p : ChatParticipant = {
-                    id: x.participantId,
-                    username: x.username
+                let participant : ChatParticipant = {
+                    id: participantData.participantId,
+                    username: participantData.username
                 }
-                return p;
+                return participant;
             }
         }
     }
-
 }
 
 async function gatherMessages(token: string, url: string){
-    const data = await makeRequest(token, url, 'user/chats');
+
+    const receivedMessages = await makeRequest(token, url, 'user/chats');
+
     let chatRooms = new Map<number, ChatRoom>();
-    const tokenOwnerId = tokenToId(token);
-    for (const x of data.content)
+
+    const IdOfOwnerOfTheToken = tokenToId(token);
+    for (const x of receivedMessages.content)
     {
         const chatid = parseInt(x.chatId);
         if (chatRooms.has(chatid) == false)
         {
-            if (tokenOwnerId != undefined)
+            if (IdOfOwnerOfTheToken != undefined)
             {
-                const party = await gatherParticipants(token, url, chatid, tokenOwnerId);
+                const party = await gatherParticipants(token, url, chatid, IdOfOwnerOfTheToken);
                 if (party != undefined)
                 {
-                    let ncr : ChatRoom =  {
+                    let newChatRoom : ChatRoom =  {
                         participant: party,
                         messages: [],
                         chatId: chatid
                     }
-                    chatRooms.set(chatid, ncr);
+                    chatRooms.set(chatid, newChatRoom);
                 }
             }
         }
         const parsedDate = Date.parse(x.messageTimestamp);
-        let m : ChatMessageInterface = {
+        let message : ChatMessageInterface = {
             text: x.message,
-            sideOfChat: x.senderId !== tokenOwnerId,
+            sideOfChat: x.senderId !== IdOfOwnerOfTheToken,
             date: new Date(parsedDate)
         };
         let chatRoom = chatRooms.get(chatid);
         if (chatRoom != undefined)
         {
-            chatRoom.messages.push(m);
-        }
-        else
-        {
+            chatRoom.messages.push(message);
         }
     }
     return chatRooms;
 }
 
-interface Message{
-
-}
-
-function parseMessages(messages: Message[])
-{
-    console.log(messages);
-}
-
-export {gatherMessages, parseMessages};
+export {gatherMessages};
