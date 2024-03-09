@@ -17,7 +17,7 @@ import SearchGameView from './Views/GameView/SearchGame';
 import GameStatus from './Views/GameView/GameStatus';
 import GameSummaryView from './Views/GameSummaryView/GameSummaryView';
 import FriendsChat from './Components/FriendsChat/FriendsChat';
-import {gatherMessages, parseMessages} from './ApiHelpers/ChatServiceClient';
+import {gatherMessages} from './ApiHelpers/ChatServiceClient';
 
 const sampleGameData = {
     playerWhiteFigures: 'sprzeglo46',

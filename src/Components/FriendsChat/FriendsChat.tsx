@@ -2,7 +2,6 @@ import InGameChat from '../IngameChat/InGameChat';
 import React, { useState, useEffect } from 'react';
 import './FriendsChat.css'
 import { gatherMessages} from '../../ApiHelpers/ChatServiceClient';
-import { unescape } from 'querystring';
 
 interface ChatMessageInterface {
     text: string;
@@ -30,7 +29,8 @@ function FriendsChat(){
     const [chatRooms, setChatRooms] = useState<Map<number, ChatRoom>>(new Map());
     const [selectedChatRoom, setSelectedChatRoom] = useState<number>();
     const [isHidden, setIsHidden] = useState(true);
-    const [f, setf] = useState(1);
+    //don't touch it works 
+    const [f, setF] = useState(1);
 
     useEffect(() => {
         gatherMessages("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidG9taXPFgmF3IGFwb2xvbml1c3ogY3VydcWbIGJhY2hsZWRhIGZhcmVsIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiJnbG9iYWwtaWQtMSJ9.5t1xYlNI5NnKXzyCFWa1HbPFwVTziggfaWnPeL10TcU", "localhost:8000")
@@ -38,11 +38,10 @@ function FriendsChat(){
                 setChatRooms(receivedChatRooms);
         })
         return () => {
-            console.log('Component will unmount, cleanup code here.');
         };
     }, []);
 
-    const addMessage = (message: string) => {
+    const sendMessage = (message: string) => {
         const newMessage: ChatMessageInterface = {
             text: message,
             sideOfChat: false, 
@@ -54,12 +53,10 @@ function FriendsChat(){
         {
             x.get(selectedChatRoom)?.messages.push(newMessage);
             setChatRooms(x);
-            setf(f+1);
+            //don't touch it works 
+            setF(f+1);
         }
-
-        //setMessages((prevMessages) => [...prevMessages, newMessage]);
     };
-    
 
     const selectUser = (chatId: number) => {
         setIsHidden(!isHidden);
@@ -69,7 +66,7 @@ function FriendsChat(){
     return <div className={"friendChat"}>
         {
             !isHidden && selectedChatRoom != undefined && chatRooms.has(selectedChatRoom) && chatRooms.get(selectedChatRoom)?.messages && (
-            <InGameChat messages={chatRooms.get(selectedChatRoom)?.messages || []} sentMessage={addMessage} closeable={true} title={chatRooms.get(selectedChatRoom)?.participant.username || ""} hidden={isHidden} hide={()=>setIsHidden(true)}></InGameChat>)
+            <InGameChat messages={chatRooms.get(selectedChatRoom)?.messages ?? []} sentMessage={sendMessage} closeable={true} title={chatRooms.get(selectedChatRoom)?.participant.username || ""} hidden={isHidden} hide={()=>setIsHidden(true)}></InGameChat>)
         }
         <div className='friendList'>
             <div className='friendEntry friendListButton' >Znajomi</div>
