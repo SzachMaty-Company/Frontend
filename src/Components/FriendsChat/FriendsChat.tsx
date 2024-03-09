@@ -27,25 +27,20 @@ interface ChatRoom{
 }
 
 function FriendsChat(){
-    const [messages, setMessages] = useState<ChatMessageInterface[]>([]);
-    const [chatRoom, setChatRooms] = useState<Map<number, ChatRoom>>(new Map());
+    const [chatRooms, setChatRooms] = useState<Map<number, ChatRoom>>(new Map());
     const [selectedChatRoom, setSelectedChatRoom] = useState<number>();
+    const [isHidden, setIsHidden] = useState(true);
+    const [f, setf] = useState(1);
 
     useEffect(() => {
         gatherMessages("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidG9taXPFgmF3IGFwb2xvbml1c3ogY3VydcWbIGJhY2hsZWRhIGZhcmVsIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiJnbG9iYWwtaWQtMSJ9.5t1xYlNI5NnKXzyCFWa1HbPFwVTziggfaWnPeL10TcU", "localhost:8000")
             .then(receivedChatRooms => {
                 setChatRooms(receivedChatRooms);
-                const firstKey = chatRoom.keys().next().value;
-                setSelectedChatRoom(firstKey);
-                if (selectedChatRoom !== undefined && chatRoom.has(selectedChatRoom))
-                {
-                    setMessages(chatRoom.get(selectedChatRoom)!.messages);
-                }
-        });
+        })
         return () => {
             console.log('Component will unmount, cleanup code here.');
         };
-    }, []); 
+    }, []);
 
     const addMessage = (message: string) => {
         const newMessage: ChatMessageInterface = {
@@ -54,36 +49,33 @@ function FriendsChat(){
             date: new Date(),
         };
 
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
+        let x = chatRooms;
+        if (x != undefined && selectedChatRoom != undefined && x.has(selectedChatRoom))
+        {
+            x.get(selectedChatRoom)?.messages.push(newMessage);
+            setChatRooms(x);
+            setf(f+1);
+        }
+
+        //setMessages((prevMessages) => [...prevMessages, newMessage]);
     };
     
 
-    const ch: ChatMessageInterface[] = [];
-    const f = () => console.log("click");
-    
-    const [isHidden, setIsHidden] = useState(false);
-
-    const toggleVisibility = () => {
+    const selectUser = (chatId: number) => {
         setIsHidden(!isHidden);
+        setSelectedChatRoom(chatId);
     };
-
-    let windowTitle: string = "";
-
-    if (selectedChatRoom != undefined && chatRoom.has(selectedChatRoom))
-    {
-        windowTitle = chatRoom.get(selectedChatRoom)?.participant.username ?? "";
-    }
 
     return <div className={"friendChat"}>
         {
-            !isHidden &&
-            <InGameChat messages={messages} sentMessage={addMessage} closeable={true} title={windowTitle}></InGameChat>
+            !isHidden && selectedChatRoom != undefined && chatRooms.has(selectedChatRoom) && chatRooms.get(selectedChatRoom)?.messages && (
+            <InGameChat messages={chatRooms.get(selectedChatRoom)?.messages || []} sentMessage={addMessage} closeable={true} title={chatRooms.get(selectedChatRoom)?.participant.username || ""} hidden={isHidden} hide={()=>setIsHidden(true)}></InGameChat>)
         }
         <div className='friendList'>
-            <div className='friendEntry friendListButton' onClick={toggleVisibility}>Znajomi</div>
-            <div className='friendEntries' hidden={isHidden}>
-                {Array.from(chatRoom.entries()).map(([chatId, chatRoom]) => (
-                    <div className='friendEntry'>{chatRoom.participant.username}</div>
+            <div className='friendEntry friendListButton' >Znajomi</div>
+            <div className='friendEntries'>
+                {Array.from(chatRooms.entries()).map(([chatId, chatRoom]) => (
+                    <div className='friendEntry' onClick={() => selectUser(chatId)}>{chatRoom.participant.username}</div>
                
                 ))}
             </div>

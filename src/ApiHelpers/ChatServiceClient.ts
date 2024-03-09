@@ -97,7 +97,6 @@ interface JwtClaims extends JwtPayload {
 function tokenToId(token: string)
 {
     const decoded = jwtDecode(token) as JwtClaims;
-    console.log(decoded);
     return decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
 }
 
@@ -143,14 +142,12 @@ async function gatherMessages(token: string, url: string){
                 }
             }
         }
-        console.log(x);
         const parsedDate = Date.parse(x.messageTimestamp);
         let m : ChatMessageInterface = {
             text: x.message,
             sideOfChat: x.senderId !== tokenOwnerId,
             date: new Date(parsedDate)
         };
-        console.log(chatid);
         let chatRoom = chatRooms.get(chatid);
         if (chatRoom != undefined)
         {
@@ -158,10 +155,8 @@ async function gatherMessages(token: string, url: string){
         }
         else
         {
-            console.log("boze moj");
         }
     }
-    console.log(chatRooms);
     return chatRooms;
 }
 
