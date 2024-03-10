@@ -1,8 +1,5 @@
 import { Client, IMessage, StompSubscription } from '@stomp/stompjs';
-import React, { useState } from 'react';
-import ChatMessage from '../Components/ChatMessage/ChatMessage';
 import { JwtPayload, jwtDecode } from "jwt-decode";
-import { tokenToString } from 'typescript';
 
 interface ChatMessageInterface {
     text: string;
@@ -10,7 +7,7 @@ interface ChatMessageInterface {
     date: Date;
 }
 
-export class ChatSerivceClient{
+class ChatSerivceClient{
     private stompClient: Client | undefined;
     private subscription: StompSubscription | undefined;
 
@@ -119,7 +116,7 @@ async function gatherParticipants(token:string, url:string, chatId: number, toke
 
 async function gatherMessages(token: string, url: string){
 
-    const receivedMessages = await makeRequest(token, url, 'user/chats');
+    const receivedMessages = await makeRequest(token, url, 'user/chats?page=0&size=20&sort=desc');
 
     let chatRooms = new Map<number, ChatRoom>();
 
@@ -158,4 +155,4 @@ async function gatherMessages(token: string, url: string){
     return chatRooms;
 }
 
-export {gatherMessages};
+export {gatherMessages, ChatSerivceClient};

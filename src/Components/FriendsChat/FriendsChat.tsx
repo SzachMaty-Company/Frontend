@@ -1,7 +1,8 @@
 import InGameChat from '../IngameChat/InGameChat';
 import React, { useState, useEffect } from 'react';
 import './FriendsChat.css'
-import { gatherMessages} from '../../ApiHelpers/ChatServiceClient';
+import { gatherMessages, ChatSerivceClient } from '../../ApiHelpers/ChatServiceClient';
+import { Client } from '@stomp/stompjs';
 
 interface ChatMessageInterface {
     text: string;
@@ -25,19 +26,31 @@ interface ChatRoom{
     chatId: number
 }
 
+const token: string = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidG9taXPFgmF3IGFwb2xvbml1c3ogY3VydcWbIGJhY2hsZWRhIGZhcmVsIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiJnbG9iYWwtaWQtMSJ9.5t1xYlNI5NnKXzyCFWa1HbPFwVTziggfaWnPeL10TcU";
+const apiPath: string = "localhost:8000";
+let chatClient : ChatSerivceClient;
+
 function FriendsChat(){
     const [chatRooms, setChatRooms] = useState<Map<number, ChatRoom>>(new Map());
     const [selectedChatRoom, setSelectedChatRoom] = useState<number>();
     const [isHidden, setIsHidden] = useState(true);
+
     //don't touch it works 
     const [f, setF] = useState(1);
 
     useEffect(() => {
-        gatherMessages("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidG9taXPFgmF3IGFwb2xvbml1c3ogY3VydcWbIGJhY2hsZWRhIGZhcmVsIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiJnbG9iYWwtaWQtMSJ9.5t1xYlNI5NnKXzyCFWa1HbPFwVTziggfaWnPeL10TcU", "localhost:8000")
-            .then(receivedChatRooms => {
+
+        chatClient = new ChatSerivceClient(token, apiPath);
+
+        gatherMessages(token, apiPath)
+            .then(async (receivedChatRooms) => {
                 setChatRooms(receivedChatRooms);
+
+                console.log(receivedChatRooms);
+                chatClient.connect();
         })
         return () => {
+            chatClient.closeConnection();
         };
     }, []);
 
@@ -53,6 +66,8 @@ function FriendsChat(){
         {
             x.get(selectedChatRoom)?.messages.push(newMessage);
             setChatRooms(x);
+           
+            chatClient.sendMessage(selectedChatRoom, message);
             //don't touch it works 
             setF(f+1);
         }
