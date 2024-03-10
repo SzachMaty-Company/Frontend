@@ -13,9 +13,12 @@ interface ChatMessageProps {
   messages: ChatMessageInterface[];
   sentMessage: (text:string) => void;
   closeable: boolean;
+  title: string;
+  hidden: boolean;
+  hide: () => void;
 }
 
-const InGameChat: React.FC<ChatMessageProps> = ({messages, sentMessage, closeable}) => {   
+const InGameChat: React.FC<ChatMessageProps> = ({messages, sentMessage, closeable, title, hidden, hide}) => {   
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -23,18 +26,12 @@ const InGameChat: React.FC<ChatMessageProps> = ({messages, sentMessage, closeabl
         const textInput = form.elements.namedItem('msg') as HTMLInputElement;
 
         if (textInput) {
-        const text = textInput.value;
-        sentMessage(text);
+            const text = textInput.value;
+            sentMessage(text);
         }
    };
 
-    const [isHidden, setIsHidden] = useState(false);
-
-    const toggleVisibility = () => {
-        setIsHidden(!isHidden);
-    };
-
-    if (isHidden)
+    if (hidden)
         return <></>
 
     return (
@@ -42,10 +39,10 @@ const InGameChat: React.FC<ChatMessageProps> = ({messages, sentMessage, closeabl
         <div className='ChatWindow'>
             <div className="chatHeader">
             <div className='receiverUserName'>
-                <span>ZbigniewZiobro</span>
+                <span>{title}</span>
             </div>
             {closeable && (
-                <div className='closeChatWindow' onClick={() => {toggleVisibility()}}>
+                <div className='closeChatWindow' onClick={() => {hide()}}>
                 X
                 </div>
             )}

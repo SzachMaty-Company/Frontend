@@ -16,7 +16,6 @@ import LoginView from './Views/LoginView/LoginView';
 import SearchGameView from './Views/GameView/SearchGame';
 import GameStatus from './Views/GameView/GameStatus';
 import GameSummaryView from './Views/GameSummaryView/GameSummaryView';
-import InGameChat from './Components/IngameChat/InGameChat';
 import FriendsChat from './Components/FriendsChat/FriendsChat';
 
 const sampleGameData = {
@@ -47,7 +46,6 @@ const sampleGameData = {
       
     ]
 };
-
 
 function App() {
   return(
