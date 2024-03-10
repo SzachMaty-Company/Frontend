@@ -5,16 +5,13 @@ import { Button } from "./Components/Buttons/Buttons";
 import './Layout.css'
 import AuthComponent from "./AuthComponent";
 
-export default function Layout({gamePath,statPath,mainPath,loginPath}:{gamePath:string,statPath:string,mainPath:string,loginPath:string}){
+export default function Layout({gamePath,statPath,loginPath}:{gamePath:string,statPath:string,loginPath:string}){
     const navigate = useNavigate();
     const gameCallback=()=>{
         navigate(gamePath);
     };
     const statCallback=()=>{
         navigate(statPath);
-    };
-    const mainCallback=()=>{
-        navigate(mainPath);
     };
     const loginCallback=(event:any)=>{
       //Log out
@@ -30,15 +27,15 @@ export default function Layout({gamePath,statPath,mainPath,loginPath}:{gamePath:
     };
 
     return <div>
-      <Header gameCallback={gameCallback} statCallback={statCallback} mainCallback={mainCallback} loginCallback={loginCallback}/>
+      <Header gameCallback={gameCallback} statCallback={statCallback} loginCallback={loginCallback}/>
       <Outlet />
     </div>
   }
 
-function Header({gameCallback,statCallback,mainCallback,loginCallback}:{gameCallback:any,statCallback:any,mainCallback:any,loginCallback:any}){
+function Header({gameCallback,statCallback,loginCallback}:{gameCallback:any,statCallback:any,loginCallback:any}){
     return <div className="header">
-        <img alt="SzachMaty" className="logo" onClick={mainCallback}/>
-        <Button text="♞Graj" callback={gameCallback}/>
+        <img alt="SzachMaty" className="logo"/>
+        <Button text="Graj" horse={true} callback={gameCallback}/>
         <Button text="Statystyki" callback={statCallback}/>
         <Button text={AuthComponent.isAuthenticated ? "Wyloguj się":"Zaloguj się"} callback={loginCallback} type="loginButton"/>
     </div>

@@ -27,7 +27,6 @@ interface ChatRoom{
     chatId: number
 }
 
-
 const token: string = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidG9taXPFgmF3IGFwb2xvbml1c3ogY3VydcWbIGJhY2hsZWRhIGZhcmVsIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiJnbG9iYWwtaWQtMSJ9.5t1xYlNI5NnKXzyCFWa1HbPFwVTziggfaWnPeL10TcU";
 const apiPath: string = "localhost:8000";
 let chatClient : ChatSerivceClient;
@@ -82,8 +81,6 @@ function FriendsChat(){
             chatClient.closeConnection();
         };
     }, []);
-
-
 
     const selectUser = (chatId: number) => {
         setIsHidden(!isHidden);

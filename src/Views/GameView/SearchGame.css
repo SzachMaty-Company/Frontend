@@ -22,11 +22,11 @@
     padding-bottom: 0.8rem;
 }
 
-.LabelTag{
+.SearchGameView .LabelTag{
     width: 30%;
 }
 
-.LabelValue{
+.SearchGameView .LabelValue{
     width: 120%;
 }
 
@@ -35,6 +35,10 @@
     font-weight: bolder;
     color:#F97C00;
     width: 100%;
+}
+
+.clickable{
+    cursor: pointer;
 }
 
 .SearchTable button{

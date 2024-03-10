@@ -1,6 +1,7 @@
 .button{
-    font-family: 'Montserrat';
-    font-size: calc(100vh * 0.025);
+    font-family: "Montserrat", Helvetica;
+    font-weight: bold;
+    font-size: calc(100vh * 0.03);
     background-color: transparent;
     color: #E07000;
     border-color: transparent;

@@ -16,8 +16,17 @@ const pieceDict:{[key:string]:string}={
 
 //React component for displaying cell
 export function Cell({color,cell,callback}:{color:string,cell:CellObject,callback:(cell:CellObject) => void}){
-    return <div className={`${color} ${cell.available?"available":""}`} onClick={()=>callback(cell)}>
-        <img className={`PieceImg ${pieceDict[cell.piece]} ${cell.choosed===true?"choosed":""}`}></img>
+
+    return <div 
+        onDrop={()=>callback(cell)}
+        onDragOver={(e) => e.preventDefault()}
+        className={`${color} ${cell.available?"available":""}`} 
+        onClick={()=>callback(cell)}>
+        <img
+            draggable={true}
+            onDragStart={()=>callback(cell)}
+            className={`PieceImg ${pieceDict[cell.piece]} ${cell.choosed===true?"choosed":""}`}
+        />
         </div>
 }
 

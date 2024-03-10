@@ -1,5 +1,3 @@
-import React, { ReactNode } from 'react';
-import logo from './logo.svg';
 import {
   BrowserRouter,
   Routes,
@@ -19,6 +17,7 @@ import SearchGameView from './Views/GameView/SearchGame';
 import GameStatus from './Views/GameView/GameStatus';
 import GameSummaryView from './Views/GameSummaryView/GameSummaryView';
 import FriendsChat from './Components/FriendsChat/FriendsChat';
+import {gatherMessages} from './ApiHelpers/ChatServiceClient';
 
 const sampleGameData = {
     playerWhiteFigures: 'sprzeglo46',
@@ -27,24 +26,24 @@ const sampleGameData = {
     timerSettings: '10 minutes',
     gameStart: '21:37',
     gameHistory: [
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
+        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
       
     ]
 };
@@ -54,7 +53,7 @@ function App() {
   <div className='app'>
       <BrowserRouter basename='/'>
         <Routes>
-          <Route path="/" element={<Layout gamePath="/game" statPath="/statistic" mainPath='/main' loginPath='/login'/>}>
+          <Route path="/" element={<Layout gamePath="/game" statPath="/statistic" loginPath='/login'/>}>
             <Route 
               path="game" 
               element={

@@ -1,15 +1,17 @@
 import { MainActionButton, SecondaryActionButton } from '../../Components/ActionButtons/ActionButtons';
 import ContentWrapper from '../ContentWrapper';
+import GameSummaryHistory from './GameSummaryHistory';
 import './GameSummaryView.css'
 
-interface PlayerFigureColors {
+export interface PlayerFigureColors {
     isWhite: boolean;
 }
 
-interface GameHistoryRecordInterface {
+export interface GameHistoryRecordInterface {
     doneBy: PlayerFigureColors;
     figure: string;
     position: string;
+    moveTo:string;
 }
 
 interface GameSummaryViewProps {
@@ -49,35 +51,7 @@ const GameSummaryView: React.FC<GameSummaryViewProps> = ({playerWhiteFigures, pl
                     <td>{gameStart}</td>
                 </tr>
             </table>
-            <div className='GameSummaryHistory'>
-                <h2>Historia gry:</h2>
-                <div className='GameSummaryHistoryMoves'>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Gracz</th>
-                                <th>Figura</th>
-                                <th>Pozycja</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {gameHistory.map((record, index) => (
-                                <tr>
-                                    <td>
-                                        {record.doneBy.isWhite ? "Biały" : "Czarny"}
-                                    </td>
-                                    <td>
-                                        {record.figure}
-                                    </td>
-                                    <td>
-                                        {record.position}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <GameSummaryHistory title='Historia gry:' gameHistory={gameHistory}/>
             <div className='GameSummaryControls'>
                 <table>
                     <tr>

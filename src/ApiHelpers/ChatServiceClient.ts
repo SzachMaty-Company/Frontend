@@ -33,6 +33,7 @@ class ChatSerivceClient{
     private stompClient: Client | undefined;
     private subscription: StompSubscription | undefined;
 
+
     constructor(private token: string, private url: string, private handleReceivedMessage: (message: ChatMessageInterface, numberArg: number) => void){
     }
 
@@ -106,7 +107,6 @@ class ChatSerivceClient{
             this.stompClient.deactivate();
         }
     }
-
     private async makeRequest(endpoint: string){
         let response = await fetch(`http://${this.url}/${endpoint}`, {
             method: 'GET',
@@ -179,7 +179,5 @@ class ChatSerivceClient{
         return chatRooms;
     }
 }
-
-
 
 export {ChatSerivceClient};

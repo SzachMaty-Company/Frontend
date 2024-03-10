@@ -34,7 +34,7 @@
     text-align: center;
 }
 .GameSummaryHistoryMoves td{
-    width: calc(100%/3);
+    width: calc(100%/4);
 }
 
 .GameSummaryHistoryMoves table{

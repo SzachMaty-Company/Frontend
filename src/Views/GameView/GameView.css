@@ -4,13 +4,19 @@
     display: flex;
 }
 
+.gamePromotionSide{
+    flex: 10% 0 0;
+    height: 85vh;
+    display: flex;
+}
+
 .gameSide {
-    flex: 70% 0 0;
+    flex: 65% 0 0;
     height: 85vh;
 }
 
 .gameControlSide {
-    flex: 30% 0 0;
+    flex: 25% 0 0;
     height: 85vh;
 }
 
