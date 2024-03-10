@@ -97,7 +97,7 @@ export default function GameView() {
                         <MainActionButton text="Poddaj się"></MainActionButton>
                     </div>
                     <div className="chatHolder">
-                        <InGameChat messages={messages} sentMessage={addMessage} closeable={false}></InGameChat>
+                        <InGameChat messages={messages} sentMessage={addMessage} closeable={false} title='zioooobro' hidden={false} hide={()=>{}}></InGameChat>
                     </div>
                 </div>
             </div>
