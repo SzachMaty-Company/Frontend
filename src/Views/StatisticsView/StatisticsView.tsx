@@ -5,6 +5,7 @@ import "./StatisticsView.css"
 import { useNavigate, useParams } from 'react-router-dom';
 import GameSummaryHistory from '../GameSummaryView/GameSummaryHistory';
 import ProfileStatistic, { Friend, Match } from './ProfileStatistic';
+import AuthComponent from '../../AuthComponent';
 
 export default function StatsView() {
     let navigate = useNavigate();
@@ -14,20 +15,37 @@ export default function StatsView() {
     const userId: number | undefined = params.userId as number | undefined;
 
     const [profile, setProfile] = useState(new ProfileStatistic());
+    let [selectedMatch, setSelectedMatch] = useState(-1);
+    const friends = profile.friendList;
+    let [isAddedToFriends, setIsAddedToFriends] = useState(false);
+    let [selectedFriend, setSelectedFriend] = useState(0);
+    let [selectedFriendName, setSelectedFriendName] = useState("");
+
+    const checkIfFriend = () => {
+        if (userId == null) {
+            setIsAddedToFriends(true);
+        } else {
+            let len = friends.length;
+            let i = 0;
+            for (; i < len; i++) {
+                if (friends[i].nickname === AuthComponent.UserNickname)
+                    break;
+            }
+            setIsAddedToFriends(i != len);
+        }
+    }
 
     useEffect(() => {
         GetProfileStatistic(userId).then(
-            p => setProfile(p)
+            p => {
+                setProfile(p);
+                setSelectedFriendName(p.friendList[0].nickname);
+                checkIfFriend();
+            }
         )
     }, []);
 
-
     let userLogged = name == null || name === "user";
-
-    let [selectedMatch, setSelectedMatch] = useState(-1);
-    const friends = profile.friendList;
-    let [selectedFriend, setSelectedFriend] = useState(0);
-    let [selectedFriendName, setSelectedFriendName] = useState(friends[0].nickname);
 
     const changeFriend = (event: any) => {
         let id = 0;
@@ -45,22 +63,27 @@ export default function StatsView() {
         setSelectedMatch(id);
     };
 
-    const friendClicked = (friend:Friend) => {
-        navigate(`/statistic/${friend.nickname}`,{
-            state:{userId: friend.id}
+    const friendClicked = (friend: Friend) => {
+        navigate(`/statistic/${friend.nickname}`, {
+            state: { userId: friend.id }
         });
+    };
+
+    const addFriend = () => {
+        //http request
+        setIsAddedToFriends(true);
     };
 
     console.log(profile.matches);
 
     return <ContentWrapper isCentered={false}>
-        {profile == null ?
+        {profile.nickname == "" ?
             <p></p> :
             <div>
                 <table className='StatisticsTable'>
                     <tr>
-                        <td>
-                            <h1 className='ProfileName'>{profile.nickname}</h1>
+                        <td className='ProfileNameTd'>
+                            <h1 className='ProfileName'>Grześ</h1>{isAddedToFriends ? <span></span> : <span className='AddToFriends' onClick={addFriend}>(<span>dodaj do znajomych</span>)</span>}
                         </td>
                     </tr>
                     <tr>

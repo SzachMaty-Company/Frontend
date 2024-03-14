@@ -1,6 +1,7 @@
 const AuthComponent = {
     isAuthenticated: false,
     JSONToken:"",
+    UserNickname:"",
     authenticate: (user:string, password:string, callback:any) => {
       if (user === "Admin" && password === "Admin") {
         AuthComponent.isAuthenticated = true;

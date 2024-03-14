@@ -1,14 +1,21 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import GetProfileStatistic from '../StatisticsView/ProfileStatisticGetter';
 import ContentWrapper from '../ContentWrapper'
 import './SearchGame.css'
 import { SecondaryActionButton } from '../../Components/ActionButtons/ActionButtons';
 import GameStatus from './GameStatus';
 import { useNavigate } from 'react-router-dom';
+import ProfileStatistic from '../StatisticsView/ProfileStatistic';
 
 export default function SearchGameView() {
 
-    const profile = GetProfileStatistic("user");
+    const [profile, setProfile] = useState(new ProfileStatistic());
+
+    useEffect(() => {
+        GetProfileStatistic(undefined).then(
+            p => setProfile(p)
+        )
+    }, []);
     const friendList = profile.friendList;
     let navigate = useNavigate();
 

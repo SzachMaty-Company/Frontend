@@ -12,6 +12,27 @@
 .StatisticsTable td
 {
     width: 20rem;
+    display: flex;
+}
+
+.StatisticsTable .ProfileNameTd
+{
+    width: 50rem;
+    display: flex;
+}
+
+.StatisticsTable .AddToFriends
+{
+    font-size: 1.8rem;
+    font-weight: bold;
+    color:#F97C00;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.StatisticsTable .AddToFriends span
+{
+    color:#D9D9EC;
 }
 
 .friend{
