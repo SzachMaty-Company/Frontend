@@ -32,13 +32,15 @@ export default class ProfileStatistic{
 export class Friend{
     nickname:string;
     winrate:number;
+    id:number;
     constructor(){
         this.nickname="";
         this.winrate=0;
+        this.id=-1;
     }
 }
 
-class Match{
+export class Match{
     white:string;
     black:string;
     win:string;
