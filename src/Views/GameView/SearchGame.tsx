@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react'
-import GetProfileStatistic from '../StatisticsView/ProfileStatisticGetter';
+import GetProfileStatistic, { GetFriends } from '../StatisticsView/ProfileStatisticGetter';
 import ContentWrapper from '../ContentWrapper'
 import './SearchGame.css'
 import { SecondaryActionButton } from '../../Components/ActionButtons/ActionButtons';
@@ -10,17 +10,24 @@ import ProfileStatistic from '../StatisticsView/ProfileStatistic';
 export default function SearchGameView() {
 
     const [profile, setProfile] = useState(new ProfileStatistic());
+    const [friends,setFriends] = useState([] as ProfileStatistic[]);
 
     useEffect(() => {
         GetProfileStatistic(undefined).then(
-            p => setProfile(p)
-        )
+            p => {
+                setProfile(p);
+            }
+        );
+        GetFriends().then(
+            p=>{
+                setFriends(p);
+            }
+        );
     }, []);
-    const friendList = profile.friendList;
     let navigate = useNavigate();
 
     let [timeSelected, setTimeSelected] = useState(5);
-    let [selectedOponent, setSelectedOponent] = useState(friendList[0].nickname);
+    let [selectedOponent, setSelectedOponent] = useState(friends[0].name);
     let [searching, setSearching] = useState(false);
 
     const changeTime = (event: any) => {
@@ -68,8 +75,8 @@ export default function SearchGameView() {
                         <td className='LabelTag'>Oponent:</td>
                         <td className='LabelValue'>
                             <select className='SelectForm' value={selectedOponent} onChange={e => changeOponent(e)}>
-                                {friendList.map((friend) =>
-                                    <option value={friend.nickname}>{friend.nickname}</option>
+                                {friends.map((friend) =>
+                                    <option value={friend.name}>{friend.name}</option>
                                 )}
                             </select>
                         </td>
