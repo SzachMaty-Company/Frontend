@@ -2,21 +2,42 @@ import { useEffect, useState } from 'react';
 import ContentWrapper from '../ContentWrapper';
 import GetProfileStatistic, { AddFriend, GetFriends } from './ProfileStatisticGetter';
 import "./StatisticsView.css"
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import GameSummaryHistory from '../GameSummaryView/GameSummaryHistory';
 import ProfileStatistic, { Match } from './ProfileStatistic';
 import AuthComponent from '../../AuthComponent';
 
 export default function StatsView() {
     let navigate = useNavigate();
+    let location = useLocation();
 
-    const params = useParams();
-    const name: string | undefined = params.name;
-    const userId: number | undefined = params.userId as number | undefined;
+    const { name } = useParams();
+    type MyState = { userId: number }
+
+    function isStateValid(state: any): state is MyState {
+        if (!state) return false; // Makes sure it's not null
+        if (typeof state !== "object") return false;
+        if (typeof state.userId !== "number") return false;
+        return true;
+    }
+
+    //const { state } = useLocation(); // state is any or unknown
+ 
+    const [userId, setUserId] = useState(0);
+
+    if (isStateValid(location.state)) {
+        console.log(userId)
+        console.log(location.state.userId)
+        if(userId !== location.state.userId)
+            setUserId(location.state.userId); // state is MyState here
+    }
+    
+    //const name: string | undefined = params.name;
+    //const userId: number | undefined = params.userId as number | undefined;
 
     const [profile, setProfile] = useState(new ProfileStatistic());
     let [selectedMatch, setSelectedMatch] = useState(-1);
-    const [friends,setFriends] = useState([] as ProfileStatistic[]);
+    const [friends, setFriends] = useState([] as ProfileStatistic[]);
     let [isAddedToFriends, setIsAddedToFriends] = useState(false);
     let [selectedFriend, setSelectedFriend] = useState(0);
     let [selectedFriendName, setSelectedFriendName] = useState("");
@@ -36,19 +57,19 @@ export default function StatsView() {
     }
 
     useEffect(() => {
+        console.log("USer" + userId)
         GetProfileStatistic(userId).then(
             p => {
                 setProfile(p);
             }
         );
         GetFriends().then(
-            p=>{
+            p => {
                 setFriends(p);
-                if(p.length !== 0)
-                {
+                if (p.length !== 0) {
                     setSelectedFriendName(p[0].name);
 
-                }    
+                }
                 checkIfFriend();
             }
         );
@@ -73,6 +94,7 @@ export default function StatsView() {
     };
 
     const friendClicked = (friend: ProfileStatistic) => {
+        console.log("Piwo" + friend.id)
         navigate(`/statistic/${friend.name}`, {
             state: { userId: friend.id }
         });
@@ -163,7 +185,7 @@ export default function StatsView() {
                         </tr>
                     ))}
                 </table>
-                {!userLogged || profile.statistics.games==null ? <br /> :
+                {!userLogged || profile.statistics.games == null ? <br /> :
                     <div className='GameHistoryDiv'>
                         <table>
                             <tr>
