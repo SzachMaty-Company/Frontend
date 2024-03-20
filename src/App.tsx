@@ -17,6 +17,7 @@ import SearchGameView from './Views/GameView/SearchGame';
 import GameStatus from './Views/GameView/GameStatus';
 import GameSummaryView from './Views/GameSummaryView/GameSummaryView';
 import FriendsChat from './Components/FriendsChat/FriendsChat';
+import { useEffect } from "react";
 
 const sampleGameData = {
     playerWhiteFigures: 'sprzeglo46',
@@ -48,6 +49,7 @@ const sampleGameData = {
 };
 
 function App() {
+  AuthComponent.initialize();
   return(
   <div className='app'>
       <BrowserRouter basename='/'>
