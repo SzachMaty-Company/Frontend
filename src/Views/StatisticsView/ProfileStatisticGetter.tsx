@@ -19,14 +19,14 @@ export default async function GetProfileStatistic(userId:number|undefined):Promi
         });
 
         
-    let json:string=await response.json();
+    let json:ProfileStatistic=await response.json();
 
     console.log("JSON token:");
     console.log(json);
 
-    let profile:ProfileStatistic=JSON.parse(json);
+    
 
-    return profile;
+    return json;
 }
 
 export async function GetFriends():Promise<ProfileStatistic[]>{
@@ -41,14 +41,9 @@ export async function GetFriends():Promise<ProfileStatistic[]>{
         });
 
         
-    let json:string=await response.json();
-
-    console.log("JSON:");
-    console.log(json);
-
-    let profile:ProfileStatistic[]=JSON.parse(json);
-
-    return profile;
+    let json:ProfileStatistic[]=await response.json();
+    
+    return json;
 }
 
 export async function AddFriend(userId:number) {

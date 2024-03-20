@@ -44,7 +44,11 @@ export default function StatsView() {
         GetFriends().then(
             p=>{
                 setFriends(p);
-                setSelectedFriendName(p[0].name);
+                if(p.length !== 0)
+                {
+                    setSelectedFriendName(p[0].name);
+
+                }    
                 checkIfFriend();
             }
         );
@@ -146,7 +150,7 @@ export default function StatsView() {
                     </tr>
                     <tr className='FormRecord'>
                         <td className='LabelTag'>Wsp. Zwycięstw</td>
-                        <td>{friends[selectedFriend].winrateAgainst}</td>
+                        <td>{friends[selectedFriend]?.winrateAgainst}</td>
                     </tr>
                     <tr>
                         <td>
