@@ -1,42 +1,40 @@
-import { GameHistoryRecordInterface } from "../GameSummaryView/GameSummaryView";
-
 export default class ProfileStatistic{
-    nickname:string;
-    firstname:string;
-    lastname:string;
+    id:number;
+    name:string;
+    surname:string;
+    email:string;
+    statistics:Statistics;
+
+    constructor()
+    {
+        this.id=-1;
+        this.name="";
+        this.surname="";
+        this.email="";
+        this.statistics=new Statistics();
+    }
+}
+
+class Statistics{
+    winrate:number; //Against sender
     winrateFriends:number;
     winFriends:number;
     playFriends:number;
     winrateAI:number;
     winAI:number;
     playAI:number;
-    friendList:Friend[];
-    matches:Match[];
+    games:Match[]|undefined;
 
     constructor()
     {
-        this.nickname="";
-        this.firstname="";
-        this.lastname="";
+        this.winrate=0;
+        this.winrateFriends=0;
         this.winFriends=0;
         this.playFriends=0;
+        this.winrateAI=0;
         this.winAI=0;
         this.playAI=0;
-        this.winrateAI=0;
-        this.winrateFriends=0;
-        this.friendList=[];
-        this.matches=[];
-    }
-}
-
-export class Friend{
-    nickname:string;
-    winrate:number;
-    id:number;
-    constructor(){
-        this.nickname="";
-        this.winrate=0;
-        this.id=-1;
+        this.games=[];
     }
 }
 
@@ -58,3 +56,16 @@ export class Match{
         this.history=[];
     }
 }
+
+export class Move{
+    figure: string;
+    position: string;
+    moveTo:string;
+    constructor(){
+        this.figure="";
+        this.position="";
+        
+    }
+}
+
+

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import ContentWrapper from '../ContentWrapper';
-import GetProfileStatistic from './ProfileStatisticGetter';
+import GetProfileStatistic, { AddFriend, GetFriends } from './ProfileStatisticGetter';
 import "./StatisticsView.css"
 import { useNavigate, useParams } from 'react-router-dom';
 import GameSummaryHistory from '../GameSummaryView/GameSummaryHistory';
-import ProfileStatistic, { Friend, Match } from './ProfileStatistic';
+import ProfileStatistic, { Match } from './ProfileStatistic';
 import AuthComponent from '../../AuthComponent';
 
 export default function StatsView() {
@@ -16,7 +16,7 @@ export default function StatsView() {
 
     const [profile, setProfile] = useState(new ProfileStatistic());
     let [selectedMatch, setSelectedMatch] = useState(-1);
-    const friends = profile.friendList;
+    const [friends,setFriends] = useState([] as ProfileStatistic[]);
     let [isAddedToFriends, setIsAddedToFriends] = useState(false);
     let [selectedFriend, setSelectedFriend] = useState(0);
     let [selectedFriendName, setSelectedFriendName] = useState("");
@@ -28,7 +28,7 @@ export default function StatsView() {
             let len = friends.length;
             let i = 0;
             for (; i < len; i++) {
-                if (friends[i].nickname === AuthComponent.UserNickname)
+                if (friends[i].name === AuthComponent.UserNickname)
                     break;
             }
             setIsAddedToFriends(i != len);
@@ -39,10 +39,15 @@ export default function StatsView() {
         GetProfileStatistic(userId).then(
             p => {
                 setProfile(p);
-                setSelectedFriendName(p.friendList[0].nickname);
+            }
+        );
+        GetFriends().then(
+            p=>{
+                setFriends(p);
+                setSelectedFriendName(p[0].name);
                 checkIfFriend();
             }
-        )
+        );
     }, []);
 
     let userLogged = name == null || name === "user";
@@ -50,40 +55,39 @@ export default function StatsView() {
     const changeFriend = (event: any) => {
         let id = 0;
         for (let i = 0; i < friends.length; i++) {
-            if (friends[i].nickname === event.target.value) {
+            if (friends[i].name === event.target.value) {
                 id = i;
                 break;
             }
         }
         setSelectedFriend(id);
-        setSelectedFriendName(friends[id].nickname);
+        setSelectedFriendName(friends[id].name);
     };
 
     const matchClicked = (id: number) => {
         setSelectedMatch(id);
     };
 
-    const friendClicked = (friend: Friend) => {
-        navigate(`/statistic/${friend.nickname}`, {
+    const friendClicked = (friend: ProfileStatistic) => {
+        navigate(`/statistic/${friend.name}`, {
             state: { userId: friend.id }
         });
     };
 
     const addFriend = () => {
         //http request
+        AddFriend(profile.id).then();
         setIsAddedToFriends(true);
     };
 
-    console.log(profile.matches);
-
     return <ContentWrapper isCentered={false}>
-        {profile.nickname == "" ?
+        {profile.name == "" ?
             <p></p> :
             <div>
                 <table className='StatisticsTable'>
                     <tr>
                         <td className='ProfileNameTd'>
-                            <h1 className='ProfileName'>Grześ</h1>{isAddedToFriends ? <span></span> : <span className='AddToFriends' onClick={addFriend}>(<span>dodaj do znajomych</span>)</span>}
+                            <h1 className='ProfileName'>{profile.name}</h1>{isAddedToFriends ? <span></span> : <span className='AddToFriends' onClick={addFriend}>(<span>dodaj do znajomych</span>)</span>}
                         </td>
                     </tr>
                     <tr>
@@ -93,11 +97,11 @@ export default function StatsView() {
                     </tr>
                     <tr className='FormRecord'>
                         <td className='LabelTag'>Imię</td>
-                        <td>{profile.firstname}</td>
+                        <td>{profile.name}</td>
                     </tr>
                     <tr className='FormRecord'>
                         <td className='LabelTag'>Nazwisko</td>
-                        <td>{profile.lastname}</td>
+                        <td>{profile.surname}</td>
                     </tr>
                     <tr>
                         <td>
@@ -106,56 +110,56 @@ export default function StatsView() {
                     </tr>
                     <tr className='FormRecord'>
                         <td className='LabelTag'>Wsp. Zwycięstw (AI)</td>
-                        <td>{profile.winrateAI * 100}%</td>
+                        <td>{profile.statistics.winrateAI * 100}%</td>
                     </tr>
                     <tr className='FormRecord'>
                         <td className='LabelTag'>Zwycięstwa (AI)</td>
-                        <td>{profile.winAI}</td>
+                        <td>{profile.statistics.winAI}</td>
                     </tr>
                     <tr className='FormRecord'>
                         <td className='LabelTag'>Rozegrane gry (AI)</td>
-                        <td>{profile.playAI}</td>
+                        <td>{profile.statistics.playAI}</td>
                     </tr>
 
                     <tr className='FormRecord'>
                         <td className='LabelTag'>Wsp. Zwycięstw (Znajomi)</td>
-                        <td>{profile.winrateFriends * 100}%</td>
+                        <td>{profile.statistics.winrateFriends * 100}%</td>
                     </tr>
                     <tr className='FormRecord'>
                         <td className='LabelTag'>Zwycięstwa (Znajomi)</td>
-                        <td>{profile.winFriends}</td>
+                        <td>{profile.statistics.winFriends}</td>
                     </tr>
                     <tr className='FormRecord'>
                         <td className='LabelTag'>Rozegrane gry (Znajomi)</td>
-                        <td>{profile.playFriends}</td>
+                        <td>{profile.statistics.playFriends}</td>
                     </tr>
                     <tr className='FormRecord'>
                         <td className='LabelTag'>Wybierz znajomego</td>
                         <td>
                             <select value={selectedFriendName}
                                 onChange={(e) => changeFriend(e)}>
-                                {friends.map((friend: Friend) =>
-                                    <option value={friend.nickname}>{friend.nickname}</option>
+                                {friends.map((friend: ProfileStatistic) =>
+                                    <option value={friend.name}>{friend.name}</option>
                                 )}
                             </select>
                         </td>
                     </tr>
                     <tr className='FormRecord'>
                         <td className='LabelTag'>Wsp. Zwycięstw</td>
-                        <td>{friends[selectedFriend].winrate}</td>
+                        <td>{friends[selectedFriend].statistics.winrate}</td>
                     </tr>
                     <tr>
                         <td>
                             <h2 className='LabelHeader'>Znajomi:</h2>
                         </td>
                     </tr>
-                    {profile.friendList.map((friend: Friend, i: number) => (
+                    {friends.map((friend: ProfileStatistic, i: number) => (
                         <tr key={i} className='FormRecord'>
-                            <td className='LabelTag' onClick={() => (friendClicked(friend))}><span className='friend'>{friend.nickname}</span></td>
+                            <td className='LabelTag' onClick={() => (friendClicked(friend))}><span className='friend'>{friend.name}</span></td>
                         </tr>
                     ))}
                 </table>
-                {!userLogged ? <br /> :
+                {!userLogged || profile.statistics.games==null ? <br /> :
                     <div className='GameHistoryDiv'>
                         <table>
                             <tr>
@@ -172,7 +176,7 @@ export default function StatsView() {
                                 <td className='LabelTag'>Tryb gry</td>
                                 <td className='LabelTag'>Data</td>
                             </tr>
-                            {profile.matches.map((match: Match, i: number) => (
+                            {profile.statistics.games.map((match: Match, i: number) => (
                                 <tr key={i} className={selectedMatch === i ? 'GameHistory Selected' : 'GameHistory'} onClick={() => (matchClicked(i))}>
                                     <td className='LabelValue'>{match.white}</td>
                                     <td className='LabelValue'>{match.black}</td>
@@ -183,7 +187,7 @@ export default function StatsView() {
                             ))}
                         </table>{
                             selectedMatch !== -1 ?
-                                <GameSummaryHistory title='Historia partii:' gameHistory={profile.matches[selectedMatch].history} />
+                                <GameSummaryHistory title='Historia partii:' gameHistory={profile.statistics.games[selectedMatch].history} />
                                 : <br />
                         }
                     </div>

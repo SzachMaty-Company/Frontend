@@ -7,12 +7,7 @@ export interface PlayerFigureColors {
     isWhite: boolean;
 }
 
-export interface GameHistoryRecordInterface {
-    doneBy: PlayerFigureColors;
-    figure: string;
-    position: string;
-    moveTo:string;
-}
+
 
 interface GameSummaryViewProps {
     playerWhiteFigures: string;

@@ -28,3 +28,42 @@ export default async function GetProfileStatistic(userId:number|undefined):Promi
 
     return profile;
 }
+
+export async function GetFriends():Promise<ProfileStatistic[]>{
+    
+    let url=`http://localhost:8000/friend`;
+
+    let response = await fetch(url, {
+            method: 'GET',
+            headers: {
+            'Authorization': `Bearer ${AuthComponent.JSONToken}`,
+            'Content-Type': 'application/json'}
+        });
+
+        
+    let json:string=await response.json();
+
+    console.log("JSON:");
+    console.log(json);
+
+    let profile:ProfileStatistic[]=JSON.parse(json);
+
+    return profile;
+}
+
+export async function AddFriend(userId:number) {
+    let url=`http://localhost:8000/friend/${userId}/send`;
+
+    let response = await fetch(url, {
+            method: 'POST',
+            headers: {
+            'Authorization': `Bearer ${AuthComponent.JSONToken}`,
+            'Content-Type': 'application/json'}
+        });
+
+        
+    let json:string=await response.json();
+
+    console.log("JSON:");
+    console.log(json);
+}
