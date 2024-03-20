@@ -4,6 +4,7 @@ export default class ProfileStatistic{
     surname:string;
     email:string;
     statistics:Statistics;
+    winrateAgainst:number|undefined; //Against sender
 
     constructor()
     {
@@ -16,7 +17,6 @@ export default class ProfileStatistic{
 }
 
 class Statistics{
-    winrate:number; //Against sender
     winrateFriends:number;
     winFriends:number;
     playFriends:number;
@@ -27,7 +27,6 @@ class Statistics{
 
     constructor()
     {
-        this.winrate=0;
         this.winrateFriends=0;
         this.winFriends=0;
         this.playFriends=0;
@@ -44,7 +43,7 @@ export class Match{
     win:string;
     mode:string;
     date:string;
-    history:GameHistoryRecordInterface[];
+    moves:string[];
 
     constructor()
     {
@@ -53,18 +52,7 @@ export class Match{
         this.win="";
         this.mode="";
         this.date="";
-        this.history=[];
-    }
-}
-
-export class Move{
-    figure: string;
-    position: string;
-    moveTo:string;
-    constructor(){
-        this.figure="";
-        this.position="";
-        
+        this.moves=[];
     }
 }
 

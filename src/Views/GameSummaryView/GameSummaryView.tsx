@@ -15,7 +15,7 @@ interface GameSummaryViewProps {
     winner: PlayerFigureColors;
     timerSettings: string;
     gameStart: string;
-    gameHistory: GameHistoryRecordInterface[];
+    gameHistory: string[];
 }
 
 const GameSummaryView: React.FC<GameSummaryViewProps> = ({playerWhiteFigures, playerBlackFigures, winner, timerSettings, gameStart, gameHistory}) => {

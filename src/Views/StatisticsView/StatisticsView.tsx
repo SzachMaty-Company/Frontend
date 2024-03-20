@@ -146,7 +146,7 @@ export default function StatsView() {
                     </tr>
                     <tr className='FormRecord'>
                         <td className='LabelTag'>Wsp. Zwycięstw</td>
-                        <td>{friends[selectedFriend].statistics.winrate}</td>
+                        <td>{friends[selectedFriend].winrateAgainst}</td>
                     </tr>
                     <tr>
                         <td>
@@ -187,7 +187,7 @@ export default function StatsView() {
                             ))}
                         </table>{
                             selectedMatch !== -1 ?
-                                <GameSummaryHistory title='Historia partii:' gameHistory={profile.statistics.games[selectedMatch].history} />
+                                <GameSummaryHistory title='Historia partii:' gameHistory={profile.statistics.games[selectedMatch].moves} />
                                 : <br />
                         }
                     </div>
