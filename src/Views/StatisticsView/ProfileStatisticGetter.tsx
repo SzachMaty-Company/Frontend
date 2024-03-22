@@ -29,9 +29,9 @@ export default async function GetProfileStatistic(userId:number|undefined):Promi
     return json;
 }
 
-export async function GetFriends():Promise<ProfileStatistic[]>{
+export async function GetFriends(userId:number|undefined):Promise<ProfileStatistic[]>{
     
-    let url=`http://localhost:8000/friend`;
+    let url=userId===undefined?`http://localhost:8000/friend`:`http://localhost:8000/friend?id=${userId}`;
 
     let response = await fetch(url, {
             method: 'GET',

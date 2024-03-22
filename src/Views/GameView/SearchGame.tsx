@@ -18,7 +18,7 @@ export default function SearchGameView() {
                 setProfile(p);
             }
         );
-        GetFriends().then(
+        GetFriends(undefined).then(
             p=>{
                 setFriends(p);
             }
