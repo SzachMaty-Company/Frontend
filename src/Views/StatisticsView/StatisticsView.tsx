@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useState } from 'react';
 import ContentWrapper from '../ContentWrapper';
 import GetProfileStatistic, { AddFriend, GetFriends } from './ProfileStatisticGetter';
 import "./StatisticsView.css"
@@ -20,20 +20,6 @@ export default function StatsView() {
     let [isAddedToFriends, setIsAddedToFriends] = useState(false);
     let [selectedFriend, setSelectedFriend] = useState(0);
     let [selectedFriendName, setSelectedFriendName] = useState("");
-
-    const checkIfFriend = () => {
-        if (userId == null) {
-            setIsAddedToFriends(true);
-        } else {
-            let len = friends.length;
-            let i = 0;
-            for (; i < len; i++) {
-                if (friends[i].email === AuthComponent.UserMail)
-                    break;
-            }
-            setIsAddedToFriends(i !== len);
-        }
-    }
 
     const changeFriend = (event: any) => {
         let id = 0;
@@ -64,7 +50,6 @@ export default function StatsView() {
 
     useEffect(() => {
         setUserId(!state?undefined:state.userId);
-        checkIfFriend();
     }, [name,state]);
 
     useEffect(() => {
@@ -79,10 +64,23 @@ export default function StatsView() {
                 if (p.length !== 0) {
                     setSelectedFriendName(p[0].name);
                 }
-                checkIfFriend();
             }
         );
     }, [userId]);
+
+    useEffect(()=>{
+        if (profile.email=== AuthComponent.UserMail) {
+            setIsAddedToFriends(true);
+        } else {
+            let len = friends.length;
+            let i = 0;
+            for (; i < len; i++) {
+                if (friends[i].email === AuthComponent.UserMail)
+                    break;
+            }
+            setIsAddedToFriends(i !== len);
+        }
+    },[friends,name,profile.email,userId])
 
     return <ContentWrapper isCentered={false}>
         {profile.name === "" ?
