@@ -62,10 +62,10 @@ export async function AddFriend(userId:number) {
 }
 
 export async function SearchFriend(email:string):Promise<ProfileStatistic> {
-    let url=`http://localhost:8000/dupa/${email}`;
+    let url=`http://localhost:8000/user/${email}`;
 
     let response = await fetch(url, {
-            method: 'POST',
+            method: 'GET',
             headers: {
             'Authorization': `Bearer ${AuthComponent.JSONToken}`,
             'Content-Type': 'application/json'}
