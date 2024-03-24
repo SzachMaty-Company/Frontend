@@ -17,6 +17,7 @@ import SearchGameView from './Views/GameView/SearchGame';
 import GameStatus from './Views/GameView/GameStatus';
 import GameSummaryView from './Views/GameSummaryView/GameSummaryView';
 import FriendsChat from './Components/FriendsChat/FriendsChat';
+import SearchProfileView from "./Views/StatisticsView/SearchProfile";
 
 const sampleGameData = {
     playerWhiteFigures: 'sprzeglo46',
@@ -52,7 +53,7 @@ function App() {
   <div className='app'>
       <BrowserRouter basename='/'>
         <Routes>
-          <Route path="/" element={<Layout gamePath="/game" statPath="/statistic" loginPath='/login'/>}>
+          <Route path="/" element={<Layout gamePath="/game" statPath="/statistic" loginPath='/login' searchPath="search/users" />}>
             <Route 
               path="game" 
               element={
@@ -84,6 +85,14 @@ function App() {
               element={
                 <ProtectedPath>
                   <StatsView/>
+                </ProtectedPath>
+              } 
+            />
+            <Route 
+              path="search/users" 
+              element={
+                <ProtectedPath>
+                  <SearchProfileView/>
                 </ProtectedPath>
               } 
             />

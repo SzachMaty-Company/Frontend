@@ -24,8 +24,6 @@ export default async function GetProfileStatistic(userId:number|undefined):Promi
     console.log("JSON token:");
     console.log(json);
 
-    
-
     return json;
 }
 
@@ -61,4 +59,23 @@ export async function AddFriend(userId:number) {
 
     console.log("JSON:");
     console.log(json);
+}
+
+export async function SearchFriend(email:string):Promise<ProfileStatistic> {
+    let url=`http://localhost:8000/dupa/${email}`;
+
+    let response = await fetch(url, {
+            method: 'POST',
+            headers: {
+            'Authorization': `Bearer ${AuthComponent.JSONToken}`,
+            'Content-Type': 'application/json'}
+        });
+
+        
+    let json:ProfileStatistic=await response.json();
+
+    console.log("JSON:");
+    console.log(json);
+
+    return json;
 }

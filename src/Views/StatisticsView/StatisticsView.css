@@ -113,3 +113,40 @@ input
 div.GameHistoryDiv {
     width: 80%;
 }
+
+.SearchProfileTable{
+    width: 20%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.SearchProfileTable td{
+    padding-bottom: 0.5rem;
+}
+
+.SearchProfileTable > tr:last-child button{
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+.SearchProfileTable > tr:first-child h1{
+    text-align: center;
+    color: white;
+}
+
+.SearchProfileTable td:first-child{
+    text-align: left;
+}
+
+.SearchProfileTable td:last-child{
+    text-align: right;
+}
+
+.SearchProfileTable .errorRow{
+    color: red;
+}
+
+.SearchProfileTable .errorRow td{
+    text-align: center;
+}
