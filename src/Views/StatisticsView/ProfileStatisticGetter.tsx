@@ -62,7 +62,7 @@ export async function AddFriend(userId:number) {
 }
 
 export async function SearchFriend(email:string):Promise<ProfileStatistic> {
-    let url=`http://localhost:8000/user/${email}`;
+    let url=`http://localhost:8000/search/${email}`;
 
     let response = await fetch(url, {
             method: 'GET',
