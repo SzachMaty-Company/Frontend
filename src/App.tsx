@@ -49,6 +49,7 @@ const sampleGameData = {
 };
 
 function App() {
+  AuthComponent.initialize();
   return(
   <div className='app'>
       <BrowserRouter basename='/'>
