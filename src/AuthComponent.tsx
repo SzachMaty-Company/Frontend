@@ -3,11 +3,13 @@ const exampleToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5
 const AuthComponent = {
     isAuthenticated: false,
     JSONToken:"",
+    UserMail:"",
     authenticate: (user:string, password:string, callback:any) => {
       if (user === "Admin" && password === "Admin") {
         AuthComponent.isAuthenticated = true;
         localStorage.setItem("Token",exampleToken);
         AuthComponent.JSONToken=exampleToken;
+        AuthComponent.UserMail="zbyszek@o2.pl";
         setTimeout(() => {
           callback("Success");
         }, 100);

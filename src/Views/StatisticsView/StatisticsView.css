@@ -12,6 +12,27 @@
 .StatisticsTable td
 {
     width: 20rem;
+    display: flex;
+}
+
+.StatisticsTable .ProfileNameTd
+{
+    width: 50rem;
+    display: flex;
+}
+
+.StatisticsTable .AddToFriends
+{
+    font-size: 1.8rem;
+    font-weight: bold;
+    color:#F97C00;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.StatisticsTable .AddToFriends span
+{
+    color:#D9D9EC;
 }
 
 .friend{
@@ -91,4 +112,41 @@ input
 
 div.GameHistoryDiv {
     width: 80%;
+}
+
+.SearchProfileTable{
+    width: 20%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.SearchProfileTable td{
+    padding-bottom: 0.5rem;
+}
+
+.SearchProfileTable > tr:last-child button{
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+.SearchProfileTable > tr:first-child h1{
+    text-align: center;
+    color: white;
+}
+
+.SearchProfileTable td:first-child{
+    text-align: left;
+}
+
+.SearchProfileTable td:last-child{
+    text-align: right;
+}
+
+.SearchProfileTable .errorRow{
+    color: red;
+}
+
+.SearchProfileTable .errorRow td{
+    text-align: center;
 }

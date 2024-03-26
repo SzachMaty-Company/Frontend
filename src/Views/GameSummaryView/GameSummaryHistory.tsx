@@ -1,7 +1,6 @@
-import { GameHistoryRecordInterface } from "./GameSummaryView";
 import './GameSummaryView.css';
 
-export default function GameSummaryHistory({title,gameHistory}:{title:string,gameHistory:GameHistoryRecordInterface[]}) {
+export default function GameSummaryHistory({title,gameHistory}:{title:string,gameHistory:string[]}) {
 
     return <div className='GameSummaryHistory'>
         <h2>{title}</h2>
@@ -10,25 +9,17 @@ export default function GameSummaryHistory({title,gameHistory}:{title:string,gam
                 <thead>
                     <tr>
                         <th>Gracz</th>
-                        <th>Figura</th>
-                        <th>Pozycja</th>
-                        <th>Ruch do</th>
+                        <th>Ruch</th>
                     </tr>
                 </thead>
                 <tbody>
                     {gameHistory.map((record, index) => (
                         <tr>
                             <td>
-                                {record.doneBy.isWhite ? "Biały" : "Czarny"}
+                                {index%2==0 ? "Biały" : "Czarny"}
                             </td>
                             <td>
-                                {record.figure}
-                            </td>
-                            <td>
-                                {record.position}
-                            </td>
-                            <td>
-                                {record.moveTo}
+                                {record}
                             </td>
                         </tr>
                     ))}

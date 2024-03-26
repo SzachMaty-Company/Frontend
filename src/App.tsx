@@ -17,7 +17,7 @@ import SearchGameView from './Views/GameView/SearchGame';
 import GameStatus from './Views/GameView/GameStatus';
 import GameSummaryView from './Views/GameSummaryView/GameSummaryView';
 import FriendsChat from './Components/FriendsChat/FriendsChat';
-import { useEffect } from "react";
+import SearchProfileView from "./Views/StatisticsView/SearchProfile";
 
 const sampleGameData = {
     playerWhiteFigures: 'sprzeglo46',
@@ -26,25 +26,25 @@ const sampleGameData = {
     timerSettings: '10 minutes',
     gameStart: '21:37',
     gameHistory: [
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
-        { doneBy: { isWhite: true }, figure: 'Pawn', position: 'e2', moveTo:'e4' },
-      
+      "e4",
+      "e4",
+      "e4",
+      "e4",
+      "e4",
+      "e4",
+      "e4",
+      "e4",
+      "e4",
+      "e4",
+      "e4",
+      "e4",
+      "e4",
+      "e4",
+      "e4",
+      "e4",
+      "e4",
+      "e4",
+      "e4"
     ]
 };
 
@@ -54,7 +54,7 @@ function App() {
   <div className='app'>
       <BrowserRouter basename='/'>
         <Routes>
-          <Route path="/" element={<Layout gamePath="/game" statPath="/statistic" loginPath='/login'/>}>
+          <Route path="/" element={<Layout gamePath="/game" statPath="/statistic" loginPath='/login' searchPath="search/users" />}>
             <Route 
               path="game" 
               element={
@@ -86,6 +86,14 @@ function App() {
               element={
                 <ProtectedPath>
                   <StatsView/>
+                </ProtectedPath>
+              } 
+            />
+            <Route 
+              path="search/users" 
+              element={
+                <ProtectedPath>
+                  <SearchProfileView/>
                 </ProtectedPath>
               } 
             />

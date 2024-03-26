@@ -7,12 +7,7 @@ export interface PlayerFigureColors {
     isWhite: boolean;
 }
 
-export interface GameHistoryRecordInterface {
-    doneBy: PlayerFigureColors;
-    figure: string;
-    position: string;
-    moveTo:string;
-}
+
 
 interface GameSummaryViewProps {
     playerWhiteFigures: string;
@@ -20,7 +15,7 @@ interface GameSummaryViewProps {
     winner: PlayerFigureColors;
     timerSettings: string;
     gameStart: string;
-    gameHistory: GameHistoryRecordInterface[];
+    gameHistory: string[];
 }
 
 const GameSummaryView: React.FC<GameSummaryViewProps> = ({playerWhiteFigures, playerBlackFigures, winner, timerSettings, gameStart, gameHistory}) => {
