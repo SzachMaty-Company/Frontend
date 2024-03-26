@@ -2,7 +2,6 @@ import {
   BrowserRouter,
   Routes,
   Route,
-  useNavigate,
   useLocation,
   Navigate,
   useParams
@@ -18,6 +17,7 @@ import GameStatus from './Views/GameView/GameStatus';
 import GameSummaryView from './Views/GameSummaryView/GameSummaryView';
 import FriendsChat from './Components/FriendsChat/FriendsChat';
 import SearchProfileView from "./Views/StatisticsView/SearchProfile";
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const sampleGameData = {
     playerWhiteFigures: 'sprzeglo46',
@@ -48,10 +48,13 @@ const sampleGameData = {
     ]
 };
 
+const clientId = "668259347625-iagkl0snappd94oms3td3hba2np64oj1.apps.googleusercontent.com";
+
 function App() {
   AuthComponent.initialize();
   return(
   <div className='app'>
+    <GoogleOAuthProvider clientId={clientId}>
       <BrowserRouter basename='/'>
         <Routes>
           <Route path="/" element={<Layout gamePath="/game" statPath="/statistic" loginPath='/login' searchPath="search/users" />}>
@@ -103,6 +106,7 @@ function App() {
         </Routes>
       </BrowserRouter>
       <FriendsChat></FriendsChat>
+      </GoogleOAuthProvider>
   </div>
   )
 }

@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react'
-import GetProfileStatistic, { GetFriends } from '../StatisticsView/ProfileStatisticGetter';
+import GetProfileStatistic, { GetFriends } from '../../ApiHelpers/UserServiceClient';
 import ContentWrapper from '../ContentWrapper'
 import './SearchGame.css'
 import { SecondaryActionButton } from '../../Components/ActionButtons/ActionButtons';
