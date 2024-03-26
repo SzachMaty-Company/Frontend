@@ -53,15 +53,9 @@ export async function AddFriend(userId:number) {
             'Authorization': `Bearer ${AuthComponent.JSONToken}`,
             'Content-Type': 'application/json'}
         });
-
-        
-    let json:string=await response.json();
-
-    console.log("JSON:");
-    console.log(json);
 }
 
-export async function SearchFriend(email:string):Promise<ProfileStatistic> {
+export async function SearchFriend(email:string):Promise<ProfileStatistic|null> {
     let url=`http://localhost:8000/search/${email}`;
 
     let response = await fetch(url, {
@@ -71,8 +65,12 @@ export async function SearchFriend(email:string):Promise<ProfileStatistic> {
             'Content-Type': 'application/json'}
         });
 
-        
-    let json:ProfileStatistic=await response.json();
+    
+    let resp = await response;
+    if(resp.status === 404) {
+        return null;
+    }
+    let json:ProfileStatistic=await resp.json();
 
     console.log("JSON:");
     console.log(json);
