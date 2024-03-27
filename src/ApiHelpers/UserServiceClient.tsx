@@ -1,7 +1,7 @@
-import AuthComponent from "../../AuthComponent";
-import ProfileStatistic from "./ProfileStatistic";
+import AuthComponent from "../AuthComponent";
+import ProfileStatistic from "../Views/StatisticsView/ProfileStatistic";
 
-export default async function GetProfileStatistic(userId:number|undefined):Promise<ProfileStatistic>{
+export async function GetProfileStatistic(userId:number|undefined):Promise<ProfileStatistic>{
 
     console.log("User ID:");
     console.log(userId);

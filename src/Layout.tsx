@@ -20,9 +20,8 @@ export default function Layout({gamePath,statPath,loginPath,searchPath}:{gamePat
       //Log out
       if(AuthComponent.isAuthenticated){
         event.preventDefault();
-        AuthComponent.unAuthenticate(() => {
-          navigate("/");
-        });
+        AuthComponent.unAuthenticate();
+        navigate("/");
       //Log in
       }else{
         navigate(loginPath);

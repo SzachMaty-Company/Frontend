@@ -1,7 +1,7 @@
 import { useState,FormEvent } from "react";
 import { MainActionButton } from "../../Components/ActionButtons/ActionButtons";
 import ContentWrapper from "../ContentWrapper";
-import { SearchFriend } from "./ProfileStatisticGetter";
+import { SearchFriend } from "../../ApiHelpers/UserServiceClient";
 import { useNavigate } from "react-router-dom";
 import "./StatisticsView.css"
 

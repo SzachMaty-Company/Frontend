@@ -1,21 +1,29 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import AuthComponent from "../../AuthComponent";
 import "./LoginView.css"
+import { useGoogleLogin } from "@react-oauth/google";
 
 export default function LoginView() {
     let navigate = useNavigate();
     let location = useLocation();
 
-    const handleSubmit = (event:any) => {
-      event.preventDefault();
-      AuthComponent.authenticate("Admin", "Admin", (status:any) => {
-        console.log(status);
-        if (status === "Success") {
-          if (location?.state?.from) navigate(location.state.from);
-          else navigate("/");
-        }
-      });
-    };
+    const GoogleLogin = useGoogleLogin({
+      flow: 'auth-code',
+      onSuccess: async codeResponse => {
+          console.log("success")
+          await fetch("http://localhost:8000/auth/google?code="+codeResponse.code)
+              .then(data => {
+                  return data.json()
+              }).then(async data => {
+                  AuthComponent.authenticate(data["token"]);
+                  if (location?.state?.from) navigate(location.state.from);
+                  else navigate("/");
+              })
+      },
+      onError: errorResponse => console.log(errorResponse),
+      redirect_uri: "http://localhost:3000"
+    });
+
     return (
       <div>
         <table className="LoginTable">
@@ -26,7 +34,7 @@ export default function LoginView() {
           </tr>
           <tr>
             <td>
-              <img className="GoogleIcon" alt="Google auth" onClick={handleSubmit}/>
+              <img className="GoogleIcon" alt="Google auth" onClick={GoogleLogin}/>
             </td>
           </tr>
         </table>

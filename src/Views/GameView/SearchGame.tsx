@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react'
-import GetProfileStatistic, { GetFriends } from '../StatisticsView/ProfileStatisticGetter';
+import {GetProfileStatistic, GetFriends } from '../../ApiHelpers/UserServiceClient';
 import ContentWrapper from '../ContentWrapper'
 import './SearchGame.css'
 import { SecondaryActionButton } from '../../Components/ActionButtons/ActionButtons';
@@ -27,7 +27,7 @@ export default function SearchGameView() {
     let navigate = useNavigate();
 
     let [timeSelected, setTimeSelected] = useState(5);
-    let [selectedOponent, setSelectedOponent] = useState(friends[0].name);
+    let [selectedOponent, setSelectedOponent] = useState(friends[0]==null?"":friends[0].name);
     let [searching, setSearching] = useState(false);
 
     const changeTime = (event: any) => {

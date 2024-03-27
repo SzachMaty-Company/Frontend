@@ -1,6 +1,6 @@
 import {useEffect, useState } from 'react';
 import ContentWrapper from '../ContentWrapper';
-import GetProfileStatistic, { AddFriend, GetFriends } from './ProfileStatisticGetter';
+import {GetProfileStatistic, AddFriend, GetFriends } from '../../ApiHelpers/UserServiceClient';
 import "./StatisticsView.css"
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import GameSummaryHistory from '../GameSummaryView/GameSummaryHistory';
