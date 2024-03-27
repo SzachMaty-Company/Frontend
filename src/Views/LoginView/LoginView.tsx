@@ -15,8 +15,7 @@ export default function LoginView() {
               .then(data => {
                   return data.json()
               }).then(async data => {
-                  console.log(data)
-                  AuthComponent.authenticate(data);
+                  AuthComponent.authenticate(data["token"]);
                   if (location?.state?.from) navigate(location.state.from);
                   else navigate("/");
               })
