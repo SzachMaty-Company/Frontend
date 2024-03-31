@@ -17,6 +17,9 @@ export default async function GetProfileStatistic(userId:number|undefined):Promi
             'Authorization': `Bearer ${AuthComponent.JSONToken}`,
             'Content-Type': 'application/json'}
         });
+    console.log("#########################");
+    console.log(response);
+    console.log("#############################");
 
         
     let json:ProfileStatistic=await response.json();

@@ -85,40 +85,40 @@ function reverseCellPosition(piece:string,pos:string):number{
     return reverseCol[pos.charAt(0)]+(parseInt(pos.charAt(1))-8)*-8;
 }
 
-function ChessBoard({chess, chessChanged,chessChangedCallback,promotionCallback,isPromote,figurePromote}:{chess:Chess, chessChanged:boolean,chessChangedCallback:any,promotionCallback:any,isPromote:boolean,figurePromote:string})
+function ChessBoard({chessFen, chessChanged,chessChangedCallback,promotionCallback,isPromote,figurePromote}:{chessFen:string, chessChanged:boolean,chessChangedCallback:any,promotionCallback:any,isPromote:boolean,figurePromote:string})
 {
     //Cell table
-    let startChess=makeChess(chess.fen());
+    let startChess=makeChess(chessFen);
     //Set Board
     let [chessBoard,setChessBoard] = useState(startChess);
     //Clicked cell
     let [cellClicked,setCellClicked]=useState("");
+    let chess = new Chess();
+    chess.load(chessFen);
 
     //Refreshing chess board
     useEffect(()=>{
-        console.log(chess.fen());
         let cellTable=makeChess(chess.fen());
         setChessBoard(cellTable);
-    },[chessChanged])
+    },[chessChanged, chessFen])
 
     //Handle clicking the board
     const cellOnClick = (cell:CellObject) =>{
         //Reset promotion
         promotionCallback(false,"");
         let castRight=chess.getCastlingRights(chess.turn()==="b"?BLACK:WHITE);
+        let movedHasBeenSent = false;
         //Castling short, king side
         if(((cellClicked==="e8" && cell.pos==="h8") || (cellClicked==="e1" && cell.pos==="h1")) && castRight.k){
             try{
-                chess.move("O-O");
-                chessChangedCallback();
+                movedHasBeenSent = true;
             }catch{}
             
         }
         //Castling long, queen side
         else if(((cellClicked==="e8" && cell.pos==="a8") || (cellClicked==="e1" && cell.pos==="a1")) && castRight.q){
             try{
-                chess.move("O-O-O");
-                chessChangedCallback();
+                movedHasBeenSent = true;
             }catch{}
         }
         //If player choosed piece
@@ -132,8 +132,8 @@ function ChessBoard({chess, chessChanged,chessChangedCallback,promotionCallback,
                 promotionCallback(isPromote,"");
             }
             try{
-                chess.move({from: cellClicked, to: cell.pos});  //Make move
-                chessChangedCallback();
+                chessChangedCallback(cellClicked, cell.pos);
+                movedHasBeenSent = true;
             }catch(err){}
             
         }
@@ -170,7 +170,10 @@ function ChessBoard({chess, chessChanged,chessChangedCallback,promotionCallback,
         }
         //Set cell to choosed
         cell.choosed=true;
-        setCellClicked(cell.pos);
+        if (!movedHasBeenSent)
+            setCellClicked(cell.pos);
+        else
+            setCellClicked("");
         //seting chessBoard
         setChessBoard(chessCopy);
     };

@@ -6,11 +6,18 @@ import { SecondaryActionButton } from '../../Components/ActionButtons/ActionButt
 import GameStatus from './GameStatus';
 import { useNavigate } from 'react-router-dom';
 import ProfileStatistic from '../StatisticsView/ProfileStatistic';
+import { createGame } from '../../ApiHelpers/GameLogicServiceClient';
+
+const TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6InVzZXIyIn0.2AfTfJR4nPP3Cj8W51V6H903081ilw5BwanT5OrpMNk";
 
 export default function SearchGameView() {
 
     const [profile, setProfile] = useState(new ProfileStatistic());
     const [friends,setFriends] = useState([] as ProfileStatistic[]);
+
+    let [timeSelected, setTimeSelected] = useState(5);
+    let [selectedOponent, setSelectedOponent] = useState("");
+    let [searching, setSearching] = useState(false);
 
     useEffect(() => {
         GetProfileStatistic(undefined).then(
@@ -21,14 +28,15 @@ export default function SearchGameView() {
         GetFriends(undefined).then(
             p=>{
                 setFriends(p);
+
+                if (friends.length != 0){
+                    setSelectedOponent(friends[0].name);
+                }
             }
         );
     }, []);
     let navigate = useNavigate();
 
-    let [timeSelected, setTimeSelected] = useState(5);
-    let [selectedOponent, setSelectedOponent] = useState(friends[0].name);
-    let [searching, setSearching] = useState(false);
 
     const changeTime = (event: any) => {
         setTimeSelected(event.target.value);
@@ -42,10 +50,14 @@ export default function SearchGameView() {
         e.preventDefault();
         setSearching(true);
 
-        setTimeout(()=>{
+        
+        createGame(TOKEN, "localhost:8000", "FRIEND", timeSelected.toString(), "WHITE", "user1", "user2").then(p => {
+            console.log(p);
             GameStatus.search();
-            navigate("/game");
-        },3000)
+            navigate("/game", {state:
+                {gameSettings: p}
+            });
+        });
     }
 
     const stopSearching = () => {
