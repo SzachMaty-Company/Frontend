@@ -45,14 +45,12 @@ function FriendsChat(){
     };
 
     const rcvMessage = (newMessage: ChatMessageInterface, chatId: number) => {
-        console.log("rcvonce");
         if (chatRooms != undefined && chatId != undefined)
         {
                 setChatRooms((prevChatRooms) => {
                 const updatedChatRooms = new Map(prevChatRooms);
                 if (updatedChatRooms.has(chatId)) {
                     const chatRoom = updatedChatRooms.get(chatId);
-                    console.log(chatRoom);
                     if (chatRoom) {
                         const updatedMessages = [...chatRoom.messages, newMessage];
                         const updatedChatRoom = { ...chatRoom, messages: updatedMessages };
@@ -63,7 +61,6 @@ function FriendsChat(){
             });
         }
         else{
-            console.log("MIJAATA");
         }
     };
 

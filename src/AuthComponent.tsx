@@ -27,7 +27,6 @@ const AuthComponent = {
     },
     initialize:()=>{
       let token=localStorage.getItem("Token");
-      console.log("init " + token);
       if(token!=null && isValid(token)){
         AuthComponent.isAuthenticated = true;
         localStorage.setItem("Token",token);

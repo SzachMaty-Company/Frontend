@@ -52,7 +52,6 @@ export default function SearchGameView() {
 
         
         createGame(TOKEN, "localhost:8000", "FRIEND", timeSelected.toString(), "WHITE", "user1", "user2").then(p => {
-            console.log(p);
             GameStatus.search();
             navigate("/game", {state:
                 {gameSettings: p}

@@ -83,7 +83,6 @@ async function createGame(token: string, url: string, gameMode: string, gameTime
         body: JSON.stringify(gameSettings)
     });
     let gameCode = (await response.json()).gameCode;
-    console.log(gameCode);
     return {
         ...gameSettings,
         gameCode: gameCode

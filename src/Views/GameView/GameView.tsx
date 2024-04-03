@@ -4,14 +4,15 @@ import './GameView.css'
 import { PlayerInfo } from '../../Components/PlayerInfo/PlayerInfo';
 import React, { useState, useEffect } from 'react';
 import { WHITE_FIGURES, BLACK_FIGURES } from '../../Constants';
-import { Chess } from 'chess.js';
+import { Chess, BLACK, WHITE } from 'chess.js';
 import { Button } from '../../Components/Buttons/Buttons';
 import { MainActionButton } from '../../Components/ActionButtons/ActionButtons';
 import InGameChat from '../../Components/IngameChat/InGameChat';
-import Promotion from '../../Components/ChessBoard/Promotion';
+import {AWAITING, Promotion} from '../../Components/ChessBoard/Promotion';
 import { CellObject } from '../../Components/ChessBoard/Cell';
 import { useLocation } from 'react-router-dom';
 import { GameLogicServiceClient } from '../../ApiHelpers/GameLogicServiceClient';
+import { send } from 'process';
 
 interface ChatMessageProps {
     text: string;
@@ -20,76 +21,21 @@ interface ChatMessageProps {
 }
 let gameSettings: {};
 let gameLogicClient : GameLogicServiceClient;
-let chess : Chess = new Chess();
 
 const TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6InVzZXIxIn0.XryQwJ1cat_nQXmsViRRwlOhEVo8yesd6y7XYn0JDFw";
 
 export default function GameView() {
-    let [chessChanged, setChessChanged] = useState(false);
+    const [messages, setMessages] = useState<ChatMessageProps[]>([]);
+    const addMessage = (message: string) => {};
+    
     let [fen, setFen] = useState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-    let [numberOfMoves, setNumberOfMoves]  = useState(0);
-
-    const chessChangedCallback = (positionFrom: string, positionTo:string) => {
-        let state = chessChanged;
-        setChessChanged(!state);
-
-        gameLogicClient.sendMove(`${positionFrom}${positionTo}`);
-    }
-
-    let [canPromote, setCanPromote] = useState("");    //Define from which cell pawn can promote or when he go
-    let [promoting, setPromoting] = useState(false);
-
-    const promotionCallback = (promote: boolean, figurePromote: string) => {
-        setPromoting(promote);
-        setCanPromote(figurePromote);
-    }
-
-    //Handle promotion choise
-    const promotionClick = (cell: CellObject) => {
-        //If promotions is invalid, skip
-        if (!promoting) {
-            return;
-        }
-        //Make move
-        let m = canPromote + cell.piece;
-
-
-        //chess.move(m);
-        setChessChanged(!chessChanged); //Refresh board
-        setPromoting(false);    //Reset promotion trigger
-    }
-
+    let [promotionChoiceStatus, setPromotionChoiceStatus] = useState(AWAITING);
+    let [lastCellClicked, setlastCellClicked] = useState("");
     const location = useLocation();
     const { gameSettings } = location.state;
-
-    const gameTime = parseInt(gameSettings.gameTime)*60;
-    const [timerPlayerBlack, setTimerBlack] = useState(gameTime);
-    const [timerPlayerWhite, setTimerWhite] = useState(gameTime);
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-            setTimerWhite(prevTimer => ((prevTimer > 0 && (numberOfMoves > 0 && numberOfMoves%2==0)) ? prevTimer - 1 : prevTimer));
-        }, 1000);
-        // Cleanup the interval when the component is unmounted
-        return () => clearInterval(intervalId);
-    }, []); // Empty dependency array ensures the effect runs only once on mount
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-            setTimerBlack(prevTimer => ((prevTimer > 0 && (numberOfMoves%2!=0)) ? prevTimer - 1 : prevTimer));
-        }, 1000);
-        // Cleanup the interval when the component is unmounted
-        return () => clearInterval(intervalId);
-    }, [numberOfMoves]); // Empty dependency array ensures the effect runs only once on mount
-
+    const clientChooseWhitePierceColor = gameSettings.player1 == "user1" && gameSettings.player1PieceColor == "WHITE";
 
     useEffect(()=>{
-
-        console.log("Game settings:", gameSettings);
-
-
-        //TODO: validate if player is white
-
-
-        const clientChooseWhitePierceColor = gameSettings.player1 == "user1" && gameSettings.player1PieceColor == "WHITE";
         gameLogicClient = new GameLogicServiceClient(
             TOKEN,
             "localhost:8000",
@@ -97,54 +43,92 @@ export default function GameView() {
              clientChooseWhitePierceColor,
              (s) => {
                 setFen(s);
-                numberOfMoves = numberOfMoves+1;
-                setNumberOfMoves(numberOfMoves);
-                console.log(numberOfMoves);
              }
         );
 
         gameLogicClient.connect();
     }, []);
 
-    useEffect(()=>{
-
-    }, [fen]);
-
-    const [messages, setMessages] = useState<ChatMessageProps[]>([
-        {
-            text: 'Hello!',
-            sideOfChat: true,
-            date: new Date(),
-        },
-        {
-            text: 'Hi there!',
-            sideOfChat: false,
-            date: new Date(),
-        },
-        // Add more messages as needed
-    ]);
-
-    const addMessage = (message: string) => {
-        const newMessage: ChatMessageProps = {
-            text: message,
-            sideOfChat: false,
-            date: new Date(),
-        };
-
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
+    let sendMove = (move: string) =>
+    {
+        console.log("move has been sent " + move);
+        gameLogicClient.sendMove(move);
     };
 
-;
+    let processPromotion = (choosenFigure:CellObject) => {
+        let figureName = choosenFigure.piece;
+
+        sendMove(promotionChoiceStatus+figureName);
+
+        setPromotionChoiceStatus(AWAITING);
+    };
+
+
+    let processMove = (from: string, to:string) => {
+
+
+        if (promotionChoiceStatus == AWAITING)
+        {
+            try{
+                let validator = new Chess(fen);
+                let move = validator.move(from+to);
+
+                let castRight=validator.getCastlingRights(validator.turn()==="b"?BLACK:WHITE);
+                if (clientChooseWhitePierceColor && to[1]=='8')
+                {
+                    setPromotionChoiceStatus(from+to);
+                }
+                else if (!clientChooseWhitePierceColor && to[1]=='1')
+                {
+                    setPromotionChoiceStatus(from+to);
+                }
+                else
+                {
+                    sendMove(from + to);
+                }
+            }
+            catch 
+            {
+                console.log("illegal move! incident reported to the local police station");
+            }
+        }
+        else
+        {
+            console.log("cannot move while promotion choice status ongoing!");
+        }
+    };
+
+
+    let handleCellClicked = (currentCell: string) => {
+
+        if (lastCellClicked)
+        {
+            processMove(lastCellClicked, currentCell);
+            setlastCellClicked("");
+        }
+        else
+        {
+            setlastCellClicked(currentCell);
+        }
+    };
+
+    useEffect(()=>{
+        
+    }, [fen]);
+
+
+
+
 
     return <ContentWrapper isCentered={true}>
         <div className="gameViewHolder">
             <div className='gamePromotionSide'>
-                <Promotion isVisible={promoting} whoseTurn={chess.turn()} callback={promotionClick} />
+                <Promotion isVisible={promotionChoiceStatus != AWAITING ? true : false} playerFigureColor={clientChooseWhitePierceColor} callback={processPromotion} />
             </div>
             <div className="gameSide">
-                <PlayerInfo name={gameSettings.player1PieceColor == "BLACK" ? gameSettings.player1 : gameSettings.player2} figures={BLACK_FIGURES} timer={timerPlayerBlack}></PlayerInfo>
-                <ChessBoard chessFen={fen} chessChanged={chessChanged} chessChangedCallback={chessChangedCallback} promotionCallback={promotionCallback} isPromote={promoting} figurePromote={canPromote} />
-                <PlayerInfo name={gameSettings.player1PieceColor == "WHITE" ? gameSettings.player1 : gameSettings.player2} figures={WHITE_FIGURES} timer={timerPlayerWhite}></PlayerInfo>
+                <PlayerInfo name={gameSettings.player1PieceColor == "BLACK" ? gameSettings.player1 : gameSettings.player2} figures={BLACK_FIGURES} timer={0}></PlayerInfo>
+                <ChessBoard chessFen={fen} callbackClick={handleCellClicked}/>
+                <PlayerInfo name={gameSettings.player1PieceColor == "WHITE" ? gameSettings.player1 : gameSettings.player2} figures={WHITE_FIGURES} timer={0}></PlayerInfo>
             </div>
             <div className="gameControlSide">
                 <div className="gameControlHolder">
