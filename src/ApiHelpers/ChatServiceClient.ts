@@ -38,9 +38,6 @@ class ChatSerivceClient{
 
     public makeMessage(text: string, idOfSender: string, date: string)
     {
-        console.log("DEEEBUUUGD");
-        console.log(tokenToId(this.token));
-        console.log(idOfSender);
         const parsedDate = Date.parse(date);
         const msg : ChatMessageInterface = {
             text: text,
@@ -52,7 +49,6 @@ class ChatSerivceClient{
 
     public showMessage(message: IMessage){
         const parsedMessage = JSON.parse(message.body);
-        console.log(parsedMessage);
         const ownerId = tokenToId(this.token);
         if (ownerId != undefined)
         {
@@ -65,7 +61,6 @@ class ChatSerivceClient{
         this.stompClient = new Client({
             brokerURL: `ws://${this.url}/registerws`,
             debug: (str) => {
-                console.log(str)
             },
             connectHeaders: {
                 token: this.token 
@@ -94,15 +89,12 @@ class ChatSerivceClient{
                 headers: { "Content-Type:": "application/json" }
             });
         }
-        else
-            console.log("hola hola urwisie!");
     }
 
 
     public closeConnection(){
         if (this.stompClient)
         {
-            console.log("decativating!");
             this.stompClient.deactivate();
         }
     }
