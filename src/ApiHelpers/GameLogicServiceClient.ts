@@ -89,4 +89,22 @@ async function createGame(token: string, url: string, gameMode: string, gameTime
     };
 }
 
-export {createGame, GameLogicServiceClient};
+async function getInfoGame(token: string, url: string, gameCode: string) {
+    
+    let response = await fetch(`http://${url}/game-info/${gameCode}`, {
+        method: 'GET',
+        headers: {
+        'Content-Type': 'application/json'}
+    });
+    let gameSettings = await response.json();
+    console.log(gameSettings);
+    return {
+        fen: gameSettings.fen,
+        whiteTime: gameSettings.whiteTime,
+        blackTime: gameSettings.blackTime,
+        sideToMove: gameSettings.sideToMove,
+        gameStatus: gameSettings.gameStatus
+    };
+}
+
+export {createGame, getInfoGame, GameLogicServiceClient};

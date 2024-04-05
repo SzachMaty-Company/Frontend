@@ -11,7 +11,7 @@ import InGameChat from '../../Components/IngameChat/InGameChat';
 import {AWAITING, Promotion} from '../../Components/ChessBoard/Promotion';
 import { CellObject } from '../../Components/ChessBoard/Cell';
 import { useLocation } from 'react-router-dom';
-import { GameLogicServiceClient } from '../../ApiHelpers/GameLogicServiceClient';
+import { GameLogicServiceClient, getInfoGame } from '../../ApiHelpers/GameLogicServiceClient';
 import { send } from 'process';
 
 interface ChatMessageProps {
@@ -41,6 +41,27 @@ export default function GameView() {
     let [timerBlack, setTimerBlack] = useState(startTime);
     const clientChooseWhitePierceColor = gameSettings.player1 == "user1" && gameSettings.player1PieceColor == "WHITE";
 
+    //TODO: a bit meneleskie but will always work
+    useEffect(()=>{
+        getInfoGame(TOKEN, "localhost:8000", gameSettings.gameCode)
+            .then((status)=>{
+                setTimerWhite(status.whiteTime);
+                setTimerBlack(status.blackTime);
+                setFen(status.fen);
+                if (status.sideToMove == "WHITE" && status.gameStatus == "IN_GAME")
+                {
+                    numberOfMoves = 2;
+                    setNumberOfMoves(numberOfMoves);
+                }
+                if (status.sideToMove == "BLACK" && status.gameStatus == "IN_GAME") 
+                {
+                    numberOfMoves = 1;
+                    setNumberOfMoves(numberOfMoves);
+                console.log("###################updated number of moves to " + (+1));
+                }
+            });
+    }, []);
+
     useEffect(()=>{
         gameLogicClient = new GameLogicServiceClient(
             TOKEN,
@@ -49,12 +70,12 @@ export default function GameView() {
              clientChooseWhitePierceColor,
              (s, time) => {
                 setFen(s);
-                setNumberOfMoves(numberOfMoves++);
-
+                console.log("###################updated number of moves to " + (numberOfMoves+1));
                 if (numberOfMoves%2==0)
                     setTimerWhite(time);
                 else
                     setTimerBlack(time);
+                setNumberOfMoves(++numberOfMoves);
              }
         );
 
@@ -134,16 +155,15 @@ export default function GameView() {
         const intervalId = setInterval(() => {
             setTimerWhite(prevTimer => (prevTimer > 0 && (numberOfMoves > 0 && (numberOfMoves%2==0))? prevTimer - 1 : prevTimer));
         }, 1000);
-
-        return () => clearInterval(intervalId);
-    }, []);
-    useEffect(() => {
-        const intervalId = setInterval(() => {
+        const intervalId2 = setInterval(() => {
             setTimerBlack(prevTimer => (prevTimer > 0 && (numberOfMoves%2 == 1)? prevTimer - 1 : prevTimer));
         }, 1000);
 
-        return () => clearInterval(intervalId);
-    }, []);
+        return () => {
+            clearInterval(intervalId);
+            clearInterval(intervalId2);
+        };
+    }, [numberOfMoves]);
 
     return <ContentWrapper isCentered={true}>
         <div className="gameViewHolder">
