@@ -4,7 +4,7 @@ import './GameView.css'
 import { PlayerInfo } from '../../Components/PlayerInfo/PlayerInfo';
 import React, { useState, useEffect } from 'react';
 import { WHITE_FIGURES, BLACK_FIGURES } from '../../Constants';
-import { Chess, BLACK, WHITE } from 'chess.js';
+import { Chess, BLACK, WHITE, Square } from 'chess.js';
 import { Button } from '../../Components/Buttons/Buttons';
 import { MainActionButton } from '../../Components/ActionButtons/ActionButtons';
 import InGameChat from '../../Components/IngameChat/InGameChat';
@@ -21,6 +21,7 @@ interface ChatMessageProps {
 }
 let gameSettings: {};
 let gameLogicClient : GameLogicServiceClient;
+const emptyCellObject = new CellObject("","");
 
 const TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6InVzZXIxIn0.XryQwJ1cat_nQXmsViRRwlOhEVo8yesd6y7XYn0JDFw";
 
@@ -30,7 +31,7 @@ export default function GameView() {
     
     let [fen, setFen] = useState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     let [promotionChoiceStatus, setPromotionChoiceStatus] = useState(AWAITING);
-    let [lastCellClicked, setlastCellClicked] = useState("");
+    let [lastCellClicked, setlastCellClicked] = useState(emptyCellObject);
     const location = useLocation();
     const { gameSettings } = location.state;
     const clientChooseWhitePierceColor = gameSettings.player1 == "user1" && gameSettings.player1PieceColor == "WHITE";
@@ -64,27 +65,27 @@ export default function GameView() {
     };
 
 
-    let processMove = (from: string, to:string) => {
+    let processMove = (from: CellObject, to:CellObject) => {
 
 
         if (promotionChoiceStatus == AWAITING)
         {
             try{
                 let validator = new Chess(fen);
-                let move = validator.move(from+to);
+                let move = validator.move(from.pos+to.pos);
 
-                let castRight=validator.getCastlingRights(validator.turn()==="b"?BLACK:WHITE);
-                if (clientChooseWhitePierceColor && to[1]=='8')
+
+                if (clientChooseWhitePierceColor && to.pos[1]=='8' && from.piece == "P")
                 {
-                    setPromotionChoiceStatus(from+to);
+                    setPromotionChoiceStatus(from.pos+to.pos);
                 }
-                else if (!clientChooseWhitePierceColor && to[1]=='1')
+                else if (!clientChooseWhitePierceColor && to.pos[1]=='1' && from.piece == "P")
                 {
-                    setPromotionChoiceStatus(from+to);
+                    setPromotionChoiceStatus(from.pos+to.pos);
                 }
                 else
                 {
-                    sendMove(from + to);
+                    sendMove(from.pos + to.pos);
                 }
             }
             catch 
@@ -99,12 +100,12 @@ export default function GameView() {
     };
 
 
-    let handleCellClicked = (currentCell: string) => {
+    let handleCellClicked = (currentCell: CellObject) => {
 
-        if (lastCellClicked)
+        if (lastCellClicked != emptyCellObject)
         {
             processMove(lastCellClicked, currentCell);
-            setlastCellClicked("");
+            setlastCellClicked(emptyCellObject);
         }
         else
         {

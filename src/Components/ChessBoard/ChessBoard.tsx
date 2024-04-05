@@ -2,7 +2,6 @@ import './ChessBoard.css';
 import React, { useEffect, useState } from 'react';
 import {BLACK, Chess, WHITE}  from 'chess.js';
 import {Cell,CellObject} from './Cell';
-import Promotion from './Promotion';
 
 const col=["a","b","c","d","e","f","g","h"];
 
@@ -85,12 +84,13 @@ function reverseCellPosition(piece:string,pos:string):number{
     return reverseCol[pos.charAt(0)]+(parseInt(pos.charAt(1))-8)*-8;
 }
 
-function ChessBoard({chessFen, callbackClick}:{chessFen:string, callbackClick:(cell:string)=>void})
+function ChessBoard({chessFen, callbackClick}:{chessFen:string, callbackClick:(cell:CellObject)=>void})
 {
     //Cell table
     let startChess=makeChess(chessFen);
     //Set Board
     let [chessBoard,setChessBoard] = useState(startChess);
+    let [displayAvailablePositionsFlag, setDisplayAvailablePositionsFlag] = useState(false);
     let chess = new Chess();
     chess.load(chessFen);
 
@@ -103,87 +103,53 @@ function ChessBoard({chessFen, callbackClick}:{chessFen:string, callbackClick:(c
     //Handle clicking the board
     const cellOnClick = (cell:CellObject) =>{
 
-        callbackClick(cell.pos);
+        callbackClick(cell);
 
-        ////Reset promotion
-        //promotionCallback(false,"");
-        //let castRight=chess.getCastlingRights(chess.turn()==="b"?BLACK:WHITE);
-        //let movedHasBeenSent = false;
-        ////Castling short, king side
-        //// O-O e1g1
-        //// O-O e8g8
-        //if(((cellClicked==="e8" && cell.pos==="g8") || (cellClicked==="e1" && cell.pos==="g1")) && castRight.k){
-        //    try{
-        //        chessChangedCallback(cellClicked, cell.pos);
-        //        movedHasBeenSent = true;
-        //    }catch{}
-        //    
-        //}
-        //// O-O-O
-        ////e8c8
-        ////e1c1
-        ////Castling long, queen side
-        //else if(((cellClicked==="e8" && cell.pos==="c8") || (cellClicked==="e1" && cell.pos==="c1")) && castRight.q){
-        //    try{
-        //        chessChangedCallback(cellClicked, cell.pos);
-        //        movedHasBeenSent = true;
-        //    }catch{}
-        //}
-        ////If player choosed piece
-        //if(cellClicked!=="" && chessBoard[reverseCellPosition("",cellClicked)].piece!=="_"){
-        //    //Promotion
-        //    if(figurePromote!=="" && cellClicked===figurePromote){
-        //        promotionCallback(true,cellClicked+"x"+cell.pos+"=");
-        //    }
-        //    //Reset promotion
-        //    else{
-        //        promotionCallback(isPromote,"");
-        //    }
-        //    try{
-        //        chessChangedCallback(cellClicked, cell.pos+playerPromotionChoice);
-        //        movedHasBeenSent = true;
-        //    }catch(err){}
-        //    
-        //}
-        ////ResetBoard
-        ////Copy
-        //let chessCopy:CellObject[]=[];
-        //chessBoard.forEach((c,i)=>{
-        //    chessCopy.push(c);
-        //    chessCopy[i].choosed=false;
-        //    chessCopy[i].available=false;
-        //})
-        ////Get avaiable cells
-        //let currentPos:any=cell.pos;
-        //let availableMoves=chess.moves({ square: currentPos });
-        //if(availableMoves.length!==0){
-        //    availableMoves.forEach((m)=>{
-        //        //Parsing moves
-        //        let move:string=m;
-        //        //Remove Check and Mate symbols
-        //        if(move.indexOf("+")===m.length-1 || move.indexOf("#")===m.length-1){
-        //            move=move.substring(0,move.length-1);
-        //        }
-        //        //Add promotions
-        //        if(move.includes("=")){
-        //            promotionCallback(isPromote,cell.pos);
-        //            move=move.slice(0,move.length-2);
-        //        }
-        //        //Set cell on legal position and change it to avaiable. slice(-2) to cut of unnecessary info
-        //        if(move!=="O-O-O" && move!=="O-O"){
-        //            move=move.slice(-2);
-        //        }
-        //        chessCopy[reverseCellPosition(cell.piece,move)].available=true;
-        //    })
-        //}
-        ////Set cell to choosed
-        //cell.choosed=true;
-        //if (!movedHasBeenSent)
-        //    setCellClicked(cell.pos);
-        //else
-        //    setCellClicked("");
-        ////seting chessBoard
-        //setChessBoard(chessCopy);
+        const needToDisplay = !displayAvailablePositionsFlag;
+        setDisplayAvailablePositionsFlag(needToDisplay);
+
+
+        //ResetBoard
+        //Copy
+        let chessCopy:CellObject[]=[];
+        chessBoard.forEach((c,i)=>{
+                chessCopy.push(c);
+                chessCopy[i].choosed=false;
+                chessCopy[i].available=false;
+        });
+        if (needToDisplay)
+        {
+            //Get avaiable cells
+            let currentPos:any=cell.pos;
+            let availableMoves=chess.moves({ square: currentPos });
+            if(availableMoves.length!==0){
+                availableMoves.forEach((m)=>{
+                //Parsing moves
+                let move:string=m;
+                //Remove Check and Mate symbols
+                if(move.indexOf("+")===m.length-1 || move.indexOf("#")===m.length-1){
+                    move=move.substring(0,move.length-1);
+                }
+                //Add promotions
+                if(move.includes("=")){
+                    move=move.slice(0,move.length-2);
+                }
+                //Set cell on legal position and change it to avaiable. slice(-2) to cut of unnecessary info
+                if(move!=="O-O-O" && move!=="O-O"){
+                    move=move.slice(-2);
+                }
+
+                console.log(move);
+                chessCopy[reverseCellPosition(cell.piece,move)].available=true;
+            })
+            setChessBoard(chessCopy);
+            }
+        }
+        else
+        {
+            setChessBoard(chessCopy);
+        }
+
     };
 
     return <>
