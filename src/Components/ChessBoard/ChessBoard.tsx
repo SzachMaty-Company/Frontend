@@ -108,7 +108,6 @@ function ChessBoard({chessFen, callbackClick}:{chessFen:string, callbackClick:(c
         const needToDisplay = !displayAvailablePositionsFlag;
         setDisplayAvailablePositionsFlag(needToDisplay);
 
-
         //ResetBoard
         //Copy
         let chessCopy:CellObject[]=[];
@@ -137,6 +136,22 @@ function ChessBoard({chessFen, callbackClick}:{chessFen:string, callbackClick:(c
                 //Set cell on legal position and change it to avaiable. slice(-2) to cut of unnecessary info
                 if(move!=="O-O-O" && move!=="O-O"){
                     move=move.slice(-2);
+                }
+
+
+                if (move == "O-O")
+                {
+                    if (currentPos == "e1")
+                        move = "g1";
+                    else if (currentPos == "e8")
+                        move = "g8";
+                }
+                else if (move == "O-O-O")
+                {
+                    if (currentPos == "e1")
+                        move = "c1";
+                    else if (currentPos == "e8")
+                        move = "c8";
                 }
 
                 console.log(move);

@@ -29,11 +29,16 @@ export default function GameView() {
     const [messages, setMessages] = useState<ChatMessageProps[]>([]);
     const addMessage = (message: string) => {};
     
+    const location = useLocation();
+    const { gameSettings } = location.state;
+    const startTime = gameSettings.gameTime * 60;
+
     let [fen, setFen] = useState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     let [promotionChoiceStatus, setPromotionChoiceStatus] = useState(AWAITING);
     let [lastCellClicked, setlastCellClicked] = useState(emptyCellObject);
-    const location = useLocation();
-    const { gameSettings } = location.state;
+    let [numberOfMoves, setNumberOfMoves] = useState(0);
+    let [timerWhite, setTimerWhite] = useState(startTime);
+    let [timerBlack, setTimerBlack] = useState(startTime);
     const clientChooseWhitePierceColor = gameSettings.player1 == "user1" && gameSettings.player1PieceColor == "WHITE";
 
     useEffect(()=>{
@@ -42,14 +47,21 @@ export default function GameView() {
             "localhost:8000",
              gameSettings.gameCode,
              clientChooseWhitePierceColor,
-             (s) => {
+             (s, time) => {
                 setFen(s);
+                setNumberOfMoves(numberOfMoves++);
+
+                if (numberOfMoves%2==0)
+                    setTimerWhite(time);
+                else
+                    setTimerBlack(time);
              }
         );
 
         gameLogicClient.connect();
     }, []);
 
+    //logic
     let sendMove = (move: string) =>
     {
         console.log("move has been sent " + move);
@@ -67,6 +79,10 @@ export default function GameView() {
 
     let processMove = (from: CellObject, to:CellObject) => {
 
+        if (clientChooseWhitePierceColor && timerWhite <= 0)
+            return;
+        if (!clientChooseWhitePierceColor && timerBlack <= 0)
+            return;
 
         if (promotionChoiceStatus == AWAITING)
         {
@@ -113,13 +129,21 @@ export default function GameView() {
         }
     };
 
-    useEffect(()=>{
-        
-    }, [fen]);
+    //timer
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setTimerWhite(prevTimer => (prevTimer > 0 && (numberOfMoves > 0 && (numberOfMoves%2==0))? prevTimer - 1 : prevTimer));
+        }, 1000);
 
+        return () => clearInterval(intervalId);
+    }, []);
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setTimerBlack(prevTimer => (prevTimer > 0 && (numberOfMoves%2 == 1)? prevTimer - 1 : prevTimer));
+        }, 1000);
 
-
-
+        return () => clearInterval(intervalId);
+    }, []);
 
     return <ContentWrapper isCentered={true}>
         <div className="gameViewHolder">
@@ -127,9 +151,9 @@ export default function GameView() {
                 <Promotion isVisible={promotionChoiceStatus != AWAITING ? true : false} playerFigureColor={clientChooseWhitePierceColor} callback={processPromotion} />
             </div>
             <div className="gameSide">
-                <PlayerInfo name={gameSettings.player1PieceColor == "BLACK" ? gameSettings.player1 : gameSettings.player2} figures={BLACK_FIGURES} timer={0}></PlayerInfo>
+                <PlayerInfo name={gameSettings.player1PieceColor == "BLACK" ? gameSettings.player1 : gameSettings.player2} figures={BLACK_FIGURES} timer={timerBlack}></PlayerInfo>
                 <ChessBoard chessFen={fen} callbackClick={handleCellClicked}/>
-                <PlayerInfo name={gameSettings.player1PieceColor == "WHITE" ? gameSettings.player1 : gameSettings.player2} figures={WHITE_FIGURES} timer={0}></PlayerInfo>
+                <PlayerInfo name={gameSettings.player1PieceColor == "WHITE" ? gameSettings.player1 : gameSettings.player2} figures={WHITE_FIGURES} timer={timerWhite}></PlayerInfo>
             </div>
             <div className="gameControlSide">
                 <div className="gameControlHolder">
