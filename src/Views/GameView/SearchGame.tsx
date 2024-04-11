@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react'
-import {GetProfileStatistic, GetFriends } from '../../ApiHelpers/UserServiceClient';
+import { GetProfileStatistic, GetFriends } from '../../ApiHelpers/UserServiceClient';
 import ContentWrapper from '../ContentWrapper'
 import './SearchGame.css'
 import { SecondaryActionButton } from '../../Components/ActionButtons/ActionButtons';
@@ -13,11 +13,13 @@ const TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxz
 export default function SearchGameView() {
 
     const [profile, setProfile] = useState(new ProfileStatistic());
-    const [friends,setFriends] = useState([] as ProfileStatistic[]);
+    const [friends, setFriends] = useState([] as ProfileStatistic[]);
 
     let [timeSelected, setTimeSelected] = useState(5);
     let [selectedOponent, setSelectedOponent] = useState("");
     let [searching, setSearching] = useState(false);
+    let [isWhite, setIsWhite] = useState(true);
+    let [playerType, setPlayerType] = useState("FRIEND");
 
     useEffect(() => {
         GetProfileStatistic(undefined).then(
@@ -26,10 +28,10 @@ export default function SearchGameView() {
             }
         );
         GetFriends(undefined).then(
-            p=>{
+            p => {
                 setFriends(p);
 
-                if (friends.length != 0){
+                if (friends.length != 0) {
                     setSelectedOponent(friends[0].name);
                 }
             }
@@ -45,15 +47,32 @@ export default function SearchGameView() {
         setSelectedOponent(event.target.value);
     }
 
+    const changePlayerType = (event: any) => {
+        setPlayerType(event.target.value);
+    }
+
+    const changeColor = (event: any) => {
+        setIsWhite(event.target.value == "WHITE")
+    }
+
     const searchSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setSearching(true);
+        let oponentName = playerType == "AI" ? "AI" : selectedOponent;
+        let whitePlayer, blackPlayer;
+        if (isWhite) {
+            whitePlayer = profile.name;
+            blackPlayer = oponentName;
+        } else {
+            whitePlayer = oponentName;
+            blackPlayer = profile.name;
+        }
 
-        
-        createGame(TOKEN, "localhost:8000", "FRIEND", timeSelected.toString(), "WHITE", "user1", "user2").then(p => {
+        createGame(TOKEN, "localhost:8000", playerType, timeSelected.toString(), "WHITE", whitePlayer, blackPlayer).then(p => {
             GameStatus.search();
-            navigate("/game", {state:
-                {gameSettings: p}
+            navigate("/game", {
+                state:
+                    { gameSettings: p }
             });
         });
     }
@@ -71,6 +90,24 @@ export default function SearchGameView() {
                         <td className='HeaderLabel' colSpan={2}><h1>Zagraj</h1></td>
                     </tr>
                     <tr>
+                        <td className='LabelTag'>Graj z:</td>
+                        <td className='LabelValue'>
+                            <select className='SelectForm' value={"FRIEND"} onChange={e => changePlayerType(e)}>
+                                <option value="AI">SI</option>
+                                <option value="FRIEND">Przyjacielem</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className='LabelTag'>Graj jako:</td>
+                        <td className='LabelValue'>
+                            <select className='SelectForm' value={"WHITE"} onChange={e => changeColor(e)}>
+                                <option value="BLACK">Czarny</option>
+                                <option value="WHITE">Biały</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
                         <td className='LabelTag'>Czas gry:</td>
                         <td className='LabelValue'>
                             <select className='SelectForm' value={timeSelected} onChange={e => changeTime(e)}>
@@ -81,16 +118,19 @@ export default function SearchGameView() {
                             </select>
                         </td>
                     </tr>
-                    <tr>
-                        <td className='LabelTag'>Oponent:</td>
-                        <td className='LabelValue'>
-                            <select className='SelectForm' value={selectedOponent} onChange={e => changeOponent(e)}>
-                                {friends.map((friend) =>
-                                    <option value={friend.name}>{friend.name}</option>
-                                )}
-                            </select>
-                        </td>
-                    </tr>
+                    {playerType=="AI"? <tr></tr>:
+                        <tr>
+                            <td className='LabelTag'>Oponent:</td>
+                            <td className='LabelValue'>
+                                <select className='SelectForm' value={selectedOponent} onChange={e => changeOponent(e)}>
+                                    {friends.map((friend) =>
+                                        <option value={friend.name}>{friend.name}</option>
+                                    )}
+                                </select>
+                            </td>
+                        </tr>
+                    }
+
                     <tr>
                         <td colSpan={2}>
                             {searching ?

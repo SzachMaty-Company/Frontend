@@ -40,3 +40,21 @@
     background-color: aqua;
     height: 76.5vh;
 }
+
+.PopUp {
+    border: #e07000 solid 0.3rem;
+    border-radius: 0.3rem;
+    background-color: #00004b;
+    padding: 0.5rem;
+  }
+  
+  .PopUp p {
+    color: white;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  
+  .PopUp button {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }

@@ -13,6 +13,7 @@ import { CellObject } from '../../Components/ChessBoard/Cell';
 import { useLocation } from 'react-router-dom';
 import { GameLogicServiceClient, getInfoGame } from '../../ApiHelpers/GameLogicServiceClient';
 import { send } from 'process';
+import GamePopup from './GameEndPopup';
 
 interface ChatMessageProps {
     text: string;
@@ -166,6 +167,7 @@ export default function GameView() {
     }, [numberOfMoves]);
 
     return <ContentWrapper isCentered={true}>
+        <GamePopup/>
         <div className="gameViewHolder">
             <div className='gamePromotionSide'>
                 <Promotion isVisible={promotionChoiceStatus != AWAITING ? true : false} playerFigureColor={clientChooseWhitePierceColor} callback={processPromotion} />
