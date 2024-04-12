@@ -1,5 +1,6 @@
 import { Client, IMessage, StompSubscription } from '@stomp/stompjs';   
 import { Chess } from 'chess.js';
+import AuthComponent from '../AuthComponent';
 
 class GameLogicServiceClient {
     private stompClient: Client | undefined;
@@ -79,7 +80,10 @@ async function createGame(token: string, url: string, gameMode: string, gameTime
     let response = await fetch(`http://${url}/game-init`, {
         method: 'POST',
         headers: {
-        'Content-Type': 'application/json'},
+        'Authorization': `Bearer ${AuthComponent.JSONToken}`,
+        'Content-Type': 'application/json'
+        },
+        
         body: JSON.stringify(gameSettings)
     });
     let gameCode = (await response.json()).gameCode;

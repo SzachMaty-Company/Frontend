@@ -31,7 +31,7 @@ export default function SearchGameView() {
             p => {
                 setFriends(p);
 
-                if (friends.length != 0) {
+                if (friends.length !== 0) {
                     setSelectedOponent(friends[0].name);
                 }
             }
@@ -52,23 +52,23 @@ export default function SearchGameView() {
     }
 
     const changeColor = (event: any) => {
-        setIsWhite(event.target.value == "WHITE")
+        setIsWhite(event.target.value === "WHITE")
     }
 
     const searchSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setSearching(true);
-        let oponentName = playerType == "AI" ? "AI" : selectedOponent;
+        let oponentName = playerType === "AI" ? "AI" : selectedOponent;
         let whitePlayer, blackPlayer;
         if (isWhite) {
-            whitePlayer = profile.name;
+            whitePlayer = profile.id;
             blackPlayer = oponentName;
         } else {
             whitePlayer = oponentName;
-            blackPlayer = profile.name;
+            blackPlayer = profile.id;
         }
 
-        createGame(TOKEN, "localhost:8000", playerType, timeSelected.toString(), "WHITE", whitePlayer, blackPlayer).then(p => {
+        createGame(TOKEN, "localhost:8000", playerType, timeSelected.toString(), "WHITE", whitePlayer as string, blackPlayer as string).then(p => {
             GameStatus.search();
             navigate("/game", {
                 state:
@@ -92,7 +92,7 @@ export default function SearchGameView() {
                     <tr>
                         <td className='LabelTag'>Graj z:</td>
                         <td className='LabelValue'>
-                            <select className='SelectForm' value={"FRIEND"} onChange={e => changePlayerType(e)}>
+                            <select className='SelectForm' value={playerType} onChange={e => changePlayerType(e)}>
                                 <option value="AI">SI</option>
                                 <option value="FRIEND">Przyjacielem</option>
                             </select>
@@ -101,7 +101,7 @@ export default function SearchGameView() {
                     <tr>
                         <td className='LabelTag'>Graj jako:</td>
                         <td className='LabelValue'>
-                            <select className='SelectForm' value={"WHITE"} onChange={e => changeColor(e)}>
+                            <select className='SelectForm' value={isWhite?"WHITE":"BLACK"} onChange={e => changeColor(e)}>
                                 <option value="BLACK">Czarny</option>
                                 <option value="WHITE">Biały</option>
                             </select>
@@ -118,13 +118,13 @@ export default function SearchGameView() {
                             </select>
                         </td>
                     </tr>
-                    {playerType=="AI"? <tr></tr>:
+                    {playerType==="AI"? <tr></tr>:
                         <tr>
                             <td className='LabelTag'>Oponent:</td>
                             <td className='LabelValue'>
                                 <select className='SelectForm' value={selectedOponent} onChange={e => changeOponent(e)}>
                                     {friends.map((friend) =>
-                                        <option value={friend.name}>{friend.name}</option>
+                                        <option value={friend.id}>{friend.name}</option>
                                     )}
                                 </select>
                             </td>
