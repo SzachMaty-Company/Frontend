@@ -42,7 +42,7 @@ export default function GameView() {
     let [timerWhite, setTimerWhite] = useState(startTime);
     let [timerBlack, setTimerBlack] = useState(startTime);
     //Popup info
-    let [popupVisibility,setPopupVisibility]=useState(true);
+    let [popupVisibility,setPopupVisibility]=useState(false);
     let [popupInfo,setPopupInfo] = useState([] as string[]);
 
     const clientChooseWhitePierceColor = gameSettings.player1 == "user1" && gameSettings.player1PieceColor == "WHITE";
@@ -65,7 +65,7 @@ export default function GameView() {
                     setNumberOfMoves(numberOfMoves);
                 //console.log("###################updated number of moves to " + (+1));
                 }
-                if(status.gameStatus !== "IN_GAME" || status.gameStatus !== "NOT_STARTED"){
+                if(status.gameStatus !== "IN_GAME" && status.gameStatus !== "NOT_STARTED"){
                     let info:string[] = [];
                     if(status.gameStatus === "DRAW"){
                         info.push("Remis!");
