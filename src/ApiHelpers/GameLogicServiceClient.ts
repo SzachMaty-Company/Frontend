@@ -29,7 +29,7 @@ class GameLogicServiceClient {
             {
                 this.subscription = this.stompClient.subscribe(`/queue/move/${this.gameCode}`,(message) => {
                     const messageJson = JSON.parse(message.body);
-                    console.log("##################");
+                    console.log("XXXXXXXXXXXXXXX");
                     console.log(messageJson);
                     console.log("##################");
                     this.rcvFenCallback(messageJson.fen, messageJson.time);
@@ -101,6 +101,7 @@ async function getInfoGame(token: string, url: string, gameCode: string) {
         'Content-Type': 'application/json'}
     });
     let gameSettings = await response.json();
+    console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXX");
     console.log(gameSettings);
     return {
         fen: gameSettings.fen,

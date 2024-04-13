@@ -14,6 +14,7 @@ import { useLocation } from 'react-router-dom';
 import { GameLogicServiceClient, getInfoGame } from '../../ApiHelpers/GameLogicServiceClient';
 import { send } from 'process';
 import GamePopup from './GameEndPopup';
+import { GetProfileStatistic } from '../../ApiHelpers/UserServiceClient';
 
 interface ChatMessageProps {
     text: string;
@@ -40,12 +41,16 @@ export default function GameView() {
     let [numberOfMoves, setNumberOfMoves] = useState(0);
     let [timerWhite, setTimerWhite] = useState(startTime);
     let [timerBlack, setTimerBlack] = useState(startTime);
+    //Popup info
+    let [popupVisibility,setPopupVisibility]=useState(true);
+    let [popupInfo,setPopupInfo] = useState([] as string[]);
+
     const clientChooseWhitePierceColor = gameSettings.player1 == "user1" && gameSettings.player1PieceColor == "WHITE";
 
     //TODO: a bit meneleskie but will always work
     useEffect(()=>{
         getInfoGame(TOKEN, "localhost:8000", gameSettings.gameCode)
-            .then((status)=>{
+            .then(async (status)=>{
                 setTimerWhite(status.whiteTime);
                 setTimerBlack(status.blackTime);
                 setFen(status.fen);
@@ -58,7 +63,25 @@ export default function GameView() {
                 {
                     numberOfMoves = 1;
                     setNumberOfMoves(numberOfMoves);
-                console.log("###################updated number of moves to " + (+1));
+                //console.log("###################updated number of moves to " + (+1));
+                }
+                if(status.gameStatus !== "IN_GAME" || status.gameStatus !== "NOT_STARTED"){
+                    let info:string[] = [];
+                    if(status.gameStatus === "DRAW"){
+                        info.push("Remis!");
+                    }else{
+                        if(clientChooseWhitePierceColor===(status.gameStatus === "WHITE_WINNER")){
+                            info.push("Wygrałeś!");
+                            let profile = await GetProfileStatistic(clientChooseWhitePierceColor?gameSettings.player1.id:gameSettings.player2.id);
+                            info.push("Wygrał " + profile.name);
+                        }else{
+                            info.push("Przegrałeś!");
+                            let profile = await GetProfileStatistic(!clientChooseWhitePierceColor?gameSettings.player1.id:gameSettings.player2.id);
+                            info.push("Wygrał " + profile.name);
+                        }
+                    }
+                    setPopupInfo(info);
+                    setPopupVisibility(true);
                 }
             });
     }, []);
@@ -167,7 +190,7 @@ export default function GameView() {
     }, [numberOfMoves]);
 
     return <ContentWrapper isCentered={true}>
-        <GamePopup/>
+        <GamePopup popupInfo={popupInfo} open={popupVisibility}/>
         <div className="gameViewHolder">
             <div className='gamePromotionSide'>
                 <Promotion isVisible={promotionChoiceStatus != AWAITING ? true : false} playerFigureColor={clientChooseWhitePierceColor} callback={processPromotion} />
