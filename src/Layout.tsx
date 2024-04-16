@@ -48,12 +48,13 @@ function Header({ gameCallback, statCallback, loginCallback, searchCallback }: {
     const intervalFiendRequest = setTimeout(async () => {
       if (AuthComponent.isAuthenticated) {
         let friends=await FriendRequests();
-        if(friends == null){
+        console.log(friends)
+        if(friends.length == 0){
           setGotFriendRequest(false);
         }else if(friends[0]!==friendId){
           let friend=friends[0];
-          setPopupInfo([friend.Name,friend.Surname]);
-          setFriendId(friend.Id);
+          setPopupInfo([friend.name,friend.surname]);
+          setFriendId(friend.id);
           setGotFriendRequest(true);
         }
       }
@@ -68,6 +69,7 @@ function Header({ gameCallback, statCallback, loginCallback, searchCallback }: {
     await AcceptFriendRequest(friendId);
     //Reload
     setCnt(0);
+    setShowPopup(false);
   };
 
   return <div className="header">
