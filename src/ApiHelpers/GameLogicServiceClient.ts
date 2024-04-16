@@ -98,6 +98,7 @@ async function getInfoGame(token: string, url: string, gameCode: string) {
     let response = await fetch(`http://${url}/game-info/${gameCode}`, {
         method: 'GET',
         headers: {
+        'Authorization': `Bearer ${AuthComponent.JSONToken}`,
         'Content-Type': 'application/json'}
     });
     let gameSettings = await response.json();
