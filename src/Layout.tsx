@@ -1,9 +1,11 @@
+import { useState, useEffect } from 'react';
 import {
     Outlet, useLocation, useNavigate
   } from "react-router-dom";
 import { Button } from "./Components/Buttons/Buttons";
 import './Layout.css'
 import AuthComponent from "./AuthComponent";
+import { AddFriend, FriendRequests, AcceptFriendRequest } from './ApiHelpers/UserServiceClient';
 
 export default function Layout({gamePath,statPath,loginPath,searchPath}:{gamePath:string,statPath:string,loginPath:string,searchPath:string}){
     const navigate = useNavigate();
@@ -56,8 +58,8 @@ function Header({ gameCallback, statCallback, loginCallback, searchCallback }: {
         }
 
       }
-    };
-  }, [cnt])
+    });
+  }, [cnt]);
 
   const AddFriendCallback=async ()=>{
     await AcceptFriendRequest(friendId);
@@ -65,20 +67,8 @@ function Header({ gameCallback, statCallback, loginCallback, searchCallback }: {
     setCnt(0);
     setShowPopup(false);
   };
-
-
-    return <div>
+  return <>
       <Header gameCallback={gameCallback} statCallback={statCallback} loginCallback={loginCallback} searchCallback={searchCallback}/>
       <Outlet />
-    </div>
-  }
-
-function Header({gameCallback,statCallback,loginCallback,searchCallback}:{gameCallback:any,statCallback:any,loginCallback:any,searchCallback:any}){
-    return <div className="header">
-        <img alt="SzachMaty" className="logo"/>
-        <Button text="Graj" horse={true} callback={gameCallback}/>
-        <Button text="Statystyki" callback={statCallback}/>
-        <Button text="Szukaj profilu" callback={searchCallback}/>
-        <Button text={AuthComponent.isAuthenticated ? "Wyloguj się":"Zaloguj się"} callback={loginCallback} type="loginButton"/>
-    </div>
+    </>
 }
