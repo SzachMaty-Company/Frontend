@@ -42,15 +42,18 @@ class GameLogicServiceClient {
     }
 
     public sendMove(move: string){
-        if (this.stompClient && this.isCurentlyClientsTurn)
+        if (this.stompClient)
         {
+            console.log("PUBLIKACJA");
             this.stompClient.publish({
                 destination: "/game/move",
                 body: JSON.stringify({
                     gameCode: this.gameCode,
                     move: move
                 }),
-                headers: { "Content-Type:": "application/json" }
+                headers: { 
+                    "Content-Type:": "application/json" 
+                }
             })
             
             this.isCurentlyClientsTurn = !this.isCurentlyClientsTurn;

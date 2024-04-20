@@ -15,6 +15,7 @@ import { GameLogicServiceClient, getInfoGame } from '../../ApiHelpers/GameLogicS
 import { send } from 'process';
 import GamePopup from './GameEndPopup';
 import { GetProfileStatistic } from '../../ApiHelpers/UserServiceClient';
+import AuthComponent from '../../AuthComponent';
 
 interface ChatMessageProps {
     text: string;
@@ -25,7 +26,6 @@ let gameSettings: {};
 let gameLogicClient : GameLogicServiceClient;
 const emptyCellObject = new CellObject("","");
 
-const TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6InVzZXIxIn0.XryQwJ1cat_nQXmsViRRwlOhEVo8yesd6y7XYn0JDFw";
 
 export default function GameView() {
     const [messages, setMessages] = useState<ChatMessageProps[]>([]);
@@ -49,7 +49,7 @@ export default function GameView() {
 
     //TODO: a bit meneleskie but will always work
     useEffect(()=>{
-        getInfoGame(TOKEN, "localhost:8000", gameSettings.gameCode)
+        getInfoGame(AuthComponent.JSONToken, "localhost:8000", gameSettings.gameCode)
             .then(async (status)=>{
                 setTimerWhite(status.whiteTime);
                 setTimerBlack(status.blackTime);
@@ -88,7 +88,7 @@ export default function GameView() {
 
     useEffect(()=>{
         gameLogicClient = new GameLogicServiceClient(
-            TOKEN,
+            AuthComponent.JSONToken,
             "localhost:8000",
              gameSettings.gameCode,
              clientChooseWhitePierceColor,
