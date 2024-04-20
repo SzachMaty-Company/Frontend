@@ -114,3 +114,14 @@ export async function AcceptFriendRequest(userId:number) {
             'Content-Type': 'application/json'}
         });
 }
+
+export async function RejectFriendRequest(userId:number) {
+    let url=`http://localhost:8000/friend/${userId}/decline`;
+
+    let response = await fetch(url, {
+            method: 'POST',
+            headers: {
+            'Authorization': `Bearer ${AuthComponent.JSONToken}`,
+            'Content-Type': 'application/json'}
+        });
+}
