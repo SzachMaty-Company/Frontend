@@ -5,7 +5,7 @@ import {
 import { Button } from "./Components/Buttons/Buttons";
 import './Layout.css'
 import AuthComponent from "./AuthComponent";
-import { AddFriend, FriendRequests, AcceptFriendRequest } from './ApiHelpers/UserServiceClient';
+import { AddFriend, FriendRequests, AcceptFriendRequest, RejectFriendRequest } from './ApiHelpers/UserServiceClient';
 import Popup from 'reactjs-popup';
 
 export default function Layout({gamePath,statPath,loginPath,searchPath}:{gamePath:string,statPath:string,loginPath:string,searchPath:string}){
@@ -71,9 +71,20 @@ function Header({ gameCallback, statCallback, loginCallback, searchCallback }: {
     setCnt(0);
     setShowPopup(false);
   };
+
+  const RejectFriendCallback=async ()=>{
+    await RejectFriendRequest(friendId);
+    //Reload
+    setCnt(0);
+    setShowPopup(false);
+  };
+
+  const ClosePopupCallback=async ()=>{
+    setShowPopup(false);
+  };
   
   return <div className="header">
-    <FriendPopup popupInfo={popupInfo} open={showPopup} callback={AddFriendCallback}/>
+    <FriendPopup popupInfo={popupInfo} open={showPopup} accept_callback={AddFriendCallback} reject_callback={RejectFriendCallback} on_close_callback={ClosePopupCallback}/>
     <img alt="SzachMaty" className="logo" />
     <Button text="Graj" horse={true} callback={gameCallback} />
     <Button text="Statystyki" callback={statCallback} />
@@ -86,15 +97,16 @@ function Header({ gameCallback, statCallback, loginCallback, searchCallback }: {
   </div>
 }
 
-function FriendPopup({popupInfo,open,callback}:{popupInfo:string[],open:boolean,callback:any}) {
+function FriendPopup({popupInfo,open,accept_callback,reject_callback,on_close_callback}:{popupInfo:string[],open:boolean,accept_callback:any,reject_callback:any,on_close_callback:any}) {
 
   return (
     <div>
-      <Popup open={open} modal nested>
+      <Popup open={open} modal nested onClose={on_close_callback}>
         <div className="PopUp friend">
           <p>Otrzymałeś zaproszenie do znajomych</p>
           <p>od {popupInfo[0]} {popupInfo[1]}</p>
-          <button onClick={callback}>Zaakceptuj</button>
+          <button onClick={reject_callback}>Odrzuć</button>
+          <button onClick={accept_callback}>Zaakceptuj</button>
         </div>
       </Popup>
     </div>
