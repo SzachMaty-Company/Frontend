@@ -112,7 +112,8 @@ async function getInfoGame(token: string, url: string, gameCode: string) {
         whiteTime: gameSettings.whiteTime,
         blackTime: gameSettings.blackTime,
         sideToMove: gameSettings.sideToMove,
-        gameStatus: gameSettings.gameStatus
+        gameStatus: gameSettings.gameStatus,
+        playerColor: gameSettings.playerColor
     };
 }
 

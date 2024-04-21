@@ -10,7 +10,7 @@ import { MainActionButton } from '../../Components/ActionButtons/ActionButtons';
 import InGameChat from '../../Components/IngameChat/InGameChat';
 import {AWAITING, Promotion} from '../../Components/ChessBoard/Promotion';
 import { CellObject } from '../../Components/ChessBoard/Cell';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { GameLogicServiceClient, getInfoGame } from '../../ApiHelpers/GameLogicServiceClient';
 import { send } from 'process';
 import GamePopup from './GameEndPopup';
@@ -21,8 +21,8 @@ interface ChatMessageProps {
     text: string;
     sideOfChat: boolean;
     date: Date;
-}
-let gameSettings: {};
+};
+
 let gameLogicClient : GameLogicServiceClient;
 const emptyCellObject = new CellObject("","");
 
@@ -31,8 +31,15 @@ export default function GameView() {
     const [messages, setMessages] = useState<ChatMessageProps[]>([]);
     const addMessage = (message: string) => {};
     
-    const location = useLocation();
-    const { gameSettings } = location.state;
+    const { gamecode } = useParams();
+    
+    //do wyjebania
+    const gameSettings = {
+        gameTime: 5,
+        player1: "player1",
+        player2: "player2",
+        player1PieceColor: "WHITE" 
+    };
     const startTime = gameSettings.gameTime * 60;
 
     let [fen, setFen] = useState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
@@ -45,12 +52,15 @@ export default function GameView() {
     let [popupVisibility,setPopupVisibility]=useState(false);
     let [popupInfo,setPopupInfo] = useState([] as string[]);
 
-    const clientChooseWhitePierceColor = gameSettings.player1 == "user1" && gameSettings.player1PieceColor == "WHITE";
+    let clientChooseWhitePierceColor = false;
 
     //TODO: a bit meneleskie but will always work
     useEffect(()=>{
-        getInfoGame(AuthComponent.JSONToken, "localhost:8000", gameSettings.gameCode)
+        if (gamecode == "" || gamecode == undefined)
+            return;
+        getInfoGame(AuthComponent.JSONToken, "localhost:8000", gamecode)
             .then(async (status)=>{
+                clientChooseWhitePierceColor = status.playerColor == "WHITE";
                 setTimerWhite(status.whiteTime);
                 setTimerBlack(status.blackTime);
                 setFen(status.fen);
@@ -72,12 +82,12 @@ export default function GameView() {
                     }else{
                         if(clientChooseWhitePierceColor===(status.gameStatus === "WHITE_WINNER")){
                             info.push("Wygrałeś!");
-                            let profile = await GetProfileStatistic(clientChooseWhitePierceColor?gameSettings.player1.id:gameSettings.player2.id);
-                            info.push("Wygrał " + profile.name);
+                            //let profile = await GetProfileStatistic(clientChooseWhitePierceColor?gameSettings.player1.id:gameSettings.player2.id);
+                            //info.push("Wygrał " + profile.name);
                         }else{
                             info.push("Przegrałeś!");
-                            let profile = await GetProfileStatistic(!clientChooseWhitePierceColor?gameSettings.player1.id:gameSettings.player2.id);
-                            info.push("Wygrał " + profile.name);
+                            //let profile = await GetProfileStatistic(!clientChooseWhitePierceColor?gameSettings.player1.id:gameSettings.player2.id);
+                            //info.push("Wygrał " + profile.name);
                         }
                     }
                     setPopupInfo(info);
@@ -87,10 +97,12 @@ export default function GameView() {
     }, []);
 
     useEffect(()=>{
+        if (gamecode == "" || gamecode == undefined)
+            return;
         gameLogicClient = new GameLogicServiceClient(
             AuthComponent.JSONToken,
             "localhost:8000",
-             gameSettings.gameCode,
+             gamecode,
              clientChooseWhitePierceColor,
              (s, time) => {
                 setFen(s);

@@ -59,12 +59,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout gamePath="/game" statPath="/statistic" loginPath='/login' searchPath="search/users" />}>
             <Route 
-              path="game" 
+              path="game/:gamecode" 
               element={
                 <ProtectedPath>
-                  <GamePath>
                     <GameView/>
-                  </GamePath>
                 </ProtectedPath>
               } 
             />

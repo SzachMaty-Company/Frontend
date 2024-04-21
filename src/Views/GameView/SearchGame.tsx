@@ -10,13 +10,16 @@ import { createGame } from '../../ApiHelpers/GameLogicServiceClient';
 
 const TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6InVzZXIyIn0.2AfTfJR4nPP3Cj8W51V6H903081ilw5BwanT5OrpMNk";
 
-export default function SearchGameView() {
+export default function SearchGameView() { 
+
+
+
 
     const [profile, setProfile] = useState(new ProfileStatistic());
     const [friends, setFriends] = useState([] as ProfileStatistic[]);
 
     let [timeSelected, setTimeSelected] = useState(5);
-    let [selectedOponent, setSelectedOponent] = useState("");
+    let [selectedOponent, setSelectedOponent] = useState(-1);
     let [searching, setSearching] = useState(false);
     let [isWhite, setIsWhite] = useState(true);
     let [playerType, setPlayerType] = useState("FRIEND");
@@ -31,8 +34,8 @@ export default function SearchGameView() {
             p => {
                 setFriends(p);
 
-                if (friends.length !== 0) {
-                    setSelectedOponent(friends[0].name);
+                if (p.length !== 0) {
+                    setSelectedOponent(p[0].id);
                 }
             }
         );
@@ -70,10 +73,7 @@ export default function SearchGameView() {
 
         createGame(TOKEN, "localhost:8000", playerType, timeSelected.toString(), "WHITE", whitePlayer as string, blackPlayer as string).then(p => {
             GameStatus.search();
-            navigate("/game", {
-                state:
-                    { gameSettings: p }
-            });
+            navigate("/game/"+p.gameCode);
         });
     }
 
