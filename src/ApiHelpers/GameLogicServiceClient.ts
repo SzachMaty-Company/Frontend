@@ -7,7 +7,7 @@ class GameLogicServiceClient {
     private subscription: StompSubscription | undefined;
     private lastClientMove: string | undefined;
 
-    constructor(private token: string, private url: string, private gameCode: string, private isCurentlyClientsTurn: boolean, private rcvFenCallback: (s:string, timer:number) => void)
+    constructor(private token: string, private url: string, private gameCode: string, private isCurentlyClientsTurn: boolean, private rcvFenCallback: (s:string, timer:number, gameStatus:string) => void)
     {
 
     }
@@ -32,7 +32,7 @@ class GameLogicServiceClient {
                     console.log("XXXXXXXXXXXXXXX");
                     console.log(messageJson);
                     console.log("##################");
-                    this.rcvFenCallback(messageJson.fen, messageJson.time);
+                    this.rcvFenCallback(messageJson.fen, messageJson.time, messageJson.gameStatus);
                     this.isCurentlyClientsTurn = this.lastClientMove != messageJson.move;
                 });
             }

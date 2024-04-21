@@ -73,25 +73,6 @@ export default function GameView() {
                 {
                     numberOfMoves = 1;
                     setNumberOfMoves(numberOfMoves);
-                //console.log("###################updated number of moves to " + (+1));
-                }
-                if(status.gameStatus !== "IN_GAME" && status.gameStatus !== "NOT_STARTED"){
-                    let info:string[] = [];
-                    if(status.gameStatus === "DRAW"){
-                        info.push("Remis!");
-                    }else{
-                        if(clientChooseWhitePierceColor===(status.gameStatus === "WHITE_WINNER")){
-                            info.push("Wygrałeś!");
-                            //let profile = await GetProfileStatistic(clientChooseWhitePierceColor?gameSettings.player1.id:gameSettings.player2.id);
-                            //info.push("Wygrał " + profile.name);
-                        }else{
-                            info.push("Przegrałeś!");
-                            //let profile = await GetProfileStatistic(!clientChooseWhitePierceColor?gameSettings.player1.id:gameSettings.player2.id);
-                            //info.push("Wygrał " + profile.name);
-                        }
-                    }
-                    setPopupInfo(info);
-                    setPopupVisibility(true);
                 }
             });
     }, []);
@@ -104,7 +85,7 @@ export default function GameView() {
             "localhost:8000",
              gamecode,
              clientChooseWhitePierceColor,
-             (s, time) => {
+             (s, time, gameStatus) => {
                 setFen(s);
                 console.log("###################updated number of moves to " + (numberOfMoves+1));
                 if (numberOfMoves%2==0)
@@ -112,6 +93,31 @@ export default function GameView() {
                 else
                     setTimerBlack(time);
                 setNumberOfMoves(++numberOfMoves);
+
+
+                console.log(gameStatus);
+                if(gameStatus !== "IN_GAME" && gameStatus !== "NOT_STARTED"){
+                    let info:string[] = [];
+                    if(gameStatus === "DRAW"){
+                        info.push("Remis!");
+                    }else{
+                        if(clientChooseWhitePierceColor===(gameStatus === "WHITE_WINNER")){
+                            console.log("wygrales");
+                            info.push("Wygrałeś!");
+                            //let profile = await GetProfileStatistic(clientChooseWhitePierceColor?gameSettings.player1.id:gameSettings.player2.id);
+                            //info.push("Wygrał " + profile.name);
+                        }else{
+                            console.log("przegrales");
+                            info.push("Przegrałeś!");
+                            //let profile = await GetProfileStatistic(!clientChooseWhitePierceColor?gameSettings.player1.id:gameSettings.player2.id);
+                            //info.push("Wygrał " + profile.name);
+                        }
+                    }
+                    setPopupInfo(info);
+                    setPopupVisibility(true);
+                }
+
+
              }
         );
 

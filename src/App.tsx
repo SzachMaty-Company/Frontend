@@ -57,7 +57,7 @@ function App() {
     <GoogleOAuthProvider clientId={clientId}>
       <BrowserRouter basename='/'>
         <Routes>
-          <Route path="/" element={<Layout gamePath="/game" statPath="/statistic" loginPath='/login' searchPath="search/users" />}>
+          <Route path="/" element={<Layout gamePath="/game/searching" statPath="/statistic" loginPath='/login' searchPath="search/users" />}>
             <Route 
               path="game/:gamecode" 
               element={
