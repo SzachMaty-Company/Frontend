@@ -66,7 +66,7 @@ function FriendsChat(){
 
     useEffect(() => {
 
-        chatClient = new ChatSerivceClient(AuthComponent.JSONToken, apiPath, (x, y) => {
+        chatClient = new ChatSerivceClient( apiPath, (x, y) => {
             rcvMessage(x, y)
         } );
 

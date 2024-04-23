@@ -1,5 +1,6 @@
 import { Client, IMessage, StompSubscription } from '@stomp/stompjs';
 import { JwtPayload, jwtDecode } from "jwt-decode";
+import AuthComponent from '../AuthComponent';
 
 interface ChatMessageInterface {
     text: string;
@@ -33,7 +34,7 @@ class ChatSerivceClient{
     private stompClient: Client | undefined;
     private subscription: StompSubscription | undefined;
 
-    constructor(private token: string, private url: string, private handleReceivedMessage: (message: ChatMessageInterface, numberArg: number) => void){
+    constructor(private url: string, private handleReceivedMessage: (message: ChatMessageInterface, numberArg: number) => void){
     }
 
     public makeMessage(text: string, idOfSender: string, date: string)
@@ -41,7 +42,7 @@ class ChatSerivceClient{
         const parsedDate = Date.parse(date);
         const msg : ChatMessageInterface = {
             text: text,
-            sideOfChat: idOfSender !== tokenToId(this.token),
+            sideOfChat: idOfSender !== tokenToId(AuthComponent.JSONToken),
             date: new Date(parsedDate)
         };
         return msg;
@@ -49,7 +50,7 @@ class ChatSerivceClient{
 
     public showMessage(message: IMessage){
         const parsedMessage = JSON.parse(message.body);
-        const ownerId = tokenToId(this.token);
+        const ownerId = tokenToId(AuthComponent.JSONToken);
         if (ownerId != undefined)
         {
             const newMessage = this.makeMessage(parsedMessage.message, parsedMessage.senderId, parsedMessage.timestamp);
@@ -63,7 +64,7 @@ class ChatSerivceClient{
             debug: (str) => {
             },
             connectHeaders: {
-                token: this.token 
+                token: AuthComponent.JSONToken
             }
         })
 
@@ -103,14 +104,14 @@ class ChatSerivceClient{
         let response = await fetch(`http://${this.url}/${endpoint}`, {
             method: 'GET',
             headers: {
-            'Authorization': `Bearer ${this.token}`,
+            'Authorization': `Bearer ${AuthComponent.JSONToken}`,
             'Content-Type': 'application/json'}
         });
         return response.json();
     }
 
     private async gatherParticipants(chatId: number){
-        const tokenOwnerId = tokenToId(this.token);
+        const tokenOwnerId = tokenToId(AuthComponent.JSONToken);
         if (tokenOwnerId != undefined)
         {
             const participantsData = await this.makeRequest(`chat/${chatId}/participants`);
