@@ -4,6 +4,7 @@ import './FriendsChat.css'
 import { ChatSerivceClient } from '../../ApiHelpers/ChatServiceClient';
 import { Client } from '@stomp/stompjs';
 import { unescape } from 'querystring';
+import AuthComponent from '../../AuthComponent';
 
 interface ChatMessageInterface {
     text: string;
@@ -28,7 +29,6 @@ interface ChatRoom{
 }
 
 
-const token: string = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidG9taXPFgmF3IGFwb2xvbml1c3ogY3VydcWbIGJhY2hsZWRhIGZhcmVsIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiJnbG9iYWwtaWQtMSJ9.5t1xYlNI5NnKXzyCFWa1HbPFwVTziggfaWnPeL10TcU";
 const apiPath: string = "localhost:8000";
 let chatClient : ChatSerivceClient;
 
@@ -66,11 +66,11 @@ function FriendsChat(){
 
     useEffect(() => {
 
-        chatClient = new ChatSerivceClient(token, apiPath, (x, y) => {
+        chatClient = new ChatSerivceClient(AuthComponent.JSONToken, apiPath, (x, y) => {
             rcvMessage(x, y)
         } );
 
-        chatClient.gatherChatRooms(token, apiPath)
+        chatClient.gatherChatRooms(AuthComponent.JSONToken, apiPath)
             .then(async (receivedChatRooms) => {
                 setChatRooms(receivedChatRooms);
                 chatClient.connect();
