@@ -1,13 +1,15 @@
+import { StringLiteral } from 'typescript';
 import './ChatMessage.css'
 
 interface ChatMessageProps {
   text: string;
   sideOfChat: boolean;
   date: Date;
+  type: string;
 }
 const padZero = (num:number) => (num < 10 ? `0${num}` : num);
 
-const ChatMessage: React.FC<ChatMessageProps> = ({text, sideOfChat, date}) =>{
+const ChatMessage: React.FC<ChatMessageProps> = ({text, sideOfChat, date, type}) =>{
 
   const containerStyle = {
     display: 'flex',
@@ -30,7 +32,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({text, sideOfChat, date}) =>{
                     </table>
                 </div>
                 <div className={`messageText ${sideOfChat ? "receivedText" : "sentText"}`}>
-                    {text}
+                    {type == "INVITE" ? <span>Elo, elo, mój kolego! Może jakiś intelektualny sparing? - <a href={"/game/"+text}>Dołącz</a> </span> : text}
                 </div>
                 </div>
             </div> 

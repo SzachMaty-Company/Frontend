@@ -10,6 +10,7 @@ interface ChatMessageInterface {
     text: string;
     sideOfChat: boolean;
     date: Date;
+    type: string;
 }
 
 interface ChatMessageProps {

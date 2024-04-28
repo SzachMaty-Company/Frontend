@@ -7,6 +7,7 @@ interface ChatMessageInterface {
     text: string;
     sideOfChat: boolean;
     date: Date;
+    type: string;
 }
 
 interface ChatMessageProps {
@@ -49,7 +50,7 @@ const InGameChat: React.FC<ChatMessageProps> = ({messages, sentMessage, closeabl
             </div>
             <div className='conversation'>
             {messages.map((message, index) => (
-                <ChatMessage key={index} text={message.text} sideOfChat={message.sideOfChat} date={message.date}></ChatMessage>  
+                <ChatMessage key={index} text={message.text} sideOfChat={message.sideOfChat} date={message.date} type={message.type}></ChatMessage>  
             ))}
             </div>
             <div className='controls'>

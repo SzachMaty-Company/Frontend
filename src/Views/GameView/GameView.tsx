@@ -21,6 +21,7 @@ interface ChatMessageProps {
     text: string;
     sideOfChat: boolean;
     date: Date;
+    type: string;
 };
 
 let gameLogicClient : GameLogicServiceClient;
@@ -222,9 +223,6 @@ export default function GameView() {
                 <div className="gameControlHolder">
                     <div className="surrenderButtonHolder">
                         <MainActionButton text="Poddaj się"></MainActionButton>
-                    </div>
-                    <div className="chatHolder">
-                        <InGameChat messages={messages} sentMessage={addMessage} closeable={false} title='zioooobro' hidden={false} hide={()=>{}}></InGameChat>
                     </div>
                 </div>
             </div>

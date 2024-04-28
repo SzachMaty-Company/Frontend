@@ -5,6 +5,7 @@ interface ChatMessageInterface {
     text: string;
     sideOfChat: boolean;
     date: Date;
+    type: string;
 }
 
 interface ChatParticipant{
@@ -36,13 +37,14 @@ class ChatSerivceClient{
     constructor(private token: string, private url: string, private handleReceivedMessage: (message: ChatMessageInterface, numberArg: number) => void){
     }
 
-    public makeMessage(text: string, idOfSender: string, date: string)
+    public makeMessage(text: string, idOfSender: string, date: string, type: string)
     {
         const parsedDate = Date.parse(date);
         const msg : ChatMessageInterface = {
             text: text,
             sideOfChat: idOfSender !== tokenToId(this.token),
-            date: new Date(parsedDate)
+            date: new Date(parsedDate),
+            type: type
         };
         return msg;
     }
@@ -52,7 +54,7 @@ class ChatSerivceClient{
         const ownerId = tokenToId(this.token);
         if (ownerId != undefined)
         {
-            const newMessage = this.makeMessage(parsedMessage.message, parsedMessage.senderId, parsedMessage.timestamp);
+            const newMessage = this.makeMessage(parsedMessage.message, parsedMessage.senderId, parsedMessage.timestamp, parsedMessage.type);
             this.handleReceivedMessage(newMessage, parsedMessage.chatId);
         }
     }
@@ -134,7 +136,7 @@ class ChatSerivceClient{
         let messages: ChatMessageInterface[] = [];
         for (const x of receivedMessages.content)
         {
-            messages.push(this.makeMessage(x.message, x.senderId, x.timestamp));
+            messages.push(this.makeMessage(x.message, x.senderId, x.timestamp, x.type));
         }
         messages.sort((a, b) => a.date.getTime() - b.date.getTime());
         return messages;
