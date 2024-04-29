@@ -17,7 +17,7 @@ export default function LoginView() {
               }).then(async data => {
                   AuthComponent.authenticate(data["token"]);
                   if (location?.state?.from) navigate(location.state.from);
-                  else navigate("/");
+                  else navigate("/game/searching");
               })
       },
       onError: errorResponse => console.log(errorResponse),
